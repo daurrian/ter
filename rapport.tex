@@ -1,0 +1,26 @@
+\documentclass[a4paper, 11pt]{article}
+\usepackage{preamble}
+
+\usepackage{subfiles}
+
+\title{\Title}
+\author{\Author}
+\date{\today}
+
+\begin{document}
+  \maketitle
+  \tableofcontents
+  \pagebreak
+
+  \section{Théorie des Types}
+    \subsection{Introduction}
+      \subfile{sections/type_theory/intro.tex}
+
+    % \subsection{Egalité par définition / propositionelle}
+    %   \subfile{sections/type_theory/equality.tex}
+
+    \subsection{Construction de types}
+      \subfile{sections/type_theory/construction.tex}
+
+    % NOTE : https://lean-lang.org/theorem_proving_in_lean4/axioms_and_computation.html
+\end{document}

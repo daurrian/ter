@@ -1,0 +1,29 @@
+\documentclass[../main.tex]{subfiles}
+
+\begin{document}
+  \paragraph{Univers.}
+
+  Un univers est un type composé de type, ce n'est pas le type de tout les types,
+  car cela ferait apparaître un paradoxe de la même nature que lorsque l'on considère l'ensemble
+  $\{x ; x \in x\}$ en théorie des ensembles.
+
+  \paragraph{Fonctions.}
+
+  Etant donné deux types $A, B : \U$, construit le type $A \fun B$ qui correspond au type des fonctions
+  de $A$ dans $B$.
+  Si $f : A \fun B$ et $a : A$, alors on peut appliquer $f$ à $a$ ce qui permet d'obtenir un élément de type $B$,
+  on le note $f(a)$ ou aussi $f\ a$ : c'est la valeur de $f$ en $a$.
+
+  Pour construire un élément $f$ de type $A \fun B$, appelé fonctions, on utilise les $\lambda$-abstraction
+  et le formalisme du $\lambda$-calcul.
+  On peut alors obtenir une fonction de la manière suivante :
+  $$f :\equiv \lambda (x : A). \Phi \, : A \fun B,$$
+  où $\Phi$ est un expression de type $B$ qui peut faire intervenir $x : A$.
+  Cette fonction est ici définie comme la fonction que à $x$ associe $\Phi$,
+  on peut alors appliquer $f$ à $x : A$, et il serait alors naturel d'avoir la relation
+  $$f\ a \equiv (\lambda (x : A). \Phi)\ a \equiv \Phi [a/x],$$
+  où $\Phi [a/x]$ est $\Phi$ où toutes les occurences de $x$ sont remplacées par $a$.
+  Cette relation est en fait une règle du système déductif, souvent appelée règle $\beta$.
+  % ebproof ou prftree pour les arbres de preuves
+
+\end{document}
