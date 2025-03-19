@@ -1,6 +1,7 @@
 \documentclass[../../rapport.tex]{subfiles}
 
 \begin{document}
+  % TODO: Réécrire en disant que ce résultat est une généralisation d'un résultat nécessaire pour l'unicité.
   Pour montrer l'unicité dans le théorème de Bowen, on a besoin d'un résultat de topologie de certains espaces,
   appelés espaces ultramétriques, qui sont des espaces métriques où l'inégalité triangulaire habituelle est remplacée
   par une inégalité dite ultramétrique :
@@ -13,7 +14,8 @@
   puis une formalisation possible en Lean.
 
   \begin{theorem}
-    Soit $(E, d)$ un espace ultramétrique et $\O$ un ouvert de $E$,
+    \label{thm:open_bdd_eq_disjoint_union_ball}
+    Soit $(E, d)$ un espace ultramétrique et $\O$ un ouvert borné de $E$,
     alors il existe une partie $R \subseteq \O$ et une application $r \colon R \longrightarrow \R^*_+$ tels que
     $$\O = \bigsqcup_{x \in R}{B(x, r(x))}.$$
     De plus, si $E$ est séparable alors on peut imposer que $R$ soit au plus dénombrable.
@@ -38,6 +40,7 @@
   \end{proof}
 
   \begin{lemma}
+    \label{lem:ball_subset_trichotomy}
     Soit $x, y \in E$ et deux réels $r, s > 0$, alors il y a trois possibilités :
     \begin{enumerate}
       \item $B(x, r) \subseteq B(y, s)$,
@@ -53,6 +56,7 @@
   \end{proof}
 
   \begin{lemma}
+    \label{lem:union_mem_balls}
     Soit $(x_i)_{i\in I}$ une famille de point de $E$ et $(r_i)_{i\in I}$ une famille de réels strictement positifs.
     De plus, supposons qu'il existe $x \in E$ tel que $x \in B(x_i, r_i)$ pour tout $i \in I$ et que $R = \sup_{i\in I}{r_i} < \infty$.
     Alors
@@ -69,8 +73,9 @@
     Finalement, l'union de ces boules est encore une boule.
   \end{proof}
 
-  On notera dans la suite $\O \subseteq E$ un ouvert et donc on a pour chaque $x \in \O$ un réel $r_x > 0$ tel que
-  $B(x, r_x) \subseteq \O$. On a alors
+  On notera dans la suite $\O \subseteq E$ un ouvert borné,
+  et donc on a pour chaque $x \in \O$ un réel $r_x > 0$ tel que $B(x, r_x) \subseteq \O$.
+  On a alors
   $$\O = \bigcup_{x\in\O}{B(x, r_x)}.$$
 
   \begin{remark}
@@ -103,7 +108,7 @@
       \item $v \subseteq w$ dans ce cas on a $u_1 \stackrel{v}{\sim} u_3$
       \item $w \subseteq v$ et alors on a $u_1 \stackrel{w}{\sim} u_3$
     \end{itemize}
-    \begin{figure}[h]
+    \begin{figure}[ht]
       \centering
 	\begin{tikzpicture}
       [
@@ -137,13 +142,45 @@
   Donc $\sim_{\U}$ est bien une relation d'équivalence sur $\U$.
   \end{proof}
 
-  Soit $\U \subseteq B(\O)$ et $u \in \U$.
-  Dorénavant, on notera $\bar{u}$ la classe d'équivalence de $u$ pour la relation $\sim$ sur $\U$.
+  Pour la suite de la section on fixe $\U \subseteq B(\O)$ un sous-ensemble de l'ensemble des boules incluses dans $\O$.
 
-  \begin{proposition}
-    Supposons que $\O$ est un ouvert borné de $E$.
-    Soit $\U \subseteq B(\O)$ et $B(x, r) \in \U$ avec $x \in \O$ et $r>0$ alors il existe $R > 0$ tel que
-    $$\bigcup_{v \in \bar{u}}{v} \subseteq B(x, R) $$
-  \end{proposition}
+  \begin{definition}
+    Soit $u \in \U$, la classe d'équivalence de $u$ pour la relation $\sim$ est noté $\bar{u}$.
+    On introduit également $\B_u \in B(\O)$ l'union des éléments de la classe d'équivalence de $u$ :
+    $$\B_u := \bigcup_{u \sim u'}{u'} \subseteq \O.$$
+    Remarquons que $\B_u$ est une boule dès lors que cette union est bornée (d'après le lemme \ref{lem:union_mem_balls}),
+    or cette $\B_u \subseteq \O$ et $\O$ est borné donc $\B_u$ est toujours une boule.
+  \end{definition}
 
+  \begin{definition}
+    Soit $R$ un système complet de représentant pour la relation $\sim$.
+    On pose alors
+    $$\U' := \U \cup \left\{\B_u \mid u \in R\right\} \subseteq B(\O).$$
+    car $\B_u \in B(\O)$ pour chaque $u \in R$.
+  \end{definition}
+
+  On considère désormais $\sim' = \sim_{\U'}$ qui est encore une relation d'équivalence,
+  et soit $R'$ un système complet de représentant pour la relation $\sim'$.
+
+  \begin{theorem}
+    Soit $\O$ un ouvert borné de $E$. Avec les notations introduites précédemment on a
+    $$\O = \bigsqcup_{u\in R'}{\B_u}.$$
+  \end{theorem}
+
+  \begin{proof}
+    On commence par montrer que cette union est bien égale à $\O$.
+    En considérant $\U = \left\{B(x, r_x) \mid x \in \O\right\}$,
+    \begin{align*}
+      \O = \bigcup_{u \in \U}{u} = \bigcup_{u \in \U'}{u} = \bigcup_{u\in R'}{\left(\bigcup_{v \sim' u}{v}\right)}
+				= \bigcup_{u\in R'}{\B_u}
+    \end{align*}
+
+    Il reste encore à montrer que cette union est disjointe.
+    Supposons que $\B_u \cap \B_v \not= \emptyset$.
+    Alors on a $\B_u \subseteq \B_v$ ou $\B_v \subseteq \B_u$ par le lemme \ref{lem:ball_subset_trichotomy}.
+    Dans les deux cas on a $u \sim' v$ avec $w = \B_v \in \U'$ dans le premier cas et $w = \B_u \in \U'$ dans le second.
+    Or $R$ est un système complet de représentant pour $\sim'$ et donc nécessairement $u = v$.
+    Finalement les $(\B_u)_{u\in R'}$ sont deux à deux disjoints et leur union est égale à $\O$,
+    ce qui conclut la preuve du théorème \ref{thm:open_bdd_eq_disjoint_union_ball}.
+  \end{proof}
 \end{document}
