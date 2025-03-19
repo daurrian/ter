@@ -1,0 +1,36 @@
+\documentclass[../../rapport.tex]{subfiles}
+
+\begin{document}
+  Pour montrer l'unicité dans le théorème de Bowen, on a besoin d'un résultat de topologie de certains espaces,
+  appelés espaces ultramétriques où l'inégalité triangulaire habituelle est rermplacée par une inégalité dite ultramétrique :
+  $$\forall x, y, z \in E, d(x, z) \le \max{(d(x, y), d(y, z))}.$$
+  Cette inégalité donne de nombreux résultats topologiques très différents des espaces métriques,
+  notamment sur les triangles et les boules.
+
+  Le théorème permettant de prouver l'unicité du théorème de Bowen est le suivant,
+  et nous allons en donner une preuve dans cette section,
+  puis une formalisation possible en Lean.
+
+  \begin{theorem}
+    Soit $(E, d)$ un espace ultramétrique et $\O$ un ouvert de $E$,
+    alors il existe une partie $R \subseteq \O$ et une application $r \colon R \longrightarrow \R^*_+$ tels que
+    $$\O = \bigsqcup_{x \in R}{B(x, r(x))}.$$
+    De plus, si $E$ est séparable alors on peut imposer que $R$ soit au plus dénombrable.
+  \end{theorem}
+
+  On notera dans la suite $\O \subseteq E$ un ouvert et donc on a pour chaque $x \in \O$ un réel $r_x > 0$ tel que
+  $B(x, r_x) \subseteq \O$. On a alors
+  $$\O = \bigcup_{x\in\O}{B(x, r_x)}.$$
+
+  \begin{remark}
+    On peut voir les $(r_x)_{x\in\O}$ comme une une application $r \colon \mathcal{O} \longrightarrow \R^*_+$.
+  \end{remark}
+
+  \begin{definition}
+    On note $B(\O)$ l'ensemble des boules incluses dans $\O$, en particulier :
+    $$B(\O) := \left\{b | \exists x \in \O, \exists r > 0, B(x, r) \subseteq \O \right\}.$$
+    On définit une relation sur les boules contenues dans $\O$ de la manière suivante :
+    $$\forall u, v \subseteq \O$$ % TODO: A finir
+  \end{definition}
+
+\end{document}
