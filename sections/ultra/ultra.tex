@@ -2,7 +2,8 @@
 
 \begin{document}
   Pour montrer l'unicité dans le théorème de Bowen, on a besoin d'un résultat de topologie de certains espaces,
-  appelés espaces ultramétriques où l'inégalité triangulaire habituelle est rermplacée par une inégalité dite ultramétrique :
+  appelés espaces ultramétriques, qui sont des espaces métriques où l'inégalité triangulaire habituelle est remplacée
+  par une inégalité dite ultramétrique :
   $$\forall x, y, z \in E, d(x, z) \le \max{(d(x, y), d(y, z))}.$$
   Cette inégalité donne de nombreux résultats topologiques très différents des espaces métriques,
   notamment sur les triangles et les boules.
@@ -18,6 +19,56 @@
     De plus, si $E$ est séparable alors on peut imposer que $R$ soit au plus dénombrable.
   \end{theorem}
 
+  Dans la suite on fixe $(E, d)$ un espace ultramétrique
+  Commençons par quelques lemmes décrivant les relations entres les boules dans ces espaces.
+
+  \begin{lemma}
+    \label{lem:ball_eq_of_mem}
+    Soit $x, y \in E$ et un réel $r > 0$, si $y \in B(x, r)$, alors $B(x, r) = B(y, r)$
+  \end{lemma}
+
+  \begin{proof}
+    Supposons que $y \in B(x, r)$. Soit $z \in B(x, r)$, alors
+    $$d(y, z) \le \max{(d(y, x), d(x, z))} \le \max{(r, r)} \le r,$$
+    car $y, z \in B(x, r)$. Donc on a une inclusion : $B(x, r) \subseteq B(y, r)$.
+
+    Réciproquement comme $y \in B(x, r)$ on a $x \in B(y, r)$ par symétrie de la distance
+    et donc avec le même raisonnement on a l'autre inclusion.
+    Finalement, $B(x, r) = B(y, r)$.
+  \end{proof}
+
+  \begin{lemma}
+    Soit $x, y \in E$ et deux réels $r, s > 0$, alors il y a trois possibilités :
+    \begin{enumerate}
+      \item $B(x, r) \subseteq B(y, s)$,
+      \item $B(y, s) \subseteq B(x, r)$,
+      \item $B(x, r) \cap B(y, s) = \emptyset$.
+    \end{enumerate}
+  \end{lemma}
+
+  \begin{proof}
+    Supposons que $B(x, r) \cap B(y, s) \not= \emptyset$, alors soit $z \in B(x, r) \cap B(y, s)$.
+    On peut alors écrire $B(x, r) = B(z, r)$ et $B(y, s) = B(z, s)$ grâce au lemme \ref{lem:ball_eq_of_mem},
+    et ainsi on a bien le résultat voulu en fonction de l'ordre de $r$ et $s$.
+  \end{proof}
+
+  \begin{lemma}
+    Soit $(x_i)_{i\in I}$ une famille de point de $E$ et $(r_i)_{i\in I}$ une famille de réels strictement positifs.
+    De plus, supposons qu'il existe $x \in E$ tel que $x \in B(x_i, r_i)$ pour tout $i \in I$ et que $R = \sup_{i\in I}{r_i} < \infty$.
+    Alors
+    $$\bigcup_{i \in I}B(x_i, r_i) = B(x, R).$$
+  \end{lemma}
+
+  \begin{proof}
+    Commençons par réécrire chaque boule en changeant son centre grâce au lemme \ref{lem:ball_eq_of_mem} et
+    notons $R = \sup_{i\in I}{r_i} < \infty$, on a alors l'inclusion
+    $$\bigcup_{i\in I}B(x_i, r_i) = \bigcup_{i\in I}{B(z, r_i)} \subseteq B(z, R).$$
+
+    Réciproquement si $y \in B(z, R)$, alors il existe $i_0 \in I$ tel que $d(y, z) \le r_{i_0} \le R$
+    et donc $y \in B(z, r_{i_0}) \subseteq \bigcup_{i\in I}{B(z, r_i)}$.
+    Finalement, l'union de ces boules est encore une boule.
+  \end{proof}
+
   On notera dans la suite $\O \subseteq E$ un ouvert et donc on a pour chaque $x \in \O$ un réel $r_x > 0$ tel que
   $B(x, r_x) \subseteq \O$. On a alors
   $$\O = \bigcup_{x\in\O}{B(x, r_x)}.$$
@@ -28,9 +79,71 @@
 
   \begin{definition}
     On note $B(\O)$ l'ensemble des boules incluses dans $\O$, en particulier :
-    $$B(\O) := \left\{b | \exists x \in \O, \exists r > 0, B(x, r) \subseteq \O \right\}.$$
-    On définit une relation sur les boules contenues dans $\O$ de la manière suivante :
-    $$\forall u, v \subseteq \O$$ % TODO: A finir
+    $$B(\O) := \left\{B(x, r) \mid x \in \O \land r > 0 \land B(x, r) \subseteq \O\right\} \subseteq \mathcal{P}(E).$$
+    Soit $\U \subseteq B(\O)$, on définit une relation $\sim_{\U}$ (ou plus simplement $\sim$ s'il n'y a pas d'ambuiguité) sur $\U$ par :
+    $$\forall u, v \in \U, \hspace{1em} u \sim_{\U} v \iff \exists w \in \U, u \cup v \subseteq w.$$
   \end{definition}
+
+  \begin{proposition}
+    Pour tout $\U \subseteq B(\O)$, la relation $\sim_{\U}$ est une relation d'équivalence.
+  \end{proposition}
+
+  \begin{proof}
+    Soit $u_1, u_2, u_3 \in \U$ trois boules.
+
+    Pour la reflexivité, on considère $w = u_1 \in \U$ et on a bien $u_1 \sim u_1$.
+
+    Pour la symétrie, la définition de la relation est clairement symétrique.
+
+    Enfin pour la transitivité, on suppose que $u_1 \sim u_2$ et $u_2 \sim u_3$.
+    On a alors $v, w \in \U$ tels que
+    $$u_1 \subseteq v, u_2 \subseteq v, u_2 \subseteq w \text{ et } u_3 \subseteq w.$$
+    Ainsi, $\emptyset \not= u_2 \subseteq v \cap w$, or $v$ et $w$ sont des boules d'un espace ultramétrique. On a alors deux cas :
+    \begin{itemize}
+      \item $v \subseteq w$ dans ce cas on a $u_1 \stackrel{v}{\sim} u_3$
+      \item $w \subseteq v$ et alors on a $u_1 \stackrel{w}{\sim} u_3$
+    \end{itemize}
+    \begin{figure}[h]
+      \centering
+	\begin{tikzpicture}
+      [
+	level 1/.style={sibling distance=15mm},
+	level 2/.style={sibling distance=15mm},
+      ]
+	\node {$v$}
+		child {node {$u_1$}}
+		child {
+		    node {$w$}
+		    child {node {$u_2$}}
+		    child {node {$u_3$}}
+		};
+	\end{tikzpicture}
+	\hspace{1.5cm}
+	\begin{tikzpicture}
+      [
+	level 1/.style={sibling distance=15mm},
+	level 2/.style={sibling distance=15mm},
+      ]
+	\node {$w$}
+		child {
+		    node {$v$}
+		    child {node {$u_1$}}
+		    child {node {$u_2$}}
+		}
+		child {node {$u_3$}};
+	\end{tikzpicture}
+
+  \end{figure}
+  Donc $\sim_{\U}$ est bien une relation d'équivalence sur $\U$.
+  \end{proof}
+
+  Soit $\U \subseteq B(\O)$ et $u \in \U$.
+  Dorénavant, on notera $\bar{u}$ la classe d'équivalence de $u$ pour la relation $\sim$ sur $\U$.
+
+  \begin{proposition}
+    Supposons que $\O$ est un ouvert borné de $E$.
+    Soit $\U \subseteq B(\O)$ et $B(x, r) \in \U$ avec $x \in \O$ et $r>0$ alors il existe $R > 0$ tel que
+    $$\bigcup_{v \in \bar{u}}{v} \subseteq B(x, R) $$
+  \end{proposition}
 
 \end{document}

@@ -19,6 +19,8 @@
 \usepackage{algpseudocode}
 \usepackage{stmaryrd}
 \usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{subcaption}
 
 \graphicspath{{./images/}}
 
@@ -46,6 +48,6 @@
 \theoremstyle{plain}
 \newtheorem{theorem}{Théorème}[section]
 
-\newtheorem{corollary}{corollaire}[section]
-\newtheorem{lemma}{Lemme}[section]
-\newtheorem{proposition}{Proposition}[section]
+\newtheorem{corollary}{Corollaire}[theorem]
+\newtheorem{lemma}[theorem]{Lemme}
+\newtheorem{proposition}[theorem]{Proposition}
