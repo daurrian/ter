@@ -183,4 +183,23 @@
     Finalement les $(\B_u)_{u\in R'}$ sont deux à deux disjoints et leur union est égale à $\O$,
     ce qui conclut la preuve du théorème \ref{thm:open_bdd_eq_disjoint_union_ball}.
   \end{proof}
+
+  Avec la même preuve on obtient en changeant une hypothèse la même conclusion.
+
+  \begin{corollary}
+    Soit $E$ un espace ultramétrique tel qu'il existe $(x_i)_{i\in I} \in E^I$ et $(r_i)_{i\in I}$ des réels strictement positifs vérifiant
+    la propriété suivante :
+    $$E = \bigcup_{i\in I}{B(x_i, r_i)} \hspace{1cm} \text{et} \hspace{1cm} \sup_{i\in I}{r_i} < \infty.$$
+    Alors pour tout ouvert $\O$ de $E$, il existe $R \subseteq E$ et $r \colon R \longrightarrow \R^*_+$ tel que
+    $$\O = \bigsqcup_{x\in R}{B(x, r(x))}.$$
+  \end{corollary}
+
+  \begin{proof}
+    On réécrit $\O$ comme l'union suivante :
+    $$\O = \bigsqcup_{i\in I}{B(x_i, r_i) \cap \O}.$$
+    Cette union est disjointe car les boules des espaces ultramétriques sont disjointe ou bien incluses l'une dans l'autre,
+    donc on peut se ramener à ce cas (\textsc{A vérifier}). % TODO
+    Ainsi, pour tout $i \in I$, $B(x_i, r_i) \cap \O$ est un ouvert borné et donc peut être écrit comme une union disjointe de boule.
+    De cette manière on obtient le résultat voulu.
+  \end{proof}
 \end{document}
