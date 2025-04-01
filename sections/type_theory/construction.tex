@@ -1,24 +1,42 @@
 \documentclass[../../rapport.tex]{subfiles}
 
 \begin{document}
+  Pour construire un nouveau type à partir d'autres, on doit donner 3 règles :
+  \begin{itemize}
+    \item \textbf{Formation du type}, qui permet de construire un type à partir d'autres types ou famille de types,
+    \item \textbf{Introduction}, qui explique comment sont construits les éléments de ce type,
+    \item \textbf{Élimination}, décrivant comment utiliser ces éléments.
+  \end{itemize}
+
+  Partant de ces 3 règles, on peut construire un type et éventuellement ajouter des règles supplémentaires concernant
+  leur comportement par rapport à l'égalité par définition.
+
   \paragraph{Univers.}
 
   Un univers est un type composé de type, ce n'est pas le type de tout les types,
   car cela ferait apparaître un paradoxe de la même nature que lorsque l'on considère l'ensemble
   $\{x ; x \in x\}$ en théorie des ensembles.
+  \textsc{A revoir}
 
   \paragraph{Fonctions.}
 
-  Etant donné deux types $A, B : \U$, construit le type $A \fun B$ qui correspond au type des fonctions
+  Etant donné deux types $A, B : \U$, on construit le type $A \fun B : \U$ qui correspond au type des fonctions
   de $A$ dans $B$.
   Si $f : A \fun B$ et $a : A$, alors on peut appliquer $f$ à $a$ ce qui permet d'obtenir un élément de type $B$,
-  on le note $f(a)$ ou aussi $f\ a$ : c'est la valeur de $f$ en $a$.
+  on le note $f(a)$ ou aussi $f\ a$ : c'est la valeur de $f$ en $a$ ou l'évaluation de $f$ en $a$.
 
   Pour construire un élément $f$ de type $A \fun B$, appelé fonctions, on utilise les $\lambda$-abstraction
   et le formalisme du $\lambda$-calcul.
   On peut alors obtenir une fonction de la manière suivante :
   $$f :\equiv \lambda (x : A). \Phi \, : A \fun B,$$
   où $\Phi$ est un expression de type $B$ qui peut faire intervenir $x : A$.
+  Ceci donne les règles d'introduction et d'élimination suivantes :
+
+  $$
+  \prftree[r]{$\fun \text{i}$}{\Gamma, x : A \vdash e : B}{\Gamma \vdash \lambda (x : A). e : A \fun B} \hspace{1cm}
+  \prftree[r]{$\fun \text{e}$}{\Gamma \vdash f : A \fun B}{\Gamma \vdash a : A}{\Gamma \vdash f\ a : B}
+  $$
+
   Cette fonction est ici définie comme la fonction que à $x$ associe $\Phi$,
   on peut alors appliquer $f$ à $x : A$, et il serait alors naturel d'avoir la relation
   $$f\ a \equiv (\lambda (x : A). \Phi)\ a \equiv \Phi [a/x],$$
