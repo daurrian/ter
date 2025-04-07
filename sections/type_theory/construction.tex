@@ -13,35 +13,177 @@
 
   \paragraph{Univers.}
 
-  Un univers est un type composé de type, ce n'est pas le type de tout les types,
-  car cela ferait apparaître un paradoxe de la même nature que lorsque l'on considère l'ensemble
-  $\{x ; x \in x\}$ en théorie des ensembles.
-  \textsc{A revoir}
+  \textsc{A faire.}
 
   \paragraph{Fonctions.}
 
-  Etant donné deux types $A, B : \U$, on construit le type $A \fun B : \U$ qui correspond au type des fonctions
-  de $A$ dans $B$.
-  Si $f : A \fun B$ et $a : A$, alors on peut appliquer $f$ à $a$ ce qui permet d'obtenir un élément de type $B$,
-  on le note $f(a)$ ou aussi $f\ a$ : c'est la valeur de $f$ en $a$ ou l'évaluation de $f$ en $a$.
-
-  Pour construire un élément $f$ de type $A \fun B$, appelé fonctions, on utilise les $\lambda$-abstraction
-  et le formalisme du $\lambda$-calcul.
-  On peut alors obtenir une fonction de la manière suivante :
-  $$f :\equiv \lambda (x : A). \Phi \, : A \fun B,$$
-  où $\Phi$ est un expression de type $B$ qui peut faire intervenir $x : A$.
-  Ceci donne les règles d'introduction et d'élimination suivantes :
+  Étant donné deux types $A, B : \U$, on peut former le type des fonctions de $A$ dans $B$ noté $A \fun B$
+  grâce à la règle de formation suivante :
 
   $$
-  \prftree[r]{$\fun \text{i}$}{\Gamma, x : A \vdash e : B}{\Gamma \vdash \lambda (x : A). e : A \fun B} \hspace{1cm}
-  \prftree[r]{$\fun \text{e}$}{\Gamma \vdash f : A \fun B}{\Gamma \vdash a : A}{\Gamma \vdash f\ a : B}
+  \prfinterspace=2em
+  \prftree[r]{($\fun$ f)}{\Gamma \vdash A : \U}{\Gamma \vdash B : \U}{\Gamma \vdash A \fun B : \U}
   $$
 
-  Cette fonction est ici définie comme la fonction que à $x$ associe $\Phi$,
-  on peut alors appliquer $f$ à $x : A$, et il serait alors naturel d'avoir la relation
-  $$f\ a \equiv (\lambda (x : A). \Phi)\ a \equiv \Phi [a/x],$$
-  où $\Phi [a/x]$ est $\Phi$ où toutes les occurences de $x$ sont remplacées par $a$.
-  Cette relation est en fait une règle du système déductif, souvent appelée règle $\beta$.
-  % ebproof ou prftree pour les arbres de preuves
+  Une fonction est donc un élément $f$ de type $A \fun B$.
+  Si on se donne $a : A$, on peut évaluer $f$ en $a$ ce qui donne un élément de type $B$
+  que l'on note $f\ a$ ou bien $f(a)$ qui est appelé valeur de $f$ en $a$, c'est la règle d'élimination de $\fun$ :
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{($\fun$ e)}{\Gamma \vdash f : A \fun B}{\Gamma \vdash a : A}{\Gamma \vdash f\ a : B}
+  $$
+
+  Pour former une fonction $f$ de $A$ dans $B$ \textit{ie.} un élément de type $A \fun B$,
+  la manière canonique de faire est d'utiliser les $\lambda$-abstraction et la règle d'introduction suivante :
+
+  $$
+  \prftree[r]{($\fun$ i)}{\Gamma, x : A \vdash \Phi : B}{\Gamma \vdash \lambda (x : A). \Phi : A \fun B}
+  $$
+  Dans cette règle $\Phi$ correspond à une formule qui peut éventuellement faire intervenir la variable $x$.
+
+  Enfin, lorsque l'on considère une fonction $f : A \fun B$ définie par $f :\equiv \lambda (x : A). \Phi$
+  où $\Phi$ est une formule et un élément $a : A$, il est naturel que la valeur de $f$ en $a$ soit égale à
+  la formule $\Phi$ où l'on remplace les occurences de $x$ par des $a$, ce que l'on note $\Phi[a/x]$.
+  Ce comportement est en fait une règle d'égalité que l'on peut énoncer sous cette forme :
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{($\beta$)}{\Gamma, x : A \vdash \Phi : B}{\Gamma \vdash a : A}
+    {\Gamma \vdash (\lambda(x : A).\Phi)\ a \equiv \Phi[a/x]}
+  $$
+
+  \begin{example}
+    Considérons un type $A : \U$ et la fonction "identité" de $A$ définie par $I :\equiv \lambda(x : A).x$.
+    Pour prouver que le type de $I$ est bien $A \fun A$, on peut utiliser les règles énoncées précédemment :
+
+    $$
+    \prftree
+      {\prftree
+	{\prfaxiom{A : \U \vdash A : \U}}
+	{A : \U, x : A \vdash x : A}}
+      {A : \U \vdash \lambda(x : A). x : A \fun A}
+    $$
+  \end{example}
+
+  On a vu jusqu'ici comment construire des fonctions à une variable, on peut alors généraliser pour obtenir
+  des fonctions à plusieurs variables.
+  Pour ce faire, considérons trois types $A, B, C : \U$.
+  Naïvement, on voudrais construire une fonction de type $A \times B \fun C$,
+  mais le type $A \times B$ n'est pas encore défini.
+  Pour contourner ce problème, on peut voir une fonction $f$ de $A \times B \fun C$ comme
+
+  \begin{align}
+    f(x, y) = (\lambda(a : A). f(a, y)) x &= ((\lambda(a : A). (\lambda(b : B). f(a, b)))\ x)\ y \\ 
+					  &= (\lambda(a : A).\lambda(b : B). f(a, b))\ x\ y.
+  \end{align}
+
+  On a ainsi obtenu une fonction de type $A \fun B \fun C$ qui prend les mêmes valeurs que $f$
+  grâce à ce processus de \textit{curryfication}.
+
+  \begin{example}
+    Considérons deux types $A, B : \U$ et la fonction $K$ définie par
+    $$K :\equiv \lambda(x : A).(\lambda(y : B).x)$$
+    Grâce à un arbre similaire au précédent, on trouve que le type de $K$ est $A \fun B \fun A$
+    (on omet les parenthèses en prenant comme convention que $A \fun A \fun A$ est égal à $A \fun (A \fun A)$).
+    De plus, on peut également montrer que si $a : A$ et $b : B$, alors $K\ a\ b \equiv a$. En effet, \textsc{A faire.}
+    % $$
+    % \prfinterspace=2em
+    % \prftree{}
+    % $$
+  \end{example}
+
+  \paragraph{Fonctions dépendantes ($\Pi$-type).}
+
+  Une manière de généraliser le type des fonctions est de définir un type de fonctions dépendantes (ou $\prod$-type),
+  qui est un type de fonction dont le codomaine dépend du point d'application de la fonction.
+
+  Pour former ce nouveau type, on considère $A : \U$ un type et $B : A \fun \U$ une famille de type indexée sur $A$.
+  On peut alors former le type $\prod_{a : A}{B(a)}$ grâce à la règle de formation suivante : \textsc{Revoir avec univers}
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{($\Pi$ f)}{\Gamma \vdash A : \U}{\Gamma, a : A \vdash B(a) : \U}
+    {\Gamma \vdash \prod_{a:A}{B(a)} : \U}
+  $$
+
+  On construit des éléments de type $\prod_{a:A}{B(a)}$ de manière analogue aux fonctions en utilisant des $\lambda$-abstractions.
+  En effet, $\lambda(a : A). \Phi$ est de type $\prod_{a:A}{B(a)}$ si lorsque $a : A$, alors $\Phi : B(x)$.
+  Cette règle énoncé plus formellement est la règle d'introduction de ce nouveau type :
+
+  $$
+  \prftree[r]{($\Pi$ i)}{\Gamma, a : A \vdash \Phi : B(a)}
+    {\Gamma \vdash \lambda(a : A). \Phi : \prod_{a:A}{B(a)}}
+  $$
+
+  Ensuite, la règle d'élimination est similaire à celle des types de fonctions.
+  Si on considère $f : \prod_{a:A}B(a)$ et $a : A$, alors $f\ a$ est de type $B(a)$,
+  ce que l'on peut traduire avec la règle suivante :
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{($\Pi$ e)}{\Gamma \vdash f : \prod_{a:A}{B(a)}}{\Gamma \vdash a : A}
+    {\Gamma \vdash f\ a : B(a)}
+  $$
+
+  Également, la règle $\beta$ des fonctions se généralise au $\prod$-type :
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{($\beta$)}{\Gamma, x : A \vdash \Phi : B(x)}{\Gamma \vdash a : A}
+    {\Gamma \vdash (\lambda(x : A).\Phi)\ a \equiv \Phi[a/x]}
+  $$
+
+  L'utilité des types de fonctions dépendantes est notamment de pouvoir définir des fonctions de façon polymorphes,
+  comme le montre les exemples suivants.
+
+  \begin{example}
+    La fonction identité du paragraphe précédent était défini sur un type $A : \U$ quelconque.
+    On peut alors généraliser sa définition de la manière suivante :
+
+    $$I \equiv \lambda (A : \U). \lambda (a : A).\ a : \prod_{A : \U}{A \fun A}.$$
+    Ainsi définie, la fonction $I$ ne dépend pas d'un type préexistant.
+
+    On peut également redéfinir la fonction constante $K$ d'une manière analogue :
+
+    $$K \equiv \lambda (A : \U). \lambda (B : \U). \lambda (x : A). \lambda (y : B).\ x :
+      \prod_{A : \U}\prod_{B : \U}{A \fun B \fun A}.$$
+
+    Pour ces types et définition polymorphe, on peut également avoir la notation $I_A$ à la place de $I\ A$
+    pour plus de clarté.
+  \end{example}
+
+  D'un autre point de vue ce type peut également être vu comme l'équivalent du $\forall$ de la logique
+  du première ordre.
+  En effet, si on considère $A : \U$ un type et $C : A \fun \U$ une famille de type,
+  que l'on peut également voir comme un prédicat, alors le type $\prod_{a : A}{C(a)}$ se comporte comme
+  la proposition $\forall a,\ C(a)$ en logique classique.
+
+  \paragraph{Types inductifs : W-types}
+
+  Pour construire le type des entiers $\N$, les constructeurs précédent ne suffisent pas car ils ne permettent
+  pas de décrire le caractère inductif des entiers.
+  Habituellement, on définit le type $\N$ comme étant un élément $0 : \N$ et une fonction successeur
+  $s : \N \fun \N$ et un entier est de la forme $0$ ou bien $s\circ s \circ \hdots \circ s\ 0$.
+  Une autre manière de le voir est de décrire $\N$ comme un arbre dont $0$ est une feuille et
+  chacun des noeuds est d'arité un (\textit{ie.} possède au plus un fils).
+  \textsc{Ajouter illustration}
+
+  Un autre exemple de type défini de manière inductive est le type $L(A)$ des listes sur un type $A : \U$.
+  La seule feuille est la liste vide notée $()$ et la fonctions jouant le rôle de constructeur inductif est
+  la fonction $c : A \fun L(A) \fun L(A)$ qui a un élément $a : A$ et une liste $l : L(A)$ renvoie la liste
+  dont le premier élément est $a$ et le reste est $l$.
+  Ainsi, toutes les listes sont de la forme $() : L(A)$ ou bien $c\ a_1\ (c\ a_2\ (\hdots (c\ a_n\ ()))) :L(A)$.
+  \textsc{Ajouter illustration}
+
+  Pour généraliser les types inductifs, on introduit alors les W-types (\textit{well-founded trees}) de Martin-Löf.
+  Pour ce faire, on utilise un type $A : \U$ qui correspond aux \textit{étiquettes} et un type $B : A \fun \U$ qui
+  permet de coder l'arité des noeuds : un noeud dont l'étiquette est $a : A$ aura une arité de $B(a)$.
+  Le type résultant de ces deux types est $W_{a:A} B(a)$ que l'on construit via la règle de formation suivante :
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{W f}{\Gamma \vdash A : \U}{\Gamma, a : A \vdash B(a) : \U}{\Gamma \vdash W_{a: A} B(a) : \U}
+  $$
 
 \end{document}
