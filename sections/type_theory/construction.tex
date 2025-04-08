@@ -93,6 +93,9 @@
     % $$
   \end{example}
 
+  Si on considère deux types $A, B : \U$ et qu'on les voit comme des propositions,
+  alors le type $A \fun B$ peut s'interpreter comme l'implication $A \implies B$.
+
   \paragraph{Fonctions dépendantes ($\Pi$-type).}
 
   Une manière de généraliser le type des fonctions est de définir un type de fonctions dépendantes (ou $\prod$-type),
@@ -167,14 +170,44 @@
   $s : \N \fun \N$ et un entier est de la forme $0$ ou bien $s\circ s \circ \hdots \circ s\ 0$.
   Une autre manière de le voir est de décrire $\N$ comme un arbre dont $0$ est une feuille et
   chacun des noeuds est d'arité un (\textit{ie.} possède au plus un fils).
-  \textsc{Ajouter illustration}
+
+  \begin{figure}[ht]
+    \centering
+  \begin{tikzpicture}
+  \node {0} [grow=right]
+    child {node {1}
+      child {node {2}
+	child {node {$\hdots$}}
+      }
+    };
+  \end{tikzpicture}
+  \end{figure}
 
   Un autre exemple de type défini de manière inductive est le type $L(A)$ des listes sur un type $A : \U$.
   La seule feuille est la liste vide notée $()$ et la fonctions jouant le rôle de constructeur inductif est
   la fonction $c : A \fun L(A) \fun L(A)$ qui a un élément $a : A$ et une liste $l : L(A)$ renvoie la liste
   dont le premier élément est $a$ et le reste est $l$.
   Ainsi, toutes les listes sont de la forme $() : L(A)$ ou bien $c\ a_1\ (c\ a_2\ (\hdots (c\ a_n\ ()))) :L(A)$.
-  \textsc{Ajouter illustration}
+
+  \begin{figure}[ht]
+    \centering
+  \begin{tikzpicture}
+    [
+	level 1/.style={sibling distance=12mm},
+	level 2/.style={sibling distance=6mm},
+	level 3/.style={sibling distance=3mm}
+    ]
+  \node {()} [grow=right]
+    child {node {(0)}
+      child {node {(00)} child {node {$\hdots$}} child {node {$\hdots$}}}
+      child {node {(01)} child {node {$\hdots$}} child {node {$\hdots$}}}
+    }
+    child {node {(1)}
+      child {node {(10)} child {node {$\hdots$}} child {node {$\hdots$}}}
+      child {node {(11)} child {node {$\hdots$}} child {node {$\hdots$}}}
+    };
+  \end{tikzpicture}
+  \end{figure}
 
   Pour généraliser les types inductifs, on introduit alors les W-types (\textit{well-founded trees}) de Martin-Löf.
   Pour ce faire, on utilise un type $A : \U$ qui correspond aux \textit{étiquettes} et un type $B : A \fun \U$ qui
@@ -186,4 +219,34 @@
   \prftree[r]{W f}{\Gamma \vdash A : \U}{\Gamma, a : A \vdash B(a) : \U}{\Gamma \vdash W_{a: A} B(a) : \U}
   $$
 
+  Les éléments d'un type $W_{a:A}B(a)$ sont donc des noeuds d'un arbre auxquels on associe la fonction donnant
+  les noeuds précédents dans l'arbre. On construit ces éléments à l'aide
+  de la règle d'introduction pour les W-types :
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{W i}{\Gamma \vdash a : A}{\Gamma, a : A \vdash b : B(a) \fun W_{x:A}B(x)}
+    {\Gamma \vdash \sup(a, b) : W_{x:A}B(x)}
+  $$
+  La fonction $\sup$ utilisé dans cette règle est donc de type
+  $$\sup : \prod_{a:A}{\left(B(a) \fun W_{x:A}B(x)\right)} \fun W_{a:A}B(a).$$
+  Chaque noeud $c :\equiv \sup(a, b) : W_{x:A}B(x)$ est donc relié aux autres par la fonction $b : B(a) \fun W_{x:A}B(x)$,
+  en effet si on considère un élément $v : B(a)$ alors $b\ v$ est un prédecesseur du noeud $c$ dans l'arbre $W_{x:A}B(x)$.
+
+  Reprenons l'exemple du type $\N$ des entiers.
+  On peut le décrire en terme de W-type en prenant $\N :\equiv W_{x: \textbf{2}}B(x)$ où $B(0_{\textbf{2}}) :\equiv \textbf{0}$
+  et $B(1_{\textbf{2}}) :\equiv \textbf{1}$.
+  En effet, il y a deux manières de construire un entier : ou bien c'est 0 ou bien il est de la forme $s\ k$ avec $k : \N$.
+  Pour 0, son étiquette dans l'arbre est donc $0_{\textbf{2}}$ tandis que les éléments de la forme $s\ k$ ont l'étiquette
+  $1_{\textbf{2}}$.
+  On peut donc écrire 0 avec la fonction $\sup$ :
+  $$ 0 :\equiv \sup(0_{\textbf{2}}, \rec_{\textbf{0}, \N}).$$
+  De même la fonction successeur $s : \N \fun \N$ peut être définie de la manière suivante :
+  $$ s :\equiv \lambda n.\ \sup(1_{\textbf{2}}, \lambda(x : \textbf{1}).\ n) : \N \fun \N.$$
+  Et donc on a $1 :\equiv s\ 0 \equiv \sup(1_{\textbf{2}}, \lambda x.\ 0)$ etc.
+
+  Enfin, pour prouver des propositions sur les W-types, on a besoin de la règle d'élimination qui s'énonce de la manière suivante :
+  $$
+  \prfinterspace=2em 
+  \prftree[r]{W e}{\Gamma \vdash}
 \end{document}
