@@ -237,7 +237,7 @@
     \centering
     \begin{tikzpicture}
       [
-	level 1/.style={sibling distance=20mm},
+	level 1/.style={sibling distance=25mm},
 	level 2/.style={sibling distance=15mm}
       ]
       \node {$\sup(a_1, b_1)$} [grow=down]
@@ -267,11 +267,28 @@
   Enfin, pour prouver des propositions sur les W-types, on a besoin de la règle d'élimination qui s'énonce de la manière suivante :
   $$
   \prfinterspace=0.8em
-  \prftree[r]{W e}{\Gamma \vdash t : W_{x:A}B(x)}
-  {\prfStackPremises
-    {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x)}, c : \prod_{v : B(a)}{E(f\ v)}
-    {\vdash e(a, b, c) : E(\sup(a, b))}}
+  \prftree[r]{W e}
+  {
+    \prfStackPremises
+    {\Gamma \vdash t : W_{x:A}B(x)}
+    % {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x), c : \prod}
+    {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x), c : \prod_{v : B(a)}{E(f\ v)}\ \vdash e(a, b, c) : E(\sup(a, b))}
+  }
     % {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x), c : \prod_{v : B(a)}{E(f\ v)} \vdash e(a, b, c) : E(\sup(a, b))}
       {\Gamma \vdash \rec(E, e, t) : E(t)}
   $$
+  La fonction $e$ présente dans la règle est de type
+  $$e \colon \prod_{a:A}\prod_{b:(B(a) \fun W_{x:A}B(x))}\left(\prod_{v:B(a)}E(b\ v)\right) \fun E(\sup(a, b)).$$
+  et pour des éléments $a : A$, $b : B(a) \fun W_{x:A}B(x)$ et une preuve $c$ de $\prod_{v:B(a)}{E(b\ v)}$
+  renvoie une preuve de $E(\sup(a, b))$.
+  La fonction $\rec$ présente dans la conclusion de la règle précédente est une fonction qui à un prédicat
+  (ou famille de type) $E$ sur le type $W_{x:A}B(x)$, une fonction $e$ comme décrit juste avant et un élément $t : W_{x:A}B(x)$
+  retourne une preuve (ou un élément) de $E(t)$. Ainsi, la fonction $e$ et la fonction $\rec$ renvoie des preuves de même nature,
+  on peut donc imaginer une relation liant les deux : c'est la règle d'égalité (ou règle de calcul de $\rec$).
+
+  Cette règle décrit le principe d'induction sur les W-types.
+  En effet, pour prouver une proposition sur un type inductif, de manière analogue au principe de récurrence des entiers
+  on montre que la proposition est héréditaire, dans le cas présent cela revient à montrer que si la proposition est vraie
+  sur tout les sous-arbres, alors elle est vraie sur le noeud reliant ces sous-arbres, c'est ce que dit la deuxième prémisse
+  de la règle d'élimination.
 \end{document}
