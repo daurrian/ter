@@ -233,6 +233,25 @@
   Chaque noeud $c :\equiv \sup(a, b) : W_{x:A}B(x)$ est donc relié aux autres par la fonction $b : B(a) \fun W_{x:A}B(x)$,
   en effet si on considère un élément $v : B(a)$ alors $b\ v$ est un prédecesseur du noeud $c$ dans l'arbre $W_{x:A}B(x)$.
 
+  \begin{figure}[ht]
+    \centering
+    \begin{tikzpicture}
+      [
+	level 1/.style={sibling distance=20mm},
+	level 2/.style={sibling distance=15mm}
+      ]
+      \node {$\sup(a_1, b_1)$} [grow=down]
+	child {node {$b_1\ v_1 = \sup(a_2, b_2)$}
+	  child {node {$b_2\ v_2$} edge from parent node[left] {$v_2$}}
+	  child {node {$\hdots$}}
+	  edge from parent node[left] {$v_1\ $}
+	}
+	child {node {$\hdots$}}
+	child {node {$\hdots$}}
+	child [grow=north east] {node {$\hdots$}};
+    \end{tikzpicture}
+  \end{figure}
+
   Reprenons l'exemple du type $\N$ des entiers.
   On peut le décrire en terme de W-type en prenant $\N :\equiv W_{x: \textbf{2}}B(x)$ où $B(0_{\textbf{2}}) :\equiv \textbf{0}$
   et $B(1_{\textbf{2}}) :\equiv \textbf{1}$.
@@ -247,6 +266,12 @@
 
   Enfin, pour prouver des propositions sur les W-types, on a besoin de la règle d'élimination qui s'énonce de la manière suivante :
   $$
-  \prfinterspace=2em 
-  \prftree[r]{W e}{\Gamma \vdash}
+  \prfinterspace=0.8em
+  \prftree[r]{W e}{\Gamma \vdash t : W_{x:A}B(x)}
+  {\prfStackPremises
+    {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x)}, c : \prod_{v : B(a)}{E(f\ v)}
+    {\vdash e(a, b, c) : E(\sup(a, b))}}
+    % {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x), c : \prod_{v : B(a)}{E(f\ v)} \vdash e(a, b, c) : E(\sup(a, b))}
+      {\Gamma \vdash \rec(E, e, t) : E(t)}
+  $$
 \end{document}
