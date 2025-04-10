@@ -264,31 +264,140 @@
   $$ s :\equiv \lambda n.\ \sup(1_{\textbf{2}}, \lambda(x : \textbf{1}).\ n) : \N \fun \N.$$
   Et donc on a $1 :\equiv s\ 0 \equiv \sup(1_{\textbf{2}}, \lambda x.\ 0)$ etc.
 
-  Enfin, pour prouver des propositions sur les W-types, on a besoin de la règle d'élimination qui s'énonce de la manière suivante :
+  La règle d'élimination décrit le principe d'induction sur les W-types.
+  Pour prouver une proposition sur un type inductif, de manière analogue au principe de récurrence des entiers,
+  on montre que la proposition est héréditaire, dans le cas présent cela revient à montrer que si la proposition est vraie
+  sur tout les sous-arbres, alors elle est vraie sur le noeud reliant ces sous-arbres, c'est ce que dit la dernière prémisse
+  de la règle d'élimination, qui s'énonce de la manière suivante :
+
   $$
-  \prfinterspace=0.8em
+  \prfinterspace=2em
   \prftree[r]{W e}
+  {\Gamma\ \vdash t : W_{x:A}B(x)}
   {
     \prfStackPremises
-    {\Gamma \vdash t : W_{x:A}B(x)}
-    % {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x), c : \prod}
-    {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x), c : \prod_{v : B(a)}{E(f\ v)}\ \vdash e(a, b, c) : E(\sup(a, b))}
+    % {\Gamma \vdash t : W_{x:A}B(x)}
+    {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x),}
+    {c : \prod_{v:B(a)}{E(b\ v)}\ \vdash e(a, b, c) : E(\sup(a, b))}
   }
     % {\Gamma, a : A, b : B(a) \fun W_{x:A}B(x), c : \prod_{v : B(a)}{E(f\ v)} \vdash e(a, b, c) : E(\sup(a, b))}
-      {\Gamma \vdash \rec(E, e, t) : E(t)}
+  {\Gamma\ \vdash \rec_{W_{x:A}B(x)}(E, e, t) : E(t)}
   $$
   La fonction $e$ présente dans la règle est de type
   $$e \colon \prod_{a:A}\prod_{b:(B(a) \fun W_{x:A}B(x))}\left(\prod_{v:B(a)}E(b\ v)\right) \fun E(\sup(a, b)).$$
   et pour des éléments $a : A$, $b : B(a) \fun W_{x:A}B(x)$ et une preuve $c$ de $\prod_{v:B(a)}{E(b\ v)}$
   renvoie une preuve de $E(\sup(a, b))$.
-  La fonction $\rec$ présente dans la conclusion de la règle précédente est une fonction qui à un prédicat
+  La fonction $\rec_{W_{x:A}B(x)}$ présente dans la conclusion de la règle précédente est une fonction qui à un prédicat
   (ou famille de type) $E$ sur le type $W_{x:A}B(x)$, une fonction $e$ comme décrit juste avant et un élément $t : W_{x:A}B(x)$
-  retourne une preuve (ou un élément) de $E(t)$. Ainsi, la fonction $e$ et la fonction $\rec$ renvoie des preuves de même nature,
-  on peut donc imaginer une relation liant les deux : c'est la règle d'égalité (ou règle de calcul de $\rec$).
+  retourne une preuve (ou un élément) de $E(t)$. Ainsi, la fonction $e$ et la fonction $\rec_{W_{x:A}B(x)}$ renvoie des preuves de même nature,
+  on peut donc imaginer une relation liant les deux : c'est la règle d'égalité (ou règle de calcul de $\rec_{W_{x:A}B(x)}$).
 
-  Cette règle décrit le principe d'induction sur les W-types.
-  En effet, pour prouver une proposition sur un type inductif, de manière analogue au principe de récurrence des entiers
-  on montre que la proposition est héréditaire, dans le cas présent cela revient à montrer que si la proposition est vraie
-  sur tout les sous-arbres, alors elle est vraie sur le noeud reliant ces sous-arbres, c'est ce que dit la deuxième prémisse
-  de la règle d'élimination.
+  $$
+  \prfinterspace=2em
+  \prftree[r]{W $\equiv$}
+    {\prfStackPremises
+      {\Gamma\ \vdash a : A}
+      {\Gamma\ \vdash b : B(a) \fun W_{x:A}B(x)}
+      {\Gamma, x : A, x : B(x) \fun W_{x:A}B(x), z : \prod_{v:B(x)}{E(y\ v)}\ \vdash e(x, y, z) : E(\sup(x, y))}
+    }
+      {\Gamma \vdash \rec_{W_{x:A}B(x)}(E, e, \sup(a, b)) \equiv e(a, b, \lambda(v : B(a)).\ \rec_{W_{x:A}B(x)}(E, e, b\ v)) : E(\sup(a, b))}
+  $$
+
+  En effet, pour $a : A$ et $b : B(a) \fun W_{x:A}B(x)$ la fonction $\lambda(v : B(a)).\ \rec_{W_{x:A}B(x)}(E, e, b\ v)$
+  retourne une preuve (un élément) de $\prod_{v : B(a)}{E(b \ v)}$, ce qui correspond au
+  dernier paramètre de la fonction $e$ et donc le membre de droite de l'égalité est bien une preuve (un élément)
+  de $E(\sup(a, b))$ comme voulue.
+  Les prémisses de cette règle sont de simple vérifications de typage de $a$, $b$ et $e$.
+
+  \paragraph{Entiers naturels.}
+
+  Avec les W-types, nous pouvons désormais construire les entiers naturels.
+  Pour ce faire, on note $\N \equiv W_{x : \2}B(x)$ où $B(0_{\2}) :\equiv \0$ et $B(1_{\2}) :\equiv \1$.
+  On a donc déjà vu dans le paragraphe précédent que tout élément de $\N$ s'exprime sous la forme $0$ ou $s\ k$
+  avec $k : \N$ et de plus on avait les expressions de $0$ et de $s : \N \fun \N$ suivantes :
+  $$\left\{ \begin{array}{rll}
+      0 &:\equiv \sup(0_{\2}, \rec_{\0, \N}) 				&: \N \\
+      s &:\equiv \lambda(n : \N).\ \sup(1_{\2}, \lambda(x : \1).\ n)	&: \N \fun \N
+  \end{array}\right.$$
+
+  On peut également réexprimer les règles de formation, d'introduction, d'élimination et d'égalité dans le cas de $\N$.
+  Pour la règle de formation, on obtient :
+
+  $$
+  \prfinterspace=2em
+  \prftree
+    {\prfaxiom{\Gamma\ \vdash \2 : \U}}
+    {\prftree
+      {\prfaxiom{\Gamma, a : \2\ \vdash B : \2 \fun \U}}
+      {\prftree
+	{\prfaxiom{\Gamma\ \vdash \2 : \U}}
+      {\Gamma, a : \2\ \vdash a : \2}}
+    {\Gamma, a : \2\ \vdash B(a) : \U}}
+  {\Gamma\ \vdash \N : \U}
+  $$
+
+  On a donc la règle simplifiée :
+
+  $$
+  \prfbyaxiom{$\N$ i}
+    {\Gamma\ \vdash \N : \U}
+  $$
+
+  Ensuite, concernant la règle d'introduction on distingue deux cas puisqu'il y a deux manières de construire
+  un élément $n : \N$, soit $n \equiv 0$, soit $n \equiv s\ k$ avec $k : \N$.
+
+  $$
+  \prfinterspace=2em
+  \prftree
+    {\prftree
+      {\prfaxiom{\Gamma\ \vdash 0_{\2} : \2}}
+      {\prftree
+	{\prfaxiom{\Gamma, 0_{\2} : \2\ \vdash \rec_{\0, \N} : \0 \fun \N}}
+      {\Gamma, 0_{\2} : \2\ \vdash \rec_{\0, \N} : B(0_{\2}) \fun \N}}
+    {\Gamma\ \vdash \sup(0_{\2}, \rec_{\0, \N}) : \N}}
+  {\Gamma\ \vdash 0 : \N}
+  $$
+
+  $$
+  \prfinterspace=2em
+  \prftree
+    {\prfaxiom{\Gamma\ \vdash s : \N \fun \N}}
+    {\Gamma\ \vdash k : \N}
+  {\Gamma \vdash s\ k : \N}
+  $$
+  Ce qui donne les deux règles d'introduction de $\N$ :
+  $$\begin{array}{cc}
+    \prfbyaxiom{$0$ i}{\Gamma\ \vdash 0 : \N}\hspace{2cm} & \prftree[r]{$s$ i}{\Gamma\ \vdash k : \N}{\Gamma\ \vdash s\ k : \N}
+  \end{array}$$
+
+  Pour la règle d'élimination sur le type $\N$, on s'attend à retrouver le principe de récurrence usuel sur les entiers,
+  à savoir que si une prédicat $E : \N \fun \U$ est vrai sur $0$ et que si $E(k)$ est vrai alors $E(s\ k)$ est vrai,
+  alors $E(k)$ est vrai sur tout $k : \N$.
+  $$
+  \prfinterspace=2em
+  \prftree
+    {\Gamma\ \vdash k : \N}
+    {\prftree
+      {\vdash \text{cas où $a = 0_{\2}$}}
+      {\vdash \text{cas où $a = 1_{\2}$}}
+    {\Gamma, a : \2, b : B(a) \fun \N, c : \prod_{v : B(a)}{E(b\ v)}\ \vdash e(a, b, c) : E(\sup(a, b))}}
+    {\Gamma\ \vdash \rec_{\N}(E, e, k) : E(k)}
+  $$
+
+  D'un point de vue moins formel, pour prouver que $\rec_{\N}(E, e, k)$ est une preuve de $E(k)$,
+  il faut d'abord vérifier le typage $k : \N$, puis que lorsque l'on considère $\sup(a, b) : \N$ avec
+  $a : \2$, $b : B(a) \fun \N$ et $c : \prod_{v : B(a)}{E(b\ v)}$ alors $e(a, b, c)$ est une preuve de $E(\sup(a, b))$.
+  Pour ce faire, on distingue deux cas : si $a \equiv 0_{\2}$ et si $a \equiv 1_{\2}$.
+  \begin{itemize}
+    \item Dans le premier cas, on a $b : \0 \fun \N$ donc $b \equiv \rec_{\0, \N}$ et $c : \prod_{v:\0}{E(b\ v)}$.
+      Ainsi, $e(0_{\2}, b, c) : E(\sup(0_{\2}, \rec_{\0,\N})) \equiv E(0)$. On doit alors montrer $E(0)$.
+    \item Dans le cas $a \equiv 1_{\2}$, on a $b : \1 \fun \N$ donc $b$ est une constante égale à $b\ \0_{\1}$ et
+      $c : \prod_{v : \1}{E(b\ v)} \equiv E(b\ 0_{\1})$.
+      Donc en posant $k \equiv b\ 0_{\1}$, on a
+      $$e(a, b, c) \equiv e(1_{\2}, \lambda(x : \1).\ k, c) : E(\sup(1_{\2}, \lambda(x : \1).\ k)) \equiv E(s\ k),$$
+      et $c : E(k)$.
+      Finalement, le cas $a \equiv 1_{\2}$ est l'hérédité : sous l'hypothèse $E(k)$, on montre $E(s\ k)$
+  \end{itemize}
+  On retrouve bien le principe de récurrence usuel.
+
 \end{document}
