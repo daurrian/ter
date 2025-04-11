@@ -11,18 +11,41 @@
   Partant de ces 3 règles, on peut construire un type et éventuellement ajouter des règles supplémentaires concernant
   leur comportement par rapport à l'égalité par définition.
 
-  \paragraph{Univers.}
+  \subsubsection{Univers}
 
-  \textsc{A faire.}
+  Plus tôt, on a utilisé un jugement de la forme "$\Gamma \vdash A\ \text{type}$" pour signifier que $A$ est un type.
+  Cependant ce jugement n'est pas un jugement de la théorie, on se ramène alors à un autre jugement déjà présent :
+  le jugement de typage.
+  Pour ce faire, on doit introduire un type composé de type, un type univers $\U$.
+  Pour la même raison, on voudrais dire que $\U$ est lui-même un élément d'un type plus grand et ainsi de suite.
+  Pour résoudre ce problème, on postule qu'il existe une hiérarchie de type
+  $$\U_0,\ \U_1,\ \U_2,\ \hdots,\ \U_i,\ \hdots$$
+  telle que $\U_i : \U_{i+1}$.
 
-  \paragraph{Fonctions.}
+  Pour ces types, on a seulement une règle d'introduction et une règle décrivant la hiérarchie entre ces types :
+
+  $$
+  \begin{array}{cc}
+    \prftree[r]{($\U$ i)}{\Gamma \ctx}{\Gamma \vdash U_i : U_{i+1}} \hspace{2cm}
+    & \prftree[r]{($\U$ cumul)}{\Gamma \vdash A : \U_i}{\Gamma \vdash A : \U_{i+1}}
+  \end{array}
+  $$
+
+  Par conséquent, la règle sur les contextes devient la suivante :
+
+  $$
+  \prftree[r]{($\ctx$)}{(a_1 : A_1, \hdots, a_{n-1} : A_{n-1}) \vdash A_n : \U_k}
+    {(a_1 : A_1, \hdots, a_n : A_n) \ctx}
+  $$
+
+  \subsubsection{Fonctions}
 
   Étant donné deux types $A, B : \U$, on peut former le type des fonctions de $A$ dans $B$ noté $A \fun B$
   grâce à la règle de formation suivante :
 
   $$
   \prfinterspace=2em
-  \prftree[r]{($\fun$ f)}{\Gamma \vdash A : \U}{\Gamma \vdash B : \U}{\Gamma \vdash A \fun B : \U}
+  \prftree[r]{($\fun$ f)}{\Gamma \vdash A : \U_i}{\Gamma \vdash B : \U_i}{\Gamma \vdash A \fun B : \U_i}
   $$
 
   Une fonction est donc un élément $f$ de type $A \fun B$.
@@ -96,7 +119,7 @@
   Si on considère deux types $A, B : \U$ et qu'on les voit comme des propositions,
   alors le type $A \fun B$ peut s'interpreter comme l'implication $A \implies B$.
 
-  \paragraph{Fonctions dépendantes ($\Pi$-type).}
+  \subsubsection{Fonctions dépendantes ($\Pi$-type)}
 
   Une manière de généraliser le type des fonctions est de définir un type de fonctions dépendantes (ou $\prod$-type),
   qui est un type de fonction dont le codomaine dépend du point d'application de la fonction.
@@ -106,8 +129,8 @@
 
   $$
   \prfinterspace=2em
-  \prftree[r]{($\Pi$ f)}{\Gamma \vdash A : \U}{\Gamma, a : A \vdash B(a) : \U}
-    {\Gamma \vdash \prod_{a:A}{B(a)} : \U}
+  \prftree[r]{($\Pi$ f)}{\Gamma \vdash A : \U_i}{\Gamma, a : A \vdash B(a) : \U_i}
+    {\Gamma \vdash \prod_{a:A}{B(a)} : \U_i}
   $$
 
   On construit des éléments de type $\prod_{a:A}{B(a)}$ de manière analogue aux fonctions en utilisant des $\lambda$-abstractions.
@@ -162,7 +185,25 @@
   que l'on peut également voir comme un prédicat, alors le type $\prod_{a : A}{C(a)}$ se comporte comme
   la proposition $\forall a,\ C(a)$ en logique classique.
 
-  \paragraph{Types inductifs : W-types}
+  \subsubsection{Type vide}
+
+  On introduit le type vide $\0$, qui ne contient aucun élément et donc n'a pas de règle d'introduction mais seulement
+  une régle de formation et d'élimination :
+
+  $$
+  \prfinterspace=2em
+  \begin{array}{cc}
+    \prftree[r]{($\0$ i)}{\Gamma \ctx}{\Gamma \vdash \0 : \U_i} \hspace{2cm}
+    & \prftree[r]{($\0$ e)}{\Gamma, x : \0 \vdash C : \U_i}{\Gamma \vdash a : \0}{\Gamma \vdash \rec_{\0}(C, a) : C}
+  \end{array}
+  $$
+
+  Ainsi, on a construit une fonction $\rec_{\0}$ de type $\prod_{C: \U} \0 \fun C$
+  qui à un type $C : \U_i$ associe une fonction qui ne prend aucune valeur.
+
+  \subsubsection{Type unité}
+
+  \subsubsection{Types inductifs : W-types}
 
   Pour construire le type des entiers $\N$, les constructeurs précédent ne suffisent pas car ils ne permettent
   pas de décrire le caractère inductif des entiers.
@@ -216,7 +257,7 @@
 
   $$
   \prfinterspace=2em
-  \prftree[r]{W f}{\Gamma \vdash A : \U}{\Gamma, a : A \vdash B(a) : \U}{\Gamma \vdash W_{a: A} B(a) : \U}
+  \prftree[r]{(W f)}{\Gamma \vdash A : \U}{\Gamma, a : A \vdash B(a) : \U}{\Gamma \vdash W_{a: A} B(a) : \U}
   $$
 
   Les éléments d'un type $W_{a:A}B(a)$ sont donc des noeuds d'un arbre auxquels on associe la fonction donnant
@@ -225,7 +266,7 @@
 
   $$
   \prfinterspace=2em
-  \prftree[r]{W i}{\Gamma \vdash a : A}{\Gamma, a : A \vdash b : B(a) \fun W_{x:A}B(x)}
+  \prftree[r]{(W i)}{\Gamma \vdash a : A}{\Gamma, a : A \vdash b : B(a) \fun W_{x:A}B(x)}
     {\Gamma \vdash \sup(a, b) : W_{x:A}B(x)}
   $$
   La fonction $\sup$ utilisé dans cette règle est donc de type
@@ -272,7 +313,7 @@
 
   $$
   \prfinterspace=2em
-  \prftree[r]{W e}
+  \prftree[r]{(W e)}
   {\Gamma\ \vdash t : W_{x:A}B(x)}
   {
     \prfStackPremises
@@ -294,13 +335,13 @@
 
   $$
   \prfinterspace=2em
-  \prftree[r]{W $\equiv$}
+  \prftree[r]{(W $\equiv$)}
     {\prfStackPremises
       {\Gamma\ \vdash a : A}
       {\Gamma\ \vdash b : B(a) \fun W_{x:A}B(x)}
       {\Gamma, x : A, x : B(x) \fun W_{x:A}B(x), z : \prod_{v:B(x)}{E(y\ v)}\ \vdash e(x, y, z) : E(\sup(x, y))}
     }
-      {\Gamma \vdash \rec_{W_{x:A}B(x)}(E, e, \sup(a, b)) \equiv e(a, b, \lambda(v : B(a)).\ \rec_{W_{x:A}B(x)}(E, e, b\ v)) : E(\sup(a, b))}
+      {\Gamma \vdash \rec_{W_{x:A}B(x)}(E, e, \sup(a, b)) \equiv e(a, b, \lambda v.\ \rec_{W_{x:A}B(x)}(E, e, b\ v)) : E(\sup(a, b))}
   $$
 
   En effet, pour $a : A$ et $b : B(a) \fun W_{x:A}B(x)$ la fonction $\lambda(v : B(a)).\ \rec_{W_{x:A}B(x)}(E, e, b\ v)$
@@ -309,7 +350,7 @@
   de $E(\sup(a, b))$ comme voulue.
   Les prémisses de cette règle sont de simple vérifications de typage de $a$, $b$ et $e$.
 
-  \paragraph{Entiers naturels.}
+  \subsubsection{Entiers naturels}
 
   Avec les W-types, nous pouvons désormais construire les entiers naturels.
   Pour ce faire, on note $\N \equiv W_{x : \2}B(x)$ où $B(0_{\2}) :\equiv \0$ et $B(1_{\2}) :\equiv \1$.
@@ -367,7 +408,7 @@
   $$
   Ce qui donne les deux règles d'introduction de $\N$ :
   $$\begin{array}{cc}
-    \prfbyaxiom{$0$ i}{\Gamma\ \vdash 0 : \N}\hspace{2cm} & \prftree[r]{$s$ i}{\Gamma\ \vdash k : \N}{\Gamma\ \vdash s\ k : \N}
+    \prfbyaxiom{($0$ i)}{\Gamma\ \vdash 0 : \N}\hspace{2cm} & \prftree[r]{($s$ i)}{\Gamma\ \vdash k : \N}{\Gamma\ \vdash s\ k : \N}
   \end{array}$$
 
   Pour la règle d'élimination sur le type $\N$, on s'attend à retrouver le principe de récurrence usuel sur les entiers,
