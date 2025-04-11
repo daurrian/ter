@@ -24,10 +24,11 @@
   (que l'on notera dorénavant $a : A$) est un jugement. En effet,
   dans la théorie des types un élément possède toujours un type (uniquement) déterminé.
 
-  Le système déductif de cette théorie est composé de deux jugements principaux :
+  Le système déductif de cette théorie est composé de trois jugements :
   \begin{enumerate}
     \item \textbf{Jugement de typage} $a : A$, qui affirme que $a$ est de type $A$.
     \item \textbf{Jugement d'égalité} $a \equiv b : A$, qui affirme que $a$ et $b$ sont égaux par définition dans le type $A$.
+    \item \textbf{Jugement de contexte} $\Gamma \ctx$, exprimant le fait que $\Gamma$ est un contexte bien formé.
   \end{enumerate}
   A noter que le symbole "$\equiv$" est différent de "$=$".
   En effet, si $a, b : A$, alors on a le type $a =_A b$ qui correspond à une égalité

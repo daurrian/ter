@@ -1,0 +1,65 @@
+\documentclass[../../rapport.tex]{subfiles}
+
+\begin{document}
+  Pour prouver une proposition dans la théorie des types, on utilise des règles d'inférences, ou plus simplement règles, de la forme
+  $$
+  \prfinterspace=2em
+  \prftree[r]{\textsc{Nom}}{\mathcal I_1}{\hdots}{\mathcal I_k}{\mathcal I}
+  $$
+  où $\mathcal I$ est la conclusion de la règle tandis que les $\mathcal I_1, \hdots \mathcal I_k$
+  sont les prémisses ou hypothèses de la règle.
+
+  Avec de telles règles, on peut prouver une proposition en construisant un arbre de preuve
+  dont la racine est la proposition à prouver et les liens entre les feuilles respectent les règles d'inférence de la théorie.
+
+  \subsubsection{Contexte}
+
+  Les règles concernant le jugement de contexte sont au nombre de deux et permettent de vérifier qu'un contexte $\Gamma$ est bien formé,
+  c'est-à-dire que toutes les variables et jugements apparaissant dans $\Gamma$ sont dans un ordre cohérent.
+  Pour ce faire on a ces règles :
+
+  $$
+  \begin{array}{cc}
+    \prfbyaxiom{$\emptyset\ctx$}{\cdot\ \ctx} \hspace{1.5cm}
+    & \prftree[r]{$\ctx$}{a_1 : A_1, \hdots, a_{n-1} : A_{n-1} \vdash A_n\ \text{type}}
+      {(a_1 : A_1, \hdots, a_n : A_n) \ctx}
+  \end{array}
+  $$
+  Le jugement $A_n\ \text{type}$ signifie que $A_n$ est un type et sera détaillé davantage dans la section suivante.
+  La première règle dit qu'un contexte vide est toujours bien formé, la seconde règle dit que un contexte est bien formé
+  dès lors que la dernière variable est bien typé sous l'hypothèse que le contexte auquel on retire la dernière variable
+  est lui-même bien formé.
+
+  \subsubsection{Égalité}
+
+  L'égalité par définition "$\equiv$" se comporte comme l'égalité classique, pour se faire elle vérifie les mêmes propriétés élémentaires,
+  à savoir la reflexivité, la symétrie et la transitivité que l'on exprime avec les règles suivantes.
+
+  $$
+  \prfinterspace=2em
+  \begin{array}{ccc}
+    \prftree[r]{refl}{\Gamma \vdash a : A}{\Gamma \vdash a \equiv a : A} \hspace{0.5cm}
+    & \prftree[r]{sym} {\Gamma \vdash b \equiv a : A}{\Gamma \vdash a \equiv b : A} \hspace{0.5cm}
+    & \prftree[r]{trans}{\Gamma \vdash a \equiv b : A}{\Gamma \vdash b \equiv c : A}{\Gamma \vdash a \equiv c : A}
+  \end{array}
+  $$
+
+  On ajoute aussi deux règles supplémentaires qui permettent d'échanger le rôle de deux élément ou type sous l'hypothsèse qu'ils sont égaux.
+
+  $$
+  \prfinterspace=2em
+  \begin{array}{cc}
+    \prftree[r]{$\equiv$ type}{\Gamma \vdash a : A}{\Gamma \vdash A \equiv B}{\Gamma \vdash a : B} \hspace{1cm}
+    & \prftree[r]{$\equiv$ eq}{\Gamma \vdash a \equiv b : A}{\Gamma \vdash A \equiv B}{\Gamma \vdash a \equiv b : B}
+  \end{array}
+  $$
+
+  Enfin, on ajoute une dernière règle permettant d'utiliser des jugements présent dans le contexte, qui s'exprime sous la forme suivante.
+
+  $$
+  \prftree[r]{var}
+    {(a_1 : A_1, \hdots, a_n : A_n) \ctx}
+    {a_1 : A_1, \hdots, a_n : A_n \vdash a_i : A_i}
+  $$
+
+\end{document}
