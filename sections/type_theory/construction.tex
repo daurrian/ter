@@ -193,15 +193,181 @@
   $$
   \prfinterspace=2em
   \begin{array}{cc}
-    \prftree[r]{($\0$ i)}{\Gamma \ctx}{\Gamma \vdash \0 : \U_i} \hspace{2cm}
-    & \prftree[r]{($\0$ e)}{\Gamma, x : \0 \vdash C : \U_i}{\Gamma \vdash a : \0}{\Gamma \vdash \rec_{\0}(C, a) : C}
+    \prftree[r]{($\0$ f)}{\Gamma \ctx}{\Gamma \vdash \0 : \U_i} \hspace{2cm}
+    & \prftree[r]{($\0$ e)}{\Gamma \vdash C : \U_i}{\Gamma \vdash a : \0}{\Gamma \vdash \rec_{\0}(C, a) : C}
   \end{array}
   $$
 
   Ainsi, on a construit une fonction $\rec_{\0}$ de type $\prod_{C: \U} \0 \fun C$
   qui à un type $C : \U_i$ associe une fonction qui ne prend aucune valeur.
+  Par conséquent, on ne devrais jamais calculer cette fonction,
+  c'est la raison pour laquelle il n'y a pas de règle de calcul pour ce type.
+  La règle d'élimination agit comme le principe \textit{ex falso quodlibet},
+  en effet si on construit un élément du type vide (\textit{ie.} une preuve de $\bot$),
+  alors on peut construire des éléments de n'importe quel type.
 
   \subsubsection{Type unité}
+
+  Ensuite, dans l'objectif de construire tout les types finis, on commence par construire le type unité $\1$,
+  contenant seulement un élément. Pour ce faire on a la règle de formation analogue à celle du type $\0$ avec
+  une règle d'introduction simple car le type $\1$ ne possède qu'un seul élément :
+
+  $$
+  \prfinterspace=2em
+  \begin{array}{cc}
+    \prftree[r]{($\1$ f)}{\Gamma \ctx}{\Gamma \vdash \1 : \U_i} \hspace{2cm}
+    & \prftree[r]{($\1$ i)}{\Gamma \ctx}{\Gamma \vdash \star : \1}
+  \end{array}
+  $$
+
+  La règle d'élimination de $\1$ permet de construire des fonctions de $\1$ vers un autre type $C$,
+  qui sont donc des fonctions constantes et c'est ce qu'affirme la règle de calcul du type unité.
+
+  \begin{gather*}
+    \prfinterspace=2em
+    \prftree[r]{($\1$ e)}{\Gamma \vdash C : \U_i}{\Gamma \vdash c : C}{\Gamma \vdash p : \1}
+      {\Gamma \vdash \rec_{\1}(C, p, c) : C} \\
+    \prftree[r]{($\1 \equiv$)}{\Gamma \vdash C : \U_i}{\Gamma \vdash c : C}
+      {\Gamma \vdash \rec_{\1}(C, \star, c) \equiv c : C}
+  \end{gather*}
+  où la fonction $\rec_{\1}$ est de type $\prod_{C : \U}\1 \fun C \fun C$
+  (il est également possible d'intervertir les deux derniers arguments).
+
+  De plus pour ce type, on a un principe d'unicité car le seul élément de $\1$ est $\star$ qui découle des règles précédentes.
+
+  $$
+  \prfinterspace=2em
+  \prftree{
+      \prftree{}
+      {\Gamma \vdash \rec_{\1}(\1, p, \star) \equiv \star : \1}
+    }
+    {
+      \Gamma \vdash p \equiv \rec_{\1}(\1, p, \star) : \1
+    }
+    {\Gamma \vdash p \equiv \star : \1}
+  $$
+  \textsc{A finir.}
+
+  \subsubsection{Coproduit}
+
+  Le dernier élément manquant pour construire tout les types finis sont les coproduits,
+  qui permettent de construire un équivalent de l'union disjointe de la théorie des ensembles à partir de deux types
+  comme l'exprime la règle de formation suivante :
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{($+$ f)}{\Gamma \vdash A : \U_i}{\Gamma \vdash B : \U_i}
+    {\Gamma \vdash A + B : \U_i}
+  $$
+
+  Étant donné deux types $A, B : \U_i$, un élément $e$ du type $A + B$ à deux manières d'être construit :
+  \begin{itemize}
+    \item soit $e$ est issu d'un élément $a : A$ et est donc de la forme $\inl(a)$,
+    \item soit $e$ est issu d'un élément $b : B$ et est donc de la forme $\inr(b)$.
+  \end{itemize}
+  On a donc deux règles d'introduction pour les coproduits :
+
+  $$
+  \prfinterspace=1.2em
+  \begin{array}{cc}
+    \prftree[r]{($+ \inl)$}{\Gamma \vdash A : \U_i}{\Gamma \vdash B : \U_i}{\Gamma \vdash a : A}{\Gamma \vdash \inl(a) : A + B} \hspace{0.5cm}
+    & \prftree[r]{($+ \inr)$}{\Gamma \vdash A : \U_i}{\Gamma \vdash B : \U_i}{\Gamma \vdash b : B}{\Gamma \vdash \inr(b) : A + B}
+  \end{array}
+  $$
+
+  Pour prouver des propositions sur des coproduits, une manière naturelle de faire est de raisonner par cas :
+  ou bien on a un élément de $A$ ou bien il s'agit d'un élément de $B$.
+  Pour décrire cette méthode de raisonnement, on a la règle d'élimination des coproduits pour deux types $A, B : \U_i$ :
+
+  $$
+  \prfinterspace=1.2em
+  \prftree[r]{($+$ e)}{\Gamma \vdash C : \U_i}{\Gamma, a : A \vdash g_0\ a : C}{\Gamma, b : B \vdash g_1\ b : C}{\Gamma \vdash e : A + B}
+    {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, e) : C}
+  $$
+  Ainsi, la fonction $\rec_{A+B}$ est de type $\prod_{C : \U}(A \fun C) \fun (B \fun C) \fun A + B \fun C$,
+  et permet de faire la disjonction de cas.
+  On a de plus deux règles décrivant le comportement de la fonction $\rec_{A+B}$ en fonction de son dernier argument :
+
+  $$
+  \prfinterspace=1.2em
+  \prftree[r]{($+ \equiv_1$)}{\Gamma \vdash C : \U_i}{\Gamma, a : A \vdash g_0\ a : C}{\Gamma, b : B \vdash g_1\ b : C}{\Gamma \vdash x : A}
+    {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, \inl(x)) \equiv g_0\ x : C}
+  $$
+
+  $$
+  \prfinterspace=1.2em
+  \prftree[r]{($+ \equiv_2$)}{\Gamma \vdash C : \U_i}{\Gamma, a : A \vdash g_0\ a : C}{\Gamma, b : B \vdash g_1\ b : C}{\Gamma \vdash y : B}
+    {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, \inr(y)) \equiv g_1\ y : C}
+  $$
+
+  \begin{example}[Le type $\2$]
+    Avec le coproduit et le type $\1$ on peut désormais construire le type $\2$ a deux éléments.
+    En effet, on définit $\2$ par $\2 :\equiv \1 + \1$, ce qui donne la règle de formation
+    $$
+    \prfinterspace=1.2em
+    \prftree{\prftree{\Gamma \ctx}{\Gamma \vdash \1 : \U_i}}{\prftree{\Gamma \ctx}{\Gamma \vdash \1 : \U_i}}
+      {\Gamma \vdash \1 + \1 : \U_i}
+    $$
+    que l'on peut résumer à :
+    $$
+    \prftree[r]{($\2$ f)}{\Gamma \ctx}{\Gamma \vdash \2 : \U_i}
+    $$
+
+    Ensuite, comme pour le coproduit on a deux règles d'introduction :
+    $$
+    \prfinterspace=1.2em
+    \begin{array}{cc}
+      \prftree{\prftree{\Gamma \ctx}{\Gamma \vdash \1 : \U_i}}
+	{\prftree{\Gamma \ctx}{\Gamma \vdash \1 : \U_i}}
+	{\prftree{\Gamma \ctx}{\Gamma \vdash \star : \1}}
+	{\Gamma \vdash \inl(\star) : \2} \hspace{1cm}
+      &\prftree{\prftree{\Gamma \ctx}{\Gamma \vdash \1 : \U_i}}
+	{\prftree{\Gamma \ctx}{\Gamma \vdash \1 : \U_i}}
+	{\prftree{\Gamma \ctx}{\Gamma \vdash \star : \1}}
+	  {\Gamma \vdash \inr(\star) : \2}
+    \end{array}
+    $$
+    En posant $0_{\2} \equiv \bot \equiv \inl(\star)$ et $1_{\2} \equiv \top \equiv \inr(\star)$,
+    on peut réécrire les deux règles d'introduction plus simplement :
+    $$
+    \begin{array}{cc}
+      \prftree[r]{($\bot$ i)}{\Gamma \ctx}{\bot : \2} \hspace{2cm}
+      & \prftree[r]{($\top$ i)}{\Gamma \ctx}{\top : \2}
+    \end{array}
+    $$
+
+    On obtient alors la fonction $\rec_{\2}$ de type $\prod_{C : \U}(\1 \fun C) \fun (\1 \fun C) \fun \2 \fun C$,
+    que l'on peut également voir comme le type $\prod_{C:\U}C \fun C \fun \2 \fun C$ (car les fonctions sur $\1$ sont constantes)
+    qui vérifie les règles d'élimination et de calcul suivantes :
+
+    $$
+    \prfinterspace=1.2em
+    \prftree
+      {\Gamma \vdash C :\U_i}
+      {\Gamma, p : \1 \vdash g_0\ p : C}
+      {\Gamma, p : \1 \vdash g_1\ p : C}
+      {\Gamma \vdash e : \2}
+      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, e) : C}
+    $$
+    $$
+    \prfinterspace=1.2em
+    \prftree{\Gamma \vdash C : \U_i}{\Gamma, p : \1 \vdash g_0\ p : C}{\Gamma, p : \1 \vdash g_1\ p : C}
+      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \bot) \equiv g_0\ \bot : C}
+    $$
+    $$
+    \prfinterspace=1.2em
+    \prftree{\Gamma \vdash C : \U_i}{\Gamma, p : \1 \vdash g_0\ p : C}{\Gamma, p : \1 \vdash g_1\ p : C}
+      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \top) \equiv g_0\ \top : C}
+    $$
+    On peut les réécrire plus simplement (et moins formellement) comme
+    $$\rec_{\2}(C, g_0, g_1, \bot) \equiv g_0 : C \text{ et } \rec_{\2}(C, g_0, g_1, \top) \equiv g_1 : C$$
+    si on identifie $g_0$ et $g_1$ à leur unique valeur respective.
+    On remarque alors que la fonction $\rec_{\2}$ agit comme le "si .. alors .. sinon .." des booléens,
+    ce qui renforce la comparaison entre le type $\2$ et les booléens.
+  \end{example}
+
+  Plus généralement on peut construire tout les types finis $\T_n$ comme étant $n$ fois le coproduit du type $\1$,
+  ce qui construit des types à $n$ éléments.
 
   \subsubsection{Types inductifs : W-types}
 
@@ -440,5 +606,11 @@
       Finalement, le cas $a \equiv 1_{\2}$ est l'hérédité : sous l'hypothèse $E(k)$, on montre $E(s\ k)$
   \end{itemize}
   On retrouve bien le principe de récurrence usuel.
+
+  \subsubsection{Listes}
+
+  \subsubsection{Produit}
+
+  \subsubsection{Paires dépendantes ($\Sigma$-type)}
 
 \end{document}
