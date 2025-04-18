@@ -609,6 +609,43 @@
 
   \subsubsection{Listes}
 
+  Un autre exemple de type inductif est le type des listes sur un type $A : \U_i$, que l'on note $L(A)$.
+  Pour la construire on utilise alors le W-type $W_{x:\1+A}B(x)$ où $B(\inl(\star)) \equiv \0$ et $B(\inr(a)) \equiv \1$,
+  autrement dit on pose
+  $$L(A) \equiv W_{x:\1 + A}\rec_{1+A}(\U_i, \lambda(x : \1).\ \0, \lambda(a : A).\ \1, x).$$
+  De là, on déduit la règle de formation de $L(A)$ :
+  $$
+  \prfinterspace=1.2em
+  \prftree
+    {
+      \prftree
+	{\Gamma \vdash A : \U_i}
+	{\prftree{\Gamma \ctx}{\Gamma \vdash \1 : \U_i}}
+	  {\Gamma \vdash \1 + A : \U_i}
+    }
+    {
+      \prftree
+	{\prfaxiom{\Gamma, x : \1 + A \vdash \rec_{\1+A}(\U_i, \lambda(y : \1).\ \0, \lambda(y : A).\ \1, x) : \U_i}}
+	{\Gamma, x : \1 + A \vdash B(x) : \U_i}
+    }
+      {\Gamma \vdash L(A) : \U_i}
+  $$
+  Plus simplement,
+  $$
+  \prftree[r]{$L$ f}{\Gamma \vdash A : \U_i}{\Gamma \vdash L(A) : \U_i}
+  $$
+
+  Ensuite pour construire un élément on a deux constructeurs :
+  \begin{itemize}
+    \item La liste vide, notée $()$ que l'on définit comme $() :\equiv \sup(\inl(\star), \rec_{\0}(L(A))) : L(A)$,
+    \item L'ajout d'un élément en tête de liste via la fonction $c : A \fun L(A) \fun L(A)$ qui est définit de la manière suivante :
+      $$c :\equiv \lambda(a : A).\ \lambda(l : L(A)).\ \sup(a, \lambda(x : \1).\ l).$$
+  \end{itemize}
+  Ainsi, une liste $l \equiv (a_1, \hdots, a_k) : L(A)$ est définie par
+  $$l :\equiv c\ a_1\ (a_2, \hdots, a_k) \equiv \sup(a_1, \lambda(x : \1).\ (a_2, \hdots, a_k)).$$
+
+  On a donc deux règles d'introduction correspondant à ces deux cas.
+
   \subsubsection{Produit}
 
   \subsubsection{Paires dépendantes ($\Sigma$-type)}
