@@ -640,11 +640,102 @@
     \item La liste vide, notée $()$ que l'on définit comme $() :\equiv \sup(\inl(\star), \rec_{\0}(L(A))) : L(A)$,
     \item L'ajout d'un élément en tête de liste via la fonction $c : A \fun L(A) \fun L(A)$ qui est définit de la manière suivante :
       $$c :\equiv \lambda(a : A).\ \lambda(l : L(A)).\ \sup(a, \lambda(x : \1).\ l).$$
+      que l'on peut également noter $::$ de manière infixe.
   \end{itemize}
   Ainsi, une liste $l \equiv (a_1, \hdots, a_k) : L(A)$ est définie par
-  $$l :\equiv c\ a_1\ (a_2, \hdots, a_k) \equiv \sup(a_1, \lambda(x : \1).\ (a_2, \hdots, a_k)).$$
+  $$l :\equiv c\ a_1\ (a_2, \hdots, a_k) \equiv a_1 :: (a_2, \hdots, a_k) \equiv \sup(a_1, \lambda(x : \1).\ (a_2, \hdots, a_k)).$$
+  On remarque alors une structure d'arbre dans le type des listes, dont la racine est $()$
+  et la fonction donnant les successeurs d'un noeud $l$ est la fonction $\lambda(a:A).\ c\ a\ l : A \fun L(A)$.
 
   On a donc deux règles d'introduction correspondant à ces deux cas.
+
+  $$
+  \prfinterspace=1.2em
+  \prftree
+    {\prftree
+      {\prftree
+	{\prfaxiom{\Gamma \vdash \1 : \U_i}}
+	{\Gamma \vdash A : \U_i}
+	{\prfaxiom{\Gamma \vdash \star : \1}}
+      {\Gamma \vdash \inl(\star) : \1 + A}}
+      {\prftree
+	{\prfaxiom{\Gamma \vdash \rec_{\0}(L(A)) : \0 \fun L(A)}}
+      {\Gamma\vdash \rec_{\0}(L(A)) : B(\inl(\star)) \fun L(A)}}
+    {\Gamma \vdash \sup(\inl(\star), \rec_{\0}(L(A))) : L(A)}}
+  {\Gamma \vdash () : L(A)}
+  $$
+
+  $$
+    \prfinterspace=1.2em
+    \prftree
+      {\prftree
+	{\prftree
+	  {\prfaxiom{\Gamma \vdash \1 : \U_i}}
+	  {\Gamma \vdash A : \U_i}
+	  {\Gamma \vdash a : A}
+	{\Gamma \vdash \inr(a) : \1 + A}}
+	{\prftree
+	  {\prftree
+	    {\prftree
+	      {\prftree
+		{\Gamma \vdash l : L(A)}
+	      {\Gamma, x : \1 \vdash l : L(A)}}
+	    {\Gamma \vdash \lambda(x:\1).\ l : \1 \fun L(A)}}
+	  {\Gamma \vdash \lambda(x:\1).\ l : \rec_{\1 + A}(\U_i, \0, \1, \inr(a)) \fun L(A)}}
+	{\Gamma \vdash \lambda(x:\1).\ l : B(\inr(a)) \fun L(A)}}
+      {\Gamma \vdash \sup(\inr(a), \lambda(x:\1).\ l) : L(A)}}
+    {\Gamma \vdash a :: l : L(A)}
+  $$
+  Plus simplement,
+
+  $$\prfinterspace=1.2em
+  \begin{array}{cc}
+    \prftree[r]{$()$ i}{\Gamma \vdash A : \U_i}{\Gamma \vdash () : L(A)} \hspace{1cm}
+    & \prftree[r]{$c$ i}{\Gamma \vdash A : \U_i}{\Gamma \vdash a : A}{\Gamma \vdash l : L(A)}{\Gamma \vdash a :: l : L(A)}
+  \end{array}$$
+
+  A partir de la règle d'élimination des W-types, on peut déduire la règle d'élimination du type $L(A)$ :
+
+  $$\prfinterspace=1.2em
+  \prftree
+    {\Gamma \vdash l : L(A)}
+    {\prftree
+      {\text{Lemme 1}}
+      {\text{Lemme 2}}
+    {\Gamma, a : \1 + A, b : B(a) \fun L(A), c : \prod_{v:B(a)}E(b\ v) \vdash e(a, b, c) : E(\sup(a, b))}}
+  {\Gamma \vdash \rec_{L(A)}(E, e, l) : E(l)}
+  \vspace{1em}
+  $$
+  $$\prfinterspace=1.2em
+  \prftree[r]{Lemme 1}
+    {\Gamma, a : \1, b : \0 \fun L(A), c : \prod_{v:\0}E(b\ v) \vdash e(a, b, c) : E(())}
+  {\Gamma, a : \1, b : B(\inl(a)) \fun L(A), c : \prod_{v:B(\inl(a))}E(b\ v) \vdash e(a, b, c) : E(\sup(\inl(a), b))}
+  \vspace{1em}
+  $$
+  $$\prfinterspace=1.2em
+  \prftree[r]{Lemme 2}
+    {\Gamma, a : A, b : \1 \fun L(A), c : \prod_{v: \1}E(b\ v) \vdash e(a, b, c) : E(a :: b)}
+  {\Gamma, a : A, b : B(\inr(a)) \fun L(A), c : \prod_{v:B(\inr(a))}E(b\ v) \vdash e(a, b, c) : E(\sup(\inr(a), b))}
+  $$
+  Le lemme 1 correspond à une preuve de $E$ sur la liste vide $()$ dont les hypothèses sont triviales.
+  On peut donc réécrire sa prémisse sous une forme plus simple
+  $$\Gamma \vdash e_0 : E(()).$$
+  De même, on peut simplifier le lemme 2 en remarquant que $b : \1 \fun L(A)$ est équivalent à une liste $l \equiv b\ \star$,
+  et que $c : \prod_{v:\1}E(b\ v)$ est une preuve de $E(l)$ :
+  $$\Gamma, a : A, l : L(A), p : E(l) \vdash e_s(a, l, p) : E(a :: l).$$
+  On peut aussi réécrire $e$ en le décomposant en $e_0 : E(())$ et $e_s : \prod_{a:A}\prod_{l:L(A)}E(l)$
+  pour correspondre à ces deux cas, ce qui donne finalement la règle
+  $$
+  \prfinterspace=1.2em
+  \prftree[r]{$L$ e}
+    {\Gamma \vdash l : L(A)}
+    {\Gamma \vdash e_0 : E(())}
+    {\Gamma, a : A, l : L(A), p : E(l) \vdash e_s(a, l, p) : E(a :: l)}
+  {\Gamma \vdash \rec_{L(A)}(E, e_0, e_s, l) : E(l)}
+  $$
+  Ce qui correspond à la preuve par induction sur les listes, à savoir que si un prédicat $E$ sur $L(A)$ est vraie
+  sur la liste vide $()$ et qu'il est héréditaire \textit{ie.} si $E$ est vraie sur une liste $l$ et si $a : A$
+  alors $E$ est vérifié sur $a :: l$, alors $E$ est vérifié sur toute les listes.
 
   \subsubsection{Produit}
 
