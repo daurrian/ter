@@ -125,7 +125,7 @@
   qui est un type de fonction dont le codomaine dépend du point d'application de la fonction.
 
   Pour former ce nouveau type, on considère $A : \U$ un type et $B : A \fun \U$ une famille de type indexée sur $A$.
-  On peut alors former le type $\prod_{a : A}{B(a)}$ grâce à la règle de formation suivante : \textsc{Revoir avec univers}
+  On peut alors former le type $\prod_{a : A}{B(a)}$ grâce à la règle de formation suivante :
 
   $$
   \prfinterspace=2em
@@ -185,6 +185,67 @@
   que l'on peut également voir comme un prédicat, alors le type $\prod_{a : A}{C(a)}$ se comporte comme
   la proposition $\forall a,\ C(a)$ en logique classique.
 
+  \subsubsection{Produits}
+
+  Etant donné deux types $A, B : \U_i$, comme en théorie des ensembles on veut construire le type $A \times B$ des paires d'éléments
+  de $A$ et de $B$. Pour construire ce type on a la règle de formation suivante :
+
+  $$
+  \prfinterspace=1.2em
+  \prftree[r]{($\times$ f)}
+  {\Gamma \vdash A : \U_i}
+  {\Gamma \vdash B : \U_i}
+  {\Gamma \vdash A \times B : \U_i}
+  $$
+
+  Les éléments de ce type sont des paires d'éléments et sont donc de la forme $(a, b) : A \times B$ où $a : A$ et $b : B$,
+  on a donc la règle d'introduction pour décrire les paires :
+
+  $$
+  \prfinterspace=1.2em
+  \prftree[r]{($\times$ i)}
+  {\Gamma \vdash a : A}
+  {\Gamma \vdash b : B}
+  {\Gamma \vdash (a, b) : A \times B}
+  $$
+
+  Ensuite pour les règles d'éliminations et de calculs,
+  on introduit deux fonctions $\pi_1 : A \times B \fun A$ et $\pi_2 : A \times B \fun B$
+  qui projette un élément $(a, b) : A \times B$ sur $A$ et sur $B$.
+
+  $$
+  \prfinterspace=1.2em
+  \begin{array}{cc}
+    \prftree[r]{($\times_1$ e)}
+    {\Gamma \vdash e : A \times B}
+    {\Gamma \vdash \pi_1\ e : A}
+    &
+    \prftree[r]{($\times_2$ e)}
+    {\Gamma \vdash e : A \times B}
+    {\Gamma \vdash \pi_2\ e : B}
+    \vspace{1.5em}\\
+    \prftree[r]{($\times_1 \equiv$)}
+    {\Gamma \vdash a : A}
+    {\Gamma \vdash b : B}
+    {\Gamma \vdash \pi_1\ (a, b) \equiv a}
+    &
+    \prftree[r]{($\times_2 \equiv$)}
+    {\Gamma \vdash a : A}
+    {\Gamma \vdash b : B}
+    {\Gamma \vdash \pi_2\ (a, b) \equiv b}
+  \end{array}
+  $$
+
+  Enfin, pour les types produits on a également une règle d'unicité reliant un élément à ses projections :
+  $$
+  \prftree[r]{($\times$ u)}
+  {\Gamma \vdash e : A \times B}
+  {\Gamma \vdash e \equiv (\pi_1\ e, \pi_2\ e)}
+  $$
+
+  On peut également voir les types produits comme un cas particulier des types de fonctions dépendantes dont le domaine
+  est le type fini $\2$ à deux éléments qui seront décrit dans \ref{ex:type_2}.
+
   \subsubsection{Type vide}
 
   On introduit le type vide $\0$, qui ne contient aucun élément et donc n'a pas de règle d'introduction mais seulement
@@ -233,20 +294,18 @@
   où la fonction $\rec_{\1}$ est de type $\prod_{C : \U}\1 \fun C \fun C$
   (il est également possible d'intervertir les deux derniers arguments).
 
-  De plus pour ce type, on a un principe d'unicité car le seul élément de $\1$ est $\star$ qui découle des règles précédentes.
+  De plus pour ce type, on a une règle d'unicité car le seul élément de $\1$ est $\star$ :
 
   $$
   \prfinterspace=2em
-  \prftree{
-      \prftree{}
-      {\Gamma \vdash \rec_{\1}(\1, p, \star) \equiv \star : \1}
-    }
-    {
-      \Gamma \vdash p \equiv \rec_{\1}(\1, p, \star) : \1
-    }
+  \prftree[r]{($\1$ u)}
+    {\Gamma \vdash p : \1}
     {\Gamma \vdash p \equiv \star : \1}
   $$
-  \textsc{A finir.}
+
+  \subsubsection{Paires dépendantes ($\Sigma$-types)}
+
+  \textsc{A Faire}
 
   \subsubsection{Coproduit}
 
@@ -301,6 +360,7 @@
   $$
 
   \begin{example}[Le type $\2$]
+    \label{ex:type_2}
     Avec le coproduit et le type $\1$ on peut désormais construire le type $\2$ a deux éléments.
     En effet, on définit $\2$ par $\2 :\equiv \1 + \1$, ce qui donne la règle de formation
     $$
@@ -751,9 +811,5 @@
   Ce qui correspond à la preuve par induction sur les listes, à savoir que si un prédicat $E$ sur $L(A)$ est vraie
   sur la liste vide $()$ et qu'il est héréditaire \textit{ie.} si $E$ est vraie sur une liste $l$ et si $a : A$
   alors $E$ est vérifié sur $a :: l$, alors $E$ est vérifié sur toute les listes.
-
-  \subsubsection{Produit}
-
-  \subsubsection{Paires dépendantes ($\Sigma$-type)}
 
 \end{document}
