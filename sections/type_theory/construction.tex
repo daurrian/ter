@@ -246,6 +246,70 @@
   On peut également voir les types produits comme un cas particulier des types de fonctions dépendantes dont le domaine
   est le type fini $\2$ à deux éléments qui seront décrit dans \ref{ex:type_2}.
 
+  \subsubsection{Paires dépendantes ($\Sigma$-types)}
+
+  Si on considère un type $A : \U_i$ et une famille de type $B : A \fun \U_i$ indexée sur $A$,
+  on veut pouvoir construire l'union disjointe des $B(a)$ pour $a : A$.
+  Pour ce faire, on introduit les types de paires dépendantes (où $\Sigma$-type) qui se forme grâce à la règle :
+  $$
+  \prfinterspace=1.2em
+  \prftree[r]{($\Sigma$ f)}
+    {\Gamma \vdash A : \U_i}
+    {\Gamma, a : A \vdash B(a) : \U_i}
+  {\Gamma \vdash \Sigma_{a : A}B(a) : \U_i}
+  $$
+
+  Un élément de ce type est une paire $(a, b)$ où $a : A$ et $b : B(a)$ (d'où le nom de paire dépendante),
+  c'est ce que la règle suivante décrit :
+  $$\prfinterspace=1.2em
+  \prftree[r]{($\Sigma$ i)}
+    {\Gamma \vdash a : A}
+    {\Gamma \vdash b : B(a)}
+  {\Gamma \vdash (a, b) : \Sigma_{a:A}B(a)}
+  $$
+
+  Ensuite, comme les paires dépendantes sont des paires, on a de la même manière que pour les types produits les projections
+  $\pi_1 : \Sigma_{a:A}B(a) \fun A$ et $\pi_2 : \prod_{e : \Sigma_{a:A}B(a)}B(\pi_1\ e)$ sur chacune des coordonnées d'un élément
+  de $\Sigma_{a:A}B(a)$.
+  Ces projections se comportent de manière analogue à celle des produits, ce qu'on remarque grâce aux règles d'éliminations et de calculs
+  des $\Sigma$-types :
+  $$
+  \prfinterspace=1.2em
+  \begin{array}{cc}
+    \prftree[r]{($\Sigma_1$ e)}
+      {\Gamma \vdash e : \Sigma_{a:A}B(a)}
+      {\Gamma \vdash \pi_1\ e : A}
+    \hspace{1cm} &
+    \prftree[r]{($\Sigma_2$ e)}
+      {\Gamma \vdash e : \Sigma_{a:A}B(a)}
+      {\Gamma \vdash \pi_2\ e : B(\pi_1\ e)}
+    \vspace{1.5em} \\
+    \prftree[r]{($\Sigma_1 \equiv$)}
+      {\Gamma \vdash a : A}
+      {\Gamma \vdash b : B(a)}
+      {\Gamma \vdash \pi_1\ (a, b) \equiv a : A}
+    \hspace{1cm} &
+    \prftree[r]{($\Sigma_2 \equiv$)}
+      {\Gamma \vdash a : A}
+      {\Gamma \vdash b : B(a)}
+      {\Gamma \vdash \pi_2\ (a, b) \equiv b : B(a)}
+  \end{array}
+  $$
+
+  Enfin, on a également un équivalent de la règle d'unicité des types produits pour les $\Sigma$-types :
+  $$
+  \prfinterspace=1.2em
+  \prftree[r]{($\Sigma$ u)}
+    {\Gamma \vdash e : \Sigma_{a:A}B(a)}
+    {\Gamma \vdash e \equiv (\pi_1\ e, \pi_2\ e) : \Sigma_{a:A}B(a)}
+  $$
+
+  \begin{example}[Cas où $B$ est constant]
+    Si on considère deux types $A, B : \U_i$, on peut poser $C :\equiv \Sigma_{a:A}B$ qui est en tout point similaire au produit $A \times B$.
+    En effet, si $(a, b) : C$ alors $a: A$ et $b : B(a) \equiv B$ et donc $(a, b) : A \times B$.
+    De plus les règles étant très similaire, lorsque la famille $B$ est constante on retrouve les règles des types produits.
+  \end{example}
+
   \subsubsection{Type vide}
 
   On introduit le type vide $\0$, qui ne contient aucun élément et donc n'a pas de règle d'introduction mais seulement
@@ -302,10 +366,6 @@
     {\Gamma \vdash p : \1}
     {\Gamma \vdash p \equiv \star : \1}
   $$
-
-  \subsubsection{Paires dépendantes ($\Sigma$-types)}
-
-  \textsc{A Faire}
 
   \subsubsection{Coproduit}
 
