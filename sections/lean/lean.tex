@@ -29,6 +29,8 @@
     \end{subfigure}
   \end{figure}
 
+  \begin{spacing}{0.8}
+  {\scriptsize
   Les cases rectangulaires sont les définitions, les ellipses sont les lemmes, théorèmes, corollaires et propositions.
   Les couleurs en fond indiquent l'état d'avancement des preuves :
   le vert foncé pour pour les lemmes prouvés et dont les parents sont également prouvés,
@@ -36,6 +38,30 @@
   et le bleu pour les lemmes prêt à être prouvés (\textit{ie.} toutes les définitions nécessaires sont formalisés).
   Enfin les couleurs des bordures indiquent l'état d'avancement des énoncés des lemmes et des définitions :
   le vert pour les cases dont l'énoncé est formalisé
-  et le bleu pour les cases dont l'énoncé n'est pas formalisé mairs prêt à l'être.
+  et le bleu pour les cases dont l'énoncé n'est pas formalisé mais prêt à l'être.}
+  \end{spacing}
+
+  \subsection{Formalisation de l'énoncé du théorème}
+
+  Dans un premier temps, j'ai donc converti chaque définition et résultat nécessaire pour le théorème de Bowen en code Lean
+  afin de pouvoir écrire l'énoncé du théorème.
+  Pour ce faire on a besoin notamment de définir la notion de mesure de Gibbs puis on peut alors énoncé le théorème 
+  avec le code suivant :
+  \begin{figure}[h]
+    \centering
+    \includegraphics[width=\textwidth]{gibbs_def.png}
+
+    \vspace{0.5cm}
+    \includegraphics[width=0.5\textwidth]{gibbs_thm.png}
+  \end{figure}
+
+  Cependant, la preuve de ce résultat nécessite un certain nombre de lemmes intermédiaires qu'il faut également prouver
+  et donc la preuve du théorème était trop longue par rapport au temps imparti.
+  J'ai donc choisi de traduire les énoncés et les définitions pour le théorème de Bowen pour avoir la structure la plus complète possible,
+  avec des preuves partielles des lemmes pour pouvoir me concentrer sur la preuve d'un théorème de topologie des
+  espaces ultramétriques en Lean.
+
+
+   \subsection{Preuve d'un résultat topologique}
 
 \end{document}
