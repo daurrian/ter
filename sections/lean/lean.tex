@@ -45,23 +45,68 @@
 
   Dans un premier temps, j'ai donc converti chaque définition et résultat nécessaire pour le théorème de Bowen en code Lean
   afin de pouvoir écrire l'énoncé du théorème.
-  Pour ce faire on a besoin notamment de définir la notion de mesure de Gibbs puis on peut alors énoncé le théorème 
+  Pour ce faire on a besoin notamment de définir la notion de mesure de Gibbs puis on peut alors énoncé le théorème
   avec le code suivant :
-  \begin{figure}[h]
+  \begin{figure}[ht]
     \centering
     \includegraphics[width=\textwidth]{gibbs_def.png}
 
     \vspace{0.5cm}
-    \includegraphics[width=0.5\textwidth]{gibbs_thm.png}
+    \includegraphics[width=0.6\textwidth]{gibbs_thm.png}
   \end{figure}
 
   Cependant, la preuve de ce résultat nécessite un certain nombre de lemmes intermédiaires qu'il faut également prouver
   et donc la preuve du théorème était trop longue par rapport au temps imparti.
-  J'ai donc choisi de traduire les énoncés et les définitions pour le théorème de Bowen pour avoir la structure la plus complète possible,
-  avec des preuves partielles des lemmes pour pouvoir me concentrer sur la preuve d'un théorème de topologie des
-  espaces ultramétriques en Lean.
 
+  On a donc décidé de se concentrer sur la formalisation des énoncés et sur la preuve d'un lemme important
+  de topologie des espaces ultramétriques, pour experimenter tout les aspects d'un assistant de preuves.
 
-   \subsection{Preuve d'un résultat topologique}
+  Pour la formalisation des énoncés il a donc fallu dans un premier temps adapter le rapport de stage au format demandé
+  par l'outil lean-blueprint, en ajoutant des détails et en décomposant certains énoncés pour correspondre davantage à la structure
+  du code Lean. L'étape suivante était de traduire chaque définition et lemmes (sans les preuves) en un code le plus clair possible
+  pour faciliter le travail d'écriture des preuves suivant l'ordre préconisé par le graphe de dépendance.
+  Enfin, j'ai pu commencer à écrire des morceaux de preuves pour les lemmes les plus simples.
+  Finalement au vu du nombre de preuve à convertir en code, il a fallu choisir un résultat dont la
+  preuve était moins conséquente pour s'y consacrer.
+
+  \subsection{Preuve d'un résultat topologique}
+
+  Le choix qui a été fait était de prouver un théorème de topologie permettant de décomposer les ouverts d'un espace ultramétriques compact
+  en une union disjointe de boules.
+  Ce résultat était nécessaire pour réécrire la mesure des ouverts en somme de mesure de boules pour lesquelles on possède une estimation
+  dans le cas des mesures de Gibbs.
+
+  Afin de prouver ce résultat, la première étape était de réécrire de manière la plus détaillé possible sa preuve et d'en donner
+  les étapes intermédiaires pour ensuite les convertir en lemme dans Lean pour pouvoir écrire les preuves de ces lemmes.
+  L'étape finale à donc été d'écrire la preuve du théorème en utilisant tout les lemmes précédents.
+
+  Cependant la traduction des preuves en Lean ne se fait pas littéralement, il faut souvent adapter les énoncés pour
+  les faire correspondre aux lemmes déjà existants et prouvés dans Mathlib (la bibliothèque de Lean contenant une large variété de théorèmes).
+  Ainsi, nous avons donc transformés l'énoncé mathématique standard, à savoir
+  \begin{theorem*}
+    Soit $\O$ un ouvert borné de $E$, alors il existe une partie $R \subseteq \O$ et une fonction $r : R \fun \R^*_+$ telle que
+    $$\O = \bigsqcup_{x \in R}{B(x, r(x))}.$$
+  \end{theorem*}
+  en l'énoncé suivant, utilisant à la fois la théorie des types et des propriétés déjà présentes dans Mathlib :
+
+  \begin{theorem*}
+    Soit $\O$ un ouvert borné de $E$. Alors on a les propriétés suivantes :
+    \begin{enumerate}
+      \item $\bigcup_{s : S}{\Phi(s)} = \O$
+      \item Si $s_1, s_2 : S$ sont distincts alors $\Phi(s_1) \cap \Phi(s_2) = \emptyset$.
+    \end{enumerate}
+    où $S$ est un type et $\Phi : S \fun B$ une fonction construites à partir de $\O$ et $B$ est le type des boules de $E$ incluses dans $\O$.
+  \end{theorem*}
+
+  On peut alors remarquer que les deux énoncés sont en fait équivalents, il s'agit simplement d'une reformulation
+  plus maniable en Lean d'un même théorème, car elle fait intervenir des types et des fonctions largement utilisées dans Mathlib
+  et qui sont donc plus faciles d'utilisation. Une fois converti en Lean, il peut s'écrire avec le code suivant :
+
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.8\textwidth]{topo_thm.png}
+  \end{figure}
+
+  Une preuve de ce théorème se trouve dans la section suivante et une formalisation de ce théorème est disponible ici (\textsc{Ajouter lien}).
 
 \end{document}

@@ -22,10 +22,18 @@
 \usepackage{tikz}
 \usepackage{subcaption}
 \usepackage{setspace}
+\usepackage{tocloft}
 \usepackage{prftree}
 % \usepackage{hyperref}
 
 \graphicspath{{./assets/}}
+
+% ToC
+\setlength{\cftparskip}{0.5em} % linespread in ToC
+
+% Header
+\fancyhead{}
+\fancyhead[CE, CO]{\textsc{\nouppercase{\leftmark}}}
 
 \newcommand{\N}{\mathbf N}
 \newcommand{\Z}{\mathbf Z}
@@ -60,6 +68,7 @@
 
 \theoremstyle{plain}
 \newtheorem{theorem}{Théorème}[section]
+\newtheorem*{theorem*}{Théorème}
 
 \newtheorem{corollary}{Corollaire}[theorem]
 \newtheorem{lemma}[theorem]{Lemme}

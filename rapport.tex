@@ -1,4 +1,4 @@
-\documentclass[a4paper, 11pt]{article}
+\documentclass[a4paper, 11pt, twoside]{article}
 \usepackage{preamble}
 
 \usepackage{subfiles}
@@ -9,8 +9,9 @@
 
 \begin{document}
   \maketitle
+  \newpage
   \tableofcontents
-  \pagebreak
+  \newpage
 
   \section{Théorie des Types}
     \subsection{Introduction}
@@ -24,6 +25,8 @@
 
     \subsection{Construction de types}
       \subfile{sections/type_theory/construction.tex}
+
+    \subsection{Correspondance de Curry-Howard}
 
   \newpage
   \section{Formalisation du théorème de Bowen en Lean}
