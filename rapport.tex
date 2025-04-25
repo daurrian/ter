@@ -7,6 +7,8 @@
 \author{\Author}
 \date{\today}
 
+\addbibresource{ref.bib}
+
 \begin{document}
   \maketitle
   \newpage
@@ -17,9 +19,6 @@
     \subsection{Introduction}
       \subfile{sections/type_theory/intro.tex}
 
-    % \subsection{Egalité par définition / propositionelle}
-    %   \subfile{sections/type_theory/equality.tex}
-
     \subsection{Règles structurelles}
       \subfile{sections/type_theory/structural.tex}
 
@@ -27,6 +26,7 @@
       \subfile{sections/type_theory/construction.tex}
 
     \subsection{Correspondance de Curry-Howard}
+      \subfile{sections/type_theory/curry_howard.tex}
 
   \newpage
   \section{Formalisation du théorème de Bowen en Lean}
@@ -35,6 +35,11 @@
   \newpage
   \section{Topologie des espaces ultramétriques}
     \subfile{sections/ultra/ultra.tex}
+
+  \newpage
+  \nocite{*}
+  \thispagestyle{plain}
+  \printbibliography[heading=bibintoc, title={Bibliographie}]
 
     % NOTE : https://lean-lang.org/theorem_proving_in_lean4/axioms_and_computation.html
 \end{document}

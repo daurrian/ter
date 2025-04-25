@@ -22,6 +22,7 @@
 \usepackage{tikz}
 \usepackage{subcaption}
 \usepackage{setspace}
+\usepackage{csquotes}
 \usepackage{tocloft}
 \usepackage{prftree}
 % \usepackage{hyperref}
@@ -34,6 +35,10 @@
 % Header
 \fancyhead{}
 \fancyhead[CE, CO]{\textsc{\nouppercase{\leftmark}}}
+
+% Biblio
+\usepackage[backend=biber]{biblatex}
+\addbibresource{ref.bib}
 
 \newcommand{\N}{\mathbf N}
 \newcommand{\Z}{\mathbf Z}
