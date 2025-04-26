@@ -1,5 +1,33 @@
 \documentclass[../../rapport.tex]{subfiles}
 
 \begin{document}
+  Dans la théorie des types, les propositions sont donc des types et les preuves de ces propositions sont donc des éléments de ce type.
+  Ainsi, prouver un théorème correspond à construire un élément (ou un terme) du type correspondant à l'énoncé du théorème.
+  On a décrit comment construire des types de manière générale et ces constructions peuvent être utilisés pour construire des propositions,
+  comme décrit dans le tableau suivant.
 
+  \begin{figure}[ht]
+    \centering
+    \begin{tabular}{m{3cm} l}
+      % \hline
+      Logique & Type \vspace{0.4em} \\
+      \hline
+      \vspace{0.4em}
+      $A \implies B$ & $A \fun B$ \\
+      % $\forall x : A, P(x)$ & $\prod_{x:A}P(x)$ \\
+      $A \wedge B$ & $A \times B$ \\
+      % $\exists x : A, P(x)$ & $\Sigma_{x:A}P(x)$ \\
+      $\bot$ & $\0$ \\
+      $\top$ & $\1$ \\
+      $A \vee B$ & $A + B$ \\
+      $\neg A$ & $A \fun \0$ \\
+      $\forall x : A, P(x)$ & $\prod_{x:A}P(x)$ \\
+      $\exists x : A, P(x)$ & $\Sigma_{x:A}P(x)$ \\
+      % \hline
+    \end{tabular}
+  \end{figure}
+
+  On peut donc voir les règles d'inférences comme des règles de construction des preuves dans la théorie des types.
+  Par exemple, pour prouver une implication $A \implies B$, en théorie des types il faut construire une fonction $f : A \fun B$.
+  La fonction $f$ peut alors être vu comme une fonction prenant des preuves de $A$ et retournant une preuve de $B$
 \end{document}
