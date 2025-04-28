@@ -12,22 +12,50 @@
       % \hline
       Logique & Type \vspace{0.4em} \\
       \hline
-      \vspace{0.4em}
+      \vspace{0.6em}
       $A \implies B$ & $A \fun B$ \\
       % $\forall x : A, P(x)$ & $\prod_{x:A}P(x)$ \\
       $A \wedge B$ & $A \times B$ \\
+      $A \vee B$ & $A + B$ \\
       % $\exists x : A, P(x)$ & $\Sigma_{x:A}P(x)$ \\
       $\bot$ & $\0$ \\
       $\top$ & $\1$ \\
-      $A \vee B$ & $A + B$ \\
-      $\neg A$ & $A \fun \0$ \\
+      $A \iff B$ & $(A \fun B) \times (B \fun A)$ \\
+      $\neg A$ & $A \fun \0$ \vspace{0.2em}\\
+      \hline \vspace{0.5em}
       $\forall x : A, P(x)$ & $\prod_{x:A}P(x)$ \\
-      $\exists x : A, P(x)$ & $\Sigma_{x:A}P(x)$ \\
+      $\exists x : A, P(x)$ & $\sum_{x:A}P(x)$ \\
       % \hline
     \end{tabular}
   \end{figure}
 
   On peut donc voir les règles d'inférences comme des règles de construction des preuves dans la théorie des types.
   Par exemple, pour prouver une implication $A \implies B$, en théorie des types il faut construire une fonction $f : A \fun B$.
-  La fonction $f$ peut alors être vu comme une fonction prenant des preuves de $A$ et retournant une preuve de $B$
+  Or pour construire une fonction $f$ du type $A \fun B$,
+  on doit donner une manière de construire une preuve de $B$ à partir d'une preuve de $A$,
+  c'est-à-dire que si $a : A$ est un preuve de $A$, $f\ a$ est une preuve de $B$ et ce pour toute preuve $a$ de $A$.
+  On peut alors voir la fonction $f$ comme un algorithme qui donne une preuve de $B$ à partir de n'importe quelle preuve de $A$.
+
+  Ainsi, les règles d'introduction des types donnent une manière de construire des éléments du type en question,
+  et donc si ce type représente une proposition alors on peut voir la règle d'introduction comme une règle de construction de preuve.
+  De la même manière les règles d'élimination donnent la manière d'utiliser une hypothèse.
+
+  Enfin, les deux derniers types du tableau sont les quantificateurs universels et existentiels et leurs équivalents : les types dépendants.
+  Le caractère dépendant de ces types se situe dans le fait qu'ils dépendent d'un paramètre :
+  pour les fonctions dépendantes le codomaine dépend du point d'application,
+  pour les paires dépendantes c'est le type de la deuxième coordonnées qui dépend de la première coordonnée.
+  Le caractère dépendant de ces types permet notamment la construction de polymorphismes,
+  comme détaillé dans la section sur les fonctions dépendantes.
+
+  Si on considére $A : \U_i$ et $B : A \fun \U_i$, alors un élément $f$ du type $\prod_{a: A}B(a)$ associe à un élément $a : A$
+  une preuve de $B(a)$, le type $A$ est donc un types d'éléments alors que $B$ est un prédicat sur le type $A$.
+
+  De même, un élément $(a, b)$ du type $\sum_{a:A}B(a)$ est donc constitué d'un élément $a : A$ et d'une preuve $b$ de $B(a)$.
+  Or pour prouver l'existence d'un élément $a : A$ vérifiant le prédicat $B$, il faut à la fois fournir l'élément qui vérifie $B$
+  et un preuve que cet élément vérifie le prédicat $B$, \textit{ie.} un élément de type $\sum_{a:A}B(a)$.
+
+  L'activité de prouver une proposition en théorie des types est donc équivalente à construire des éléments de certains types.
+  Pour ce faire, les assistants de preuves permettent de simplifier la création de terme (ou d'éléments).
+  Par exemple, pour le type \textsc{Trouver un exemple simple}.
+
 \end{document}
