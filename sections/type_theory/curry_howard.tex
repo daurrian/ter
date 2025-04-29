@@ -20,7 +20,6 @@
       % $\exists x : A, P(x)$ & $\Sigma_{x:A}P(x)$ \\
       $\bot$ & $\0$ \\
       $\top$ & $\1$ \\
-      $A \iff B$ & $(A \fun B) \times (B \fun A)$ \\
       $\neg A$ & $A \fun \0$ \vspace{0.2em}\\
       \hline \vspace{0.5em}
       $\forall x : A, P(x)$ & $\prod_{x:A}P(x)$ \\
@@ -47,15 +46,44 @@
   Le caractère dépendant de ces types permet notamment la construction de polymorphismes,
   comme détaillé dans la section sur les fonctions dépendantes.
 
-  Si on considére $A : \U_i$ et $B : A \fun \U_i$, alors un élément $f$ du type $\prod_{a: A}B(a)$ associe à un élément $a : A$
-  une preuve de $B(a)$, le type $A$ est donc un types d'éléments alors que $B$ est un prédicat sur le type $A$.
+  % Si on considére $A : \U_i$ et $B : A \fun \U_i$, un élément $f$ du type $\prod_{a: A}B(a)$ associe à un élément $a : A$
+  % une preuve de $B(a)$, le type $A$ est donc un type d'éléments alors que $B$ est un prédicat sur le type $A$.
+  %
+  % De même, un élément $(a, b)$ du type $\sum_{a:A}B(a)$ est donc constitué d'un élément $a : A$ et d'une preuve $b$ de $B(a)$.
+  % Or pour prouver l'existence d'un élément $a : A$ vérifiant le prédicat $B$, il faut à la fois fournir l'élément qui vérifie $B$
+  % et un preuve que cet élément vérifie le prédicat $B$, \textit{ie.} un élément de type $\sum_{a:A}B(a)$.
 
-  De même, un élément $(a, b)$ du type $\sum_{a:A}B(a)$ est donc constitué d'un élément $a : A$ et d'une preuve $b$ de $B(a)$.
-  Or pour prouver l'existence d'un élément $a : A$ vérifiant le prédicat $B$, il faut à la fois fournir l'élément qui vérifie $B$
-  et un preuve que cet élément vérifie le prédicat $B$, \textit{ie.} un élément de type $\sum_{a:A}B(a)$.
-
-  L'activité de prouver une proposition en théorie des types est donc équivalente à construire des éléments de certains types.
+  \vspace{1em}
+  Prouver une proposition en théorie des types est équivalent à construire un élément d'un certain type.
   Pour ce faire, les assistants de preuves permettent de simplifier la création de terme (ou d'éléments).
-  Par exemple, pour le type \textsc{Trouver un exemple simple}.
+  Par exemple, la proposition
+  $$(\neg (p \wedge q) \implies r) \implies (\neg p \implies r) \wedge (\neg q \implies r).$$
+  correspond au type
+  \begin{align*}
+    &(\neg (p \times q) \fun r) \fun (\neg p \fun r) \times (\neg q \fun r) \\
+    \equiv\ &(((p \times q) \fun \0) \fun r) \fun ((p \fun \0) \fun r) \times ((q \fun \0) \fun r).
+  \end{align*}
+  dont un terme est
+  $$
+  \lambda h.\ (\lambda x.\ h\ (\lambda a.\ x\ (\pi_1\ a)), \lambda y.\ h\ (\lambda a.\ y\ (\pi_2\ a)))
+  $$
+  En effet si on considère $h : ((p \times q) \fun \0) \fun r$,
+  pour construire un terme de type $(p \fun \0) \fun r$ (\textit{resp}. $(q \fun \0) \fun r$),
+  on se donne $x : p \fun \0$ (\textit{resp}. $y : q \fun \0$),
+  puis on cherche à construire un terme de type $r$ dans les deux cas.
+  Pour ce faire, on applique la fonction $h$ à un terme du type $(p \times q) \fun \0$ que l'on doit construire.
+  Or, $\pi_1\ a$ (\textit{resp.} $\pi_2\ a$) est de type $p$ (\textit{resp.} $q$) si $a$ est de type $p \times q$,
+  donc $x\ (\pi_1\ a)$ (\textit{resp.} $y\ (\pi_2\ a)$) est de type $\0$.
+  Les fonctions $\lambda a.\ x\ (\pi_1\ a)$ et $\lambda a.\ y\ (\pi_2\ a)$ sont de type $p \times q \fun \0$,
+  on peut alors appliquer $h$ à chacune de ses deux fonctions pour obtenir un terme de type $r$ comme voulu.
+
+  La construction d'une telle fonction est parfois compliqué, c'est pourquoi les assistants de preuves possèdent
+  un système de construction de termes à partir de commande plus simple ayant un sens qui se rapproche des règles habituelles
+  de raisonnement.
+  Reprenons l'exemple précédent. En Lean, le code suivant qui permet de construire un terme de ce type :
+  \begin{figure}[ht]
+    \centering
+    \includegraphics[width=0.95\textwidth]{lean.png}
+  \end{figure}
 
 \end{document}
