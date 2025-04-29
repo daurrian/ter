@@ -25,6 +25,7 @@
 \usepackage{setspace}
 \usepackage{csquotes}
 \usepackage{tocloft}
+\usepackage{titlesec}
 \usepackage{prftree}
 % \usepackage{hyperref}
 
@@ -40,6 +41,18 @@
 % Biblio
 \usepackage[backend=biber]{biblatex}
 \addbibresource{ref.bib}
+
+% Title format
+% \titleformat
+% {\section}
+% [frame]
+% {\Large\bfseries\textsc}
+% {\thesection}
+% {1em}
+% {\centering}
+\titleformat{\section}[frame]
+{\normalfont\bfseries\Large}
+{\textsc{\thesection.}}{1em}{\centering\vspace{0.4em}}
 
 \newcommand{\N}{\mathbf N}
 \newcommand{\Z}{\mathbf Z}
