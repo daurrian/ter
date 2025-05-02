@@ -2,4 +2,34 @@
 
 \begin{document}
 
+  L'objectif du TER est de découvrir un assistant de preuve en formalisant un résultat non trivial,
+  puis de comprendre les fondements théoriques sur lesquels repose les assistants de preuves actuels comme Lean ou Rocq.
+  Pour ce faire, ce rapport est décomposé en trois parties distinctes.
+  \vspace{0em}
+
+  La première partie est une présentation de la théorie des types (dépendants),
+  dans la version introduite par Per Martin-Löf \cite{martin2021intuitionistic}.
+  Cette théorie introduit la notion fondamentalle de \textit{type} qui est un analogue des ensembles,
+  et est largement utilisé par de nombreux langages de programmation.
+  Elle permet de formaliser les mathématiques et de construire un lien entre informatique et mathématiques en étendant
+  la correspondance de Curry-Howard entre les preuves et les programmes.
+  On décrira ici seulement les règles structurant les relations entre les types et décrivant le système de preuve qu'il fournit,
+  et enfin les liens entre les preuves et les programmes et par extension les assistants de preuve comme Lean.
+  \vspace{1em}
+
+  La deuxième partie décrit la formalisation d'un théorème à l'aide de l'assistant de preuve Lean.
+  Pour ce faire, on présente les outils qui ont été utilisés dans le cadre de la formalisation et les obstacles survenus.
+  Initialement, le théorème choisi pour être formalisé établissait l'existence de mesure dite de Gibbs.
+  Cependant la preuve dûe à Rufus Bowen \cite{bowen} était trop longue pour être complètement porté en Lean.
+  Le choix final a été de montrer rigouresement un de ses lemmes essentiels.
+  On présente également dans cette section les reformulations des énoncés qui ont été nécessaires pour formaliser
+  ces résultats en utilisant les types présents dans Lean.
+  \vspace{1em}
+
+  La dernière partie est une preuve du lemme finalement choisi.
+  Ce lemme est utile dans le théorème de Bowen pour obtenir des estimations sur la mesure des ouverts d'un espace de Bernoulli,
+  nécessaire pour obtenir l'unicité des mesures de Gibbs.
+  On en donne ici une version plus générale donnant une partition des ouverts bornés par des boules en utilisant des espaces ultramétriques
+  et en prouvant également des résultats élémentaires sur ses espaces métriques particuliers.
+
 \end{document}

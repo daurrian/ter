@@ -10,14 +10,44 @@
 \addbibresource{ref.bib}
 
 \begin{document}
-  \maketitle
+  \begin{titlepage}
+    \thispagestyle{empty}
+    \begin{center}
+      \vspace*{1cm}
+
+      \large
+      \textsc{Travail Encadré de Recherche}
+      \vspace{1.5cm}
+
+      \huge\textbf{\Title}
+      \vspace{2cm}
+
+      \large
+      Dorian Guillet
+      \vspace{1cm}
+
+      Encadré par Vincent Beffara.
+
+      \vfill
+      Mai 2025.
+      \vspace{0.5cm}
+
+      Institut Fourier -- M1 Mathématiques Générales
+      \vspace*{1.5cm}
+    \end{center}
+  \end{titlepage}
+
   \newpage
+  % \section*{Table des matières}
   \tableofcontents
+  \thispagestyle{empty}
+
   \newpage
+  \setcounter{page}{1}
+  % \thispagestyle{empty}
 
-
-\addcontentsline{toc}{section}{Introduction}
-  \section*{Introduction}
+  % \addcontentsline{toc}{section}{Introduction}
+  \section{Introduction}
     \subfile{sections/intro.tex}
     \newpage
 
@@ -31,7 +61,7 @@
     \subsection{Construction de types}
       \subfile{sections/type_theory/construction.tex}
 
-    \subsection{Correspondance de Curry-Howard}
+    \subsection{Correspondance preuves -- programmes}
       \subfile{sections/type_theory/curry_howard.tex}
 
   \newpage

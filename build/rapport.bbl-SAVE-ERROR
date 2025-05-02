@@ -19,6 +19,36 @@
 
 \refsection{0}
   \datalist[entry]{nty/global//global/global/global}
+    \entry{bowen}{article}{}{}
+      \name{author}{1}{}{%
+        {{hash=1d886e96986a805df6d90d2b56dae7da}{%
+           family={Bowen},
+           familyi={B\bibinitperiod},
+           given={Rufus},
+           giveni={R\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Springer}%
+      }
+      \strng{namehash}{1d886e96986a805df6d90d2b56dae7da}
+      \strng{fullhash}{1d886e96986a805df6d90d2b56dae7da}
+      \strng{fullhashraw}{1d886e96986a805df6d90d2b56dae7da}
+      \strng{bibnamehash}{1d886e96986a805df6d90d2b56dae7da}
+      \strng{authorbibnamehash}{1d886e96986a805df6d90d2b56dae7da}
+      \strng{authornamehash}{1d886e96986a805df6d90d2b56dae7da}
+      \strng{authorfullhash}{1d886e96986a805df6d90d2b56dae7da}
+      \strng{authorfullhashraw}{1d886e96986a805df6d90d2b56dae7da}
+      \field{sortinit}{B}
+      \field{sortinithash}{d7095fff47cda75ca2589920aae98399}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Lecture notes in mathematics}
+      \field{title}{Equilibrium states and the ergodic theory of Anosov diffeomorphisms}
+      \field{volume}{470}
+      \field{year}{1975}
+      \field{pages}{11\bibrangedash 25}
+      \range{pages}{15}
+    \endentry
     \entry{leantt}{article}{}{}
       \name{author}{1}{}{%
         {{hash=c19316840220cbed4d3428e3d1173261}{%
@@ -74,7 +104,6 @@
       \field{labeltitlesource}{title}
       \field{title}{Intuitionistic Type Theory: Notes by Giovanni Sambin of a series of lectures given in Padova, June 1980}
       \field{year}{2021}
-      \true{nocite}
     \endentry
     \entry{hottbook}{book}{}{}
       \name{author}{1}{}{%

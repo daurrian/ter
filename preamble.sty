@@ -32,7 +32,8 @@
 \graphicspath{{./assets/}}
 
 % ToC
-\setlength{\cftparskip}{0.5em} % linespread in ToC
+\setlength{\cftparskip}{0.4em} % linespread in ToC
+\cftsetindents{section}{1em}{2em} % indents & numwidth for section
 
 % Header
 \fancyhead{}
@@ -42,17 +43,11 @@
 \usepackage[backend=biber]{biblatex}
 \addbibresource{ref.bib}
 
-% Title format
-% \titleformat
-% {\section}
-% [frame]
-% {\Large\bfseries\textsc}
-% {\thesection}
-% {1em}
-% {\centering}
+% Section heading & numbering
 \titleformat{\section}[frame]
 {\normalfont\bfseries\Large}
-{\textsc{\thesection.}}{1em}{\centering\vspace{0.4em}}
+{\hspace{1em}\thesection.\hspace{1em}}{1.2em}{\centering\vspace{0.2em}}[\vspace{1.4em}]
+\renewcommand\thesection{\Roman{section}} % Section numbers in Roman style
 
 \newcommand{\N}{\mathbf N}
 \newcommand{\Z}{\mathbf Z}
@@ -72,7 +67,8 @@
 \DeclareMathOperator{\1}{\textbf{1}}
 \DeclareMathOperator{\2}{\textbf{2}}
 
-\newcommand{\Title}{Théorie des types : introduction et utilisation en Lean.}
+% \newcommand{\Title}{Théorie des types : introduction et utilisation en Lean.}
+\newcommand{\Title}{Introduction aux assistants de preuves : \\ Lean et la théorie des types.}
 \newcommand{\Author}{Dorian Guillet}
 
 \setlength{\headheight}{15pt}
