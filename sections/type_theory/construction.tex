@@ -83,9 +83,17 @@
     $$
     \prftree
       {\prftree
-	{\prfaxiom{A : \U \vdash A : \U}}
-	{A : \U, x : A \vdash x : A}}
-      {A : \U \vdash \lambda(x : A). x : A \fun A}
+	{\prftree
+	  {\prftree
+	    {\prftree
+	      {\prftree
+		{\prfaxiom{\cdot\ \ctx}}
+	      {\vdash \U_i : \U_{i+1}}}
+	    {(A : \U_i) \ctx}}
+	  {A : \U_i \vdash A : \U_i}}
+	{(A : \U_i, x : A) \ctx}}
+      {A : \U_i, x : A \vdash x : A}}
+    {A : \U_i \vdash \lambda(x:A).\ x : A \fun A}
     $$
   \end{example}
 
@@ -109,15 +117,7 @@
     $$K :\equiv \lambda(x : A).(\lambda(y : B).x)$$
     Grâce à un arbre similaire au précédent, on trouve que le type de $K$ est $A \fun B \fun A$
     (on omet les parenthèses en prenant comme convention que $A \fun A \fun A$ est égal à $A \fun (A \fun A)$).
-    De plus, on peut également montrer que si $a : A$ et $b : B$, alors $K\ a\ b \equiv a$. En effet, \textsc{A faire.}
-    % $$
-    % \prfinterspace=2em
-    % \prftree{}
-    % $$
   \end{example}
-
-  Si on considère deux types $A, B : \U$ et qu'on les voit comme des propositions,
-  alors le type $A \fun B$ peut s'interpreter comme l'implication $A \implies B$.
 
   \subsubsection{Fonctions dépendantes ($\Pi$-type)}
 
@@ -179,12 +179,6 @@
     pour plus de clarté.
   \end{example}
 
-  D'un autre point de vue ce type peut également être vu comme l'équivalent du $\forall$ de la logique
-  du première ordre.
-  En effet, si on considère $A : \U$ un type et $C : A \fun \U$ une famille de type,
-  que l'on peut également voir comme un prédicat, alors le type $\prod_{a : A}{C(a)}$ se comporte comme
-  la proposition $\forall a,\ C(a)$ en logique classique.
-
   \subsubsection{Produits}
 
   Etant donné deux types $A, B : \U_i$, comme en théorie des ensembles on veut construire le type $A \times B$ des paires d'éléments
@@ -244,7 +238,7 @@
   $$
 
   On peut également voir les types produits comme un cas particulier des types de fonctions dépendantes dont le domaine
-  est le type fini $\2$ à deux éléments qui seront décrit dans \ref{ex:type_2}.
+  est le type fini $\2$ à deux éléments, qui sera décrit dans \ref{ex:type_2}.
 
   \subsubsection{Paires dépendantes ($\Sigma$-types)}
 

@@ -20,8 +20,8 @@
 
   $$
   \begin{array}{cc}
-    \prfbyaxiom{$\emptyset\ctx$}{\cdot\ \ctx} \hspace{1.5cm}
-    & \prftree[r]{$\ctx$}{a_1 : A_1, \hdots, a_{n-1} : A_{n-1} \vdash A_n\ \text{type}}
+    \prfbyaxiom{($\emptyset\ctx$)}{\cdot\ \ctx} \hspace{1.5cm}
+    & \prftree[r]{($\ctx$)}{a_1 : A_1, \hdots, a_{n-1} : A_{n-1} \vdash A_n\ \text{type}}
       {(a_1 : A_1, \hdots, a_n : A_n) \ctx}
   \end{array}
   $$
@@ -38,9 +38,9 @@
   $$
   \prfinterspace=2em
   \begin{array}{ccc}
-    \prftree[r]{refl}{\Gamma \vdash a : A}{\Gamma \vdash a \equiv a : A} \hspace{0.5cm}
-    & \prftree[r]{sym} {\Gamma \vdash b \equiv a : A}{\Gamma \vdash a \equiv b : A} \hspace{0.5cm}
-    & \prftree[r]{trans}{\Gamma \vdash a \equiv b : A}{\Gamma \vdash b \equiv c : A}{\Gamma \vdash a \equiv c : A}
+    \prftree[r]{(refl)}{\Gamma \vdash a : A}{\Gamma \vdash a \equiv a : A} \hspace{0.5cm}
+    & \prftree[r]{(sym)} {\Gamma \vdash b \equiv a : A}{\Gamma \vdash a \equiv b : A} \hspace{0.5cm}
+    & \prftree[r]{(trans)}{\Gamma \vdash a \equiv b : A}{\Gamma \vdash b \equiv c : A}{\Gamma \vdash a \equiv c : A}
   \end{array}
   $$
 
@@ -49,15 +49,15 @@
   $$
   \prfinterspace=2em
   \begin{array}{cc}
-    \prftree[r]{$\equiv$ type}{\Gamma \vdash a : A}{\Gamma \vdash A \equiv B}{\Gamma \vdash a : B} \hspace{1cm}
-    & \prftree[r]{$\equiv$ eq}{\Gamma \vdash a \equiv b : A}{\Gamma \vdash A \equiv B}{\Gamma \vdash a \equiv b : B}
+    \prftree[r]{($\equiv$ type)}{\Gamma \vdash a : A}{\Gamma \vdash A \equiv B}{\Gamma \vdash a : B} \hspace{1cm}
+    & \prftree[r]{($\equiv$ eq)}{\Gamma \vdash a \equiv b : A}{\Gamma \vdash A \equiv B}{\Gamma \vdash a \equiv b : B}
   \end{array}
   $$
 
   Enfin, on ajoute une dernière règle permettant d'utiliser des jugements présent dans le contexte, qui s'exprime sous la forme suivante.
 
   $$
-  \prftree[r]{var}
+  \prftree[r]{(var)}
     {(a_1 : A_1, \hdots, a_n : A_n) \ctx}
     {a_1 : A_1, \hdots, a_n : A_n \vdash a_i : A_i}
   $$

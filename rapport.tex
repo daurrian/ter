@@ -30,10 +30,9 @@
 
       \vfill
       Mai 2025.
-      \vspace{0.5cm}
+      \vspace{1cm}
 
       Institut Fourier -- M1 Mathématiques Générales
-      \vspace*{1.5cm}
     \end{center}
   \end{titlepage}
 
@@ -46,11 +45,12 @@
   \setcounter{page}{1}
   % \thispagestyle{empty}
 
-  % \addcontentsline{toc}{section}{Introduction}
-  \section{Introduction}
+  \addcontentsline{toc}{section}{Introduction}
+  \thispagestyle{plain}
+  \section*{Introduction}
     \subfile{sections/intro.tex}
-    \newpage
 
+  \newpage
   \section{Théorie des Types}
     \subsection{Introduction}
       \subfile{sections/type_theory/intro.tex}
