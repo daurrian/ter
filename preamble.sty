@@ -27,9 +27,22 @@
 \usepackage{tocloft}
 \usepackage{titlesec}
 \usepackage{prftree}
-% \usepackage{hyperref}
+\usepackage{hyperref}
+\usepackage[dvipsnames]{xcolor}
+
+% \newcommand{\Title}{Théorie des types : introduction et utilisation en Lean.}
+\newcommand{\Title}{Introduction à la théorie des types \\ et aux assistants de preuves.}
+\newcommand{\Author}{Dorian Guillet}
 
 \graphicspath{{./assets/}}
+\hypersetup{
+  colorlinks=true,
+  % linkcolor=Periwinkle,
+  linkcolor=BlueViolet,
+  citecolor=BlueViolet,
+  urlcolor=blue,
+  pdftitle={\Title}
+}
 
 % ToC
 \setlength{\cftparskip}{0.4em} % linespread in ToC
@@ -40,7 +53,7 @@
 \fancyhead[CE, CO]{\textsc{\nouppercase{\leftmark}}}
 
 % Biblio
-\usepackage[backend=biber]{biblatex}
+\usepackage[backend=biber, style=alphabetic]{biblatex}
 \addbibresource{ref.bib}
 
 % Section heading & numbering
@@ -66,10 +79,6 @@
 \DeclareMathOperator{\0}{\textbf{0}}
 \DeclareMathOperator{\1}{\textbf{1}}
 \DeclareMathOperator{\2}{\textbf{2}}
-
-% \newcommand{\Title}{Théorie des types : introduction et utilisation en Lean.}
-\newcommand{\Title}{Introduction aux assistants de preuves : \\ Lean et la théorie des types.}
-\newcommand{\Author}{Dorian Guillet}
 
 \setlength{\headheight}{15pt}
 \pagestyle{fancy}

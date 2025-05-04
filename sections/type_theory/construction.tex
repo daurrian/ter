@@ -16,8 +16,8 @@
   Plus tôt, on a utilisé un jugement de la forme "$\Gamma \vdash A\ \text{type}$" pour signifier que $A$ est un type.
   Cependant ce jugement n'est pas un jugement de la théorie, on se ramène alors à un autre jugement déjà présent :
   le jugement de typage.
-  Pour ce faire, on doit introduire un type composé de type, un type univers $\U$.
-  Pour la même raison, on voudrais dire que $\U$ est lui-même un élément d'un type plus grand et ainsi de suite.
+  Pour ce faire, on doit introduire un type dont les éléments sont des types, un type univers\ $\U$.
+  Pour la même raison, on voudrait pouvoir dire que $\U$ est lui-même un élément d'un type plus grand et ainsi de suite.
   Pour résoudre ce problème, on postule qu'il existe une hiérarchie de type
   $$\U_0,\ \U_1,\ \U_2,\ \hdots,\ \U_i,\ \hdots$$
   telle que $\U_i : \U_{i+1}$.
@@ -50,7 +50,7 @@
 
   Une fonction est donc un élément $f$ de type $A \fun B$.
   Si on se donne $a : A$, on peut évaluer $f$ en $a$ ce qui donne un élément de type $B$
-  que l'on note $f\ a$ ou bien $f(a)$ qui est appelé valeur de $f$ en $a$, c'est la règle d'élimination de $\fun$ :
+  que l'on note $f\ a$ ou bien $f(a)$ qui est appelé valeur de $f$ en $a$, c'est la règle d'élimination des types de fonctions :
 
   $$
   \prfinterspace=2em
@@ -58,12 +58,12 @@
   $$
 
   Pour former une fonction $f$ de $A$ dans $B$ \textit{ie.} un élément de type $A \fun B$,
-  la manière canonique de faire est d'utiliser les $\lambda$-abstraction et la règle d'introduction suivante :
+  la manière canonique de faire est d'utiliser les $\lambda$-abstractions et la règle d'introduction suivante :
 
   $$
   \prftree[r]{($\fun$ i)}{\Gamma, x : A \vdash \Phi : B}{\Gamma \vdash \lambda (x : A). \Phi : A \fun B}
   $$
-  Dans cette règle $\Phi$ correspond à une formule qui peut éventuellement faire intervenir la variable $x$.
+  Dans cette règle, $\Phi$ correspond à une formule dans laquelle la variable $x$ intervient éventuellement.
 
   Enfin, lorsque l'on considère une fonction $f : A \fun B$ définie par $f :\equiv \lambda (x : A). \Phi$
   où $\Phi$ est une formule et un élément $a : A$, il est naturel que la valeur de $f$ en $a$ soit égale à
@@ -74,6 +74,17 @@
   \prfinterspace=2em
   \prftree[r]{($\beta$)}{\Gamma, x : A \vdash \Phi : B}{\Gamma \vdash a : A}
     {\Gamma \vdash (\lambda(x : A).\Phi)\ a \equiv \Phi[a/x]}
+  $$
+
+  On ajoute aussi une dernière règle correspondant au principe d'unicité des fonctions,
+  affirmant que'un fonction $f : A \fun B$ est égale à la fonction $\lambda (a: A).\ f\ a$.
+  Sous forme d'une règle, on l'écrit :
+
+  $$
+  \prfinterspace=2em
+  \prftree[r]{($\fun$ u)}
+    {\Gamma \vdash f : A \fun B}
+  {\Gamma \vdash f \equiv \lambda(a: A).\ f\ a : A \fun B}
   $$
 
   \begin{example}
@@ -116,7 +127,7 @@
     Considérons deux types $A, B : \U$ et la fonction $K$ définie par
     $$K :\equiv \lambda(x : A).(\lambda(y : B).x)$$
     Grâce à un arbre similaire au précédent, on trouve que le type de $K$ est $A \fun B \fun A$
-    (on omet les parenthèses en prenant comme convention que $A \fun A \fun A$ est égal à $A \fun (A \fun A)$).
+    (on omet les parenthèses en prenant comme convention que $A \fun B \fun C$ est égal à $A \fun (B \fun C)$).
   \end{example}
 
   \subsubsection{Fonctions dépendantes ($\Pi$-type)}
@@ -134,7 +145,7 @@
   $$
 
   On construit des éléments de type $\prod_{a:A}{B(a)}$ de manière analogue aux fonctions en utilisant des $\lambda$-abstractions.
-  En effet, $\lambda(a : A). \Phi$ est de type $\prod_{a:A}{B(a)}$ si lorsque $a : A$, alors $\Phi : B(x)$.
+  En effet, $\lambda(a : A). \Phi$ est de type $\prod_{a:A}{B(a)}$ si lorsque $a : A$, alors $\Phi : B(a)$.
   Cette règle énoncé plus formellement est la règle d'introduction de ce nouveau type :
 
   $$
@@ -152,12 +163,18 @@
     {\Gamma \vdash f\ a : B(a)}
   $$
 
-  Également, la règle $\beta$ des fonctions se généralise au $\prod$-type :
+  Également, la règle $\beta$ et le principe d'unicité des fonctions se généralisent au $\prod$-type :
 
   $$
   \prfinterspace=2em
   \prftree[r]{($\beta$)}{\Gamma, x : A \vdash \Phi : B(x)}{\Gamma \vdash a : A}
     {\Gamma \vdash (\lambda(x : A).\Phi)\ a \equiv \Phi[a/x]}
+  $$
+
+  $$
+  \prftree[r]{($\fun$ u)}
+    {\Gamma \vdash f : \prod_{a : A}B(a)}
+  {\Gamma \vdash f \equiv \lambda(a : A).\ f\ a : \prod_{a:A}B(a)}
   $$
 
   L'utilité des types de fonctions dépendantes est notamment de pouvoir définir des fonctions de façon polymorphes,
@@ -344,16 +361,14 @@
 
   \begin{gather*}
     \prfinterspace=2em
-    \prftree[r]{($\1$ e)}{\Gamma \vdash C : \U_i}{\Gamma \vdash c : C}{\Gamma \vdash p : \1}
-      {\Gamma \vdash \rec_{\1}(C, p, c) : C} \\
-    \prftree[r]{($\1 \equiv$)}{\Gamma \vdash C : \U_i}{\Gamma \vdash c : C}
-      {\Gamma \vdash \rec_{\1}(C, \star, c) \equiv c : C}
+    \prftree[r]{($\1$ e)}{\Gamma \vdash C : \U_i}{\Gamma \vdash c : C}{\Gamma \vdash x : \1}
+      {\Gamma \vdash \rec_{\1}(C, c, x) : C} \\
+    \prftree[r]{($\1 \equiv$)}
+      {\Gamma, x : \1 \vdash C(x) : \U_i}{\Gamma \vdash c : C(\star)}
+    {\Gamma \vdash \rec_{\1}(C, c, \star) \equiv c : C(\star)}
   \end{gather*}
-  où la fonction $\rec_{\1}$ est de type $\prod_{C : \U}\1 \fun C \fun C$
-  (il est également possible d'intervertir les deux derniers arguments).
-
+  où la fonction $\rec_{\1}$ est de type $\prod_{C : \1 \fun \U} C(\star) \fun \prod_{x:\1} C(x)$
   De plus pour ce type, on a une règle d'unicité car le seul élément de $\1$ est $\star$ :
-
   $$
   \prfinterspace=2em
   \prftree[r]{($\1$ u)}
@@ -393,24 +408,40 @@
   Pour décrire cette méthode de raisonnement, on a la règle d'élimination des coproduits pour deux types $A, B : \U_i$ :
 
   $$
-  \prfinterspace=1.2em
-  \prftree[r]{($+$ e)}{\Gamma \vdash C : \U_i}{\Gamma, a : A \vdash g_0\ a : C}{\Gamma, b : B \vdash g_1\ b : C}{\Gamma \vdash e : A + B}
-    {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, e) : C}
+  \prfinterspace=2em
+  \prftree[r]{($+$ e)}
+    {\Gamma, x : A+B \vdash C(x) : \U_i}
+    {\prfStackPremises
+      {\Gamma, a : A \vdash g_0\ a : C(\inl\ a)}
+      {\Gamma, b : B \vdash g_1\ b : C(\inr\ b)}}
+    {\Gamma \vdash e : A + B}
+  {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, e) : C(e)}
   $$
-  Ainsi, la fonction $\rec_{A+B}$ est de type $\prod_{C : \U}(A \fun C) \fun (B \fun C) \fun A + B \fun C$,
+  Ainsi, la fonction $\rec_{A+B}$ est de type %$\prod_{C : \U}(A \fun C) \fun (B \fun C) \fun A + B \fun C$,
+  $$\prod_{C : A+B \fun \U}\left(\prod_{a : A}C(\inl\ a)\right) \fun \left(\prod_{b : B}C(\inr\ b)\right) \fun (\prod_{e:A+B}C(e))$$
   et permet de faire la disjonction de cas.
   On a de plus deux règles décrivant le comportement de la fonction $\rec_{A+B}$ en fonction de son dernier argument :
 
   $$
   \prfinterspace=1.2em
-  \prftree[r]{($+ \equiv_1$)}{\Gamma \vdash C : \U_i}{\Gamma, a : A \vdash g_0\ a : C}{\Gamma, b : B \vdash g_1\ b : C}{\Gamma \vdash x : A}
-    {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, \inl(x)) \equiv g_0\ x : C}
+  \prftree[r]{($+ \equiv_1$)}
+    {\Gamma, x : A+B \vdash C(x) : \U_i}
+    {\prfStackPremises
+      {\Gamma, a : A \vdash g_0\ a : C(\inl\ a)}
+      {\Gamma, b : B \vdash g_1\ b : C(\inr\ b)}}
+    {\Gamma \vdash x : A}
+  {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, \inl(x)) \equiv g_0\ x : C(\inl\ x)}
   $$
 
   $$
   \prfinterspace=1.2em
-  \prftree[r]{($+ \equiv_2$)}{\Gamma \vdash C : \U_i}{\Gamma, a : A \vdash g_0\ a : C}{\Gamma, b : B \vdash g_1\ b : C}{\Gamma \vdash y : B}
-    {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, \inr(y)) \equiv g_1\ y : C}
+  \prftree[r]{($+ \equiv_2$)}
+    {\Gamma, x : A+B \vdash C(x) : \U_i}
+    {\prfStackPremises
+      {\Gamma, a : A \vdash g_0\ a : C(\inl\ a)}
+      {\Gamma, b : B \vdash g_1\ b : C(\inr\ b)}}
+    {\Gamma \vdash y : B}
+  {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, \inr(y)) \equiv g_1\ y : C(\inr\ y)}
   $$
 
   \begin{example}[Le type $\2$]
@@ -450,32 +481,62 @@
     \end{array}
     $$
 
-    On obtient alors la fonction $\rec_{\2}$ de type $\prod_{C : \U}(\1 \fun C) \fun (\1 \fun C) \fun \2 \fun C$,
-    que l'on peut également voir comme le type $\prod_{C:\U}C \fun C \fun \2 \fun C$ (car les fonctions sur $\1$ sont constantes)
-    qui vérifie les règles d'élimination et de calcul suivantes :
+    On obtient alors la fonction $\rec_{\2}$ de type
+    $$\prod_{C : \2 \fun \U} \left(\prod_{x:\1} C(\inl\ x)\right) \fun \left(\prod_{y:\1}C(\inr\ y)\right) \fun \prod_{b : \2} C(b),$$
+    que l'on peut également voir comme le type $\prod_{C:\2 \fun \U}C(\bot) \fun C(\top) \fun \prod_{b:\2}C(b)$
+    (car les fonctions sur $\1$ sont constantes et égales à la valeurs qu'elles prennent sur $\star$).
+    Cette fonction vérifie les règles d'élimination et de calcul suivantes :
 
     $$
     \prfinterspace=1.2em
     \prftree
-      {\Gamma \vdash C :\U_i}
-      {\Gamma, p : \1 \vdash g_0\ p : C}
-      {\Gamma, p : \1 \vdash g_1\ p : C}
+      {\Gamma, b : \2 \vdash C(b) :\U_i}
+      {\Gamma, p : \1 \vdash g_0\ p : C(\inl\ p)}
+      {\Gamma, p : \1 \vdash g_1\ p : C(\inr\ p)}
       {\Gamma \vdash e : \2}
-      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, e) : C}
+      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, e) : C(e)}
     $$
     $$
     \prfinterspace=1.2em
-    \prftree{\Gamma \vdash C : \U_i}{\Gamma, p : \1 \vdash g_0\ p : C}{\Gamma, p : \1 \vdash g_1\ p : C}
-      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \bot) \equiv g_0\ \bot : C}
+    \prftree[r]{($\2 \equiv_1$)}
+      {\Gamma, b: \2 \vdash C(b) : \U_i}
+      {\Gamma, p : \1 \vdash g_0\ p : C(\inl\ p)}
+      {\Gamma, p : \1 \vdash g_1\ p : C(\inr\ p)}
+    {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \bot) \equiv g_0\ \bot : C(\bot)}
     $$
     $$
     \prfinterspace=1.2em
-    \prftree{\Gamma \vdash C : \U_i}{\Gamma, p : \1 \vdash g_0\ p : C}{\Gamma, p : \1 \vdash g_1\ p : C}
-      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \top) \equiv g_0\ \top : C}
+    \prftree[r]{($\2 \equiv_2$)}
+      {\Gamma, b: \2 \vdash C(b) : \U_i}
+      {\Gamma, p : \1 \vdash g_0\ p : C(\inl\ p)}
+      {\Gamma, p : \1 \vdash g_1\ p : C(\inr\ p)}
+    {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \top) \equiv g_0\ \top : C(\top)}
     $$
-    On peut les réécrire plus simplement (et moins formellement) comme
-    $$\rec_{\2}(C, g_0, g_1, \bot) \equiv g_0 : C \text{ et } \rec_{\2}(C, g_0, g_1, \top) \equiv g_1 : C$$
-    si on identifie $g_0$ et $g_1$ à leur unique valeur respective.
+    On peut les réécrire en modifiant les types de $\rec_{\2}$, puisque les fonctions dont le domaine est $\1$ sont des constantes :
+    $$
+    \prfinterspace=1.2em
+    \prftree[r]{($\2$ e)}
+      {\Gamma, b : \2 \vdash C(b) :\U_i}
+      {\Gamma \vdash g_0: C(\bot)}
+      {\Gamma \vdash g_1 : C(\top)}
+      {\Gamma \vdash e : \2}
+      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, e) : C(e)}
+    $$
+    $$\begin{array}{cc}
+      \prfinterspace=1.2em
+      \prftree[r]{($\2 \equiv_1$)}
+	{\Gamma, b : \2 \vdash C(b) : \U_i}
+	{\prfStackPremises{\Gamma \vdash g_0 : C(\bot)}
+	{\Gamma \vdash g_1 : C(\top)}}
+      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \bot) \equiv g_0 : C(\bot)} \hspace{1em}
+      &
+      \prfinterspace=1.2em
+      \prftree[r]{($\2 \equiv_0$)}
+	{\Gamma, b : \2 \vdash C(b) : \U_i}
+	{\prfStackPremises{\Gamma \vdash g_0 : C(\bot)}
+	{\Gamma \vdash g_1 : C(\top)}}
+      {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \top) \equiv g_1 : C(\top)}
+    \end{array}$$
     On remarque alors que la fonction $\rec_{\2}$ agit comme le "si .. alors .. sinon .." des booléens,
     ce qui renforce la comparaison entre le type $\2$ et les booléens.
   \end{example}
@@ -633,7 +694,8 @@
   \subsubsection{Entiers naturels}
 
   Avec les W-types, nous pouvons désormais construire les entiers naturels.
-  Pour ce faire, on note $\N \equiv W_{x : \2}B(x)$ où $B(0_{\2}) :\equiv \0$ et $B(1_{\2}) :\equiv \1$.
+  Pour ce faire, on note $\N \equiv W_{x : \2}B(x)$ où $B(0_{\2}) :\equiv \0$ et $B(1_{\2}) :\equiv \1$
+  (\textit{ie.} $B \equiv \rec_{\2}(\U_i, \0, \1) : \2 \fun \U_i$).
   On a donc déjà vu dans le paragraphe précédent que tout élément de $\N$ s'exprime sous la forme $0$ ou $s\ k$
   avec $k : \N$ et de plus on avait les expressions de $0$ et de $s : \N \fun \N$ suivantes :
   $$\left\{ \begin{array}{rll}
@@ -647,11 +709,11 @@
   $$
   \prfinterspace=2em
   \prftree
-    {\prfaxiom{\Gamma\ \vdash \2 : \U}}
+    {\prftree{\Gamma \ctx}{\Gamma\ \vdash \2 : \U}}
     {\prftree
-      {\prfaxiom{\Gamma, a : \2\ \vdash B : \2 \fun \U}}
+      {\prftree{\Gamma \ctx}{\Gamma, a : \2\ \vdash B : \2 \fun \U}}
       {\prftree
-	{\prfaxiom{\Gamma\ \vdash \2 : \U}}
+	{\prftree{\Gamma \ctx}{\Gamma\ \vdash \2 : \U}}
       {\Gamma, a : \2\ \vdash a : \2}}
     {\Gamma, a : \2\ \vdash B(a) : \U}}
   {\Gamma\ \vdash \N : \U}
@@ -660,8 +722,9 @@
   On a donc la règle simplifiée :
 
   $$
-  \prfbyaxiom{$\N$ i}
-    {\Gamma\ \vdash \N : \U}
+  \prftree[r]{$\N$ i}
+    {\Gamma \ctx}
+  {\Gamma\ \vdash \N : \U}
   $$
 
   Ensuite, concernant la règle d'introduction on distingue deux cas puisqu'il y a deux manières de construire
@@ -671,7 +734,7 @@
   \prfinterspace=2em
   \prftree
     {\prftree
-      {\prfaxiom{\Gamma\ \vdash 0_{\2} : \2}}
+      {\prftree{\Gamma \ctx}{\Gamma\ \vdash 0_{\2} : \2}}
       {\prftree
 	{\prfaxiom{\Gamma, 0_{\2} : \2\ \vdash \rec_{\0, \N} : \0 \fun \N}}
       {\Gamma, 0_{\2} : \2\ \vdash \rec_{\0, \N} : B(0_{\2}) \fun \N}}
@@ -688,7 +751,7 @@
   $$
   Ce qui donne les deux règles d'introduction de $\N$ :
   $$\begin{array}{cc}
-    \prfbyaxiom{($0$ i)}{\Gamma\ \vdash 0 : \N}\hspace{2cm} & \prftree[r]{($s$ i)}{\Gamma\ \vdash k : \N}{\Gamma\ \vdash s\ k : \N}
+    \prftree[r]{($0$ i)}{\Gamma \ctx}{\Gamma\ \vdash 0 : \N}\hspace{2cm} & \prftree[r]{($s$ i)}{\Gamma\ \vdash k : \N}{\Gamma\ \vdash s\ k : \N}
   \end{array}$$
 
   Pour la règle d'élimination sur le type $\N$, on s'attend à retrouver le principe de récurrence usuel sur les entiers,
