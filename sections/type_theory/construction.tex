@@ -1,13 +1,12 @@
 \documentclass[../../rapport.tex]{subfiles}
 
 \begin{document}
-  Pour construire un nouveau type à partir d'autres, on doit donner 3 règles :
+  Pour construire un nouveau type à partir d'autres, on donne généralement 3 règles :
   \begin{itemize}
     \item \textbf{Formation du type}, qui permet de construire un type à partir d'autres types ou famille de types,
     \item \textbf{Introduction}, qui explique comment sont construits les éléments de ce type,
     \item \textbf{Élimination}, décrivant comment utiliser ces éléments.
   \end{itemize}
-
   Partant de ces 3 règles, on peut construire un type et éventuellement ajouter des règles supplémentaires concernant
   leur comportement par rapport à l'égalité par définition.
 
@@ -22,7 +21,7 @@
   $$\U_0,\ \U_1,\ \U_2,\ \hdots,\ \U_i,\ \hdots$$
   telle que $\U_i : \U_{i+1}$.
 
-  Pour ces types, on a seulement une règle d'introduction et une règle décrivant la hiérarchie entre ces types :
+  Pour ces types, on a seulement une règle d'introduction et une autre décrivant la hiérarchie entre ces types :
 
   $$
   \begin{array}{cc}
@@ -40,7 +39,7 @@
 
   \subsubsection{Fonctions}
 
-  Étant donné deux types $A, B : \U$, on peut former le type des fonctions de $A$ dans $B$ noté $A \fun B$
+  Étant donné deux types $A, B : \U_i$, on peut former le type des fonctions de $A$ dans $B$ noté $A \fun B$
   grâce à la règle de formation suivante :
 
   $$
@@ -68,12 +67,12 @@
   Enfin, lorsque l'on considère une fonction $f : A \fun B$ définie par $f :\equiv \lambda (x : A). \Phi$
   où $\Phi$ est une formule et un élément $a : A$, il est naturel que la valeur de $f$ en $a$ soit égale à
   la formule $\Phi$ où l'on remplace les occurences de $x$ par des $a$, ce que l'on note $\Phi[a/x]$.
-  Ce comportement est en fait une règle d'égalité que l'on peut énoncer sous cette forme :
+  Ce comportement est une règle d'égalité que l'on peut énoncer sous cette forme :
 
   $$
   \prfinterspace=2em
   \prftree[r]{($\beta$)}{\Gamma, x : A \vdash \Phi : B}{\Gamma \vdash a : A}
-    {\Gamma \vdash (\lambda(x : A).\Phi)\ a \equiv \Phi[a/x]}
+    {\Gamma \vdash (\lambda(x : A).\Phi)\ a \equiv \Phi[a/x] : B}
   $$
 
   On ajoute aussi une dernière règle correspondant au principe d'unicité des fonctions,
@@ -144,7 +143,7 @@
     {\Gamma \vdash \prod_{a:A}{B(a)} : \U_i}
   $$
 
-  On construit des éléments de type $\prod_{a:A}{B(a)}$ de manière analogue aux fonctions en utilisant des $\lambda$-abstractions.
+  On construit des éléments de type $\prod_{a:A}{B(a)}$ de manière analogue aux fonctions en utilisant les $\lambda$-abstractions.
   En effet, $\lambda(a : A). \Phi$ est de type $\prod_{a:A}{B(a)}$ si lorsque $a : A$, alors $\Phi : B(a)$.
   Cette règle énoncé plus formellement est la règle d'introduction de ce nouveau type :
 
@@ -181,18 +180,18 @@
   comme le montre les exemples suivants.
 
   \begin{example}
-    La fonction identité du paragraphe précédent était défini sur un type $A : \U$ quelconque.
+    La fonction identité du paragraphe précédent était défini sur un type $A : \U_i$ quelconque.
     On peut alors généraliser sa définition de la manière suivante :
 
-    $$I \equiv \lambda (A : \U). \lambda (a : A).\ a : \prod_{A : \U}{A \fun A}.$$
+    $$I \equiv \lambda (A : \U_i). \lambda (a : A).\ a : \prod_{A : \U_i}{A \fun A}.$$
     Ainsi définie, la fonction $I$ ne dépend pas d'un type préexistant.
 
     On peut également redéfinir la fonction constante $K$ d'une manière analogue :
 
-    $$K \equiv \lambda (A : \U). \lambda (B : \U). \lambda (x : A). \lambda (y : B).\ x :
-      \prod_{A : \U}\prod_{B : \U}{A \fun B \fun A}.$$
+    $$K \equiv \lambda (A : \U_i). \lambda (B : \U_i). \lambda (x : A). \lambda (y : B).\ x :
+      \prod_{A : \U_i}\prod_{B : \U_i}{A \fun B \fun A}.$$
 
-    Pour ces types et définition polymorphe, on peut également avoir la notation $I_A$ à la place de $I\ A$
+    Pour ces types et définitions polymorphes, on peut également avoir la notation $I_A$ à la place de $I\ A$ et $K_{A,B}$ pour $K\ A\ B$
     pour plus de clarté.
   \end{example}
 
@@ -222,7 +221,7 @@
 
   Ensuite pour les règles d'éliminations et de calculs,
   on introduit deux fonctions $\pi_1 : A \times B \fun A$ et $\pi_2 : A \times B \fun B$
-  qui projette un élément $(a, b) : A \times B$ sur $A$ et sur $B$.
+  qui projettent un élément $(a, b) : A \times B$ sur $A$ et sur $B$.
 
   $$
   \prfinterspace=1.2em
@@ -238,12 +237,12 @@
     \prftree[r]{($\times_1 \equiv$)}
     {\Gamma \vdash a : A}
     {\Gamma \vdash b : B}
-    {\Gamma \vdash \pi_1\ (a, b) \equiv a}
+    {\Gamma \vdash \pi_1\ (a, b) \equiv a : A}
     &
     \prftree[r]{($\times_2 \equiv$)}
     {\Gamma \vdash a : A}
     {\Gamma \vdash b : B}
-    {\Gamma \vdash \pi_2\ (a, b) \equiv b}
+    {\Gamma \vdash \pi_2\ (a, b) \equiv b : B}
   \end{array}
   $$
 
@@ -251,7 +250,7 @@
   $$
   \prftree[r]{($\times$ u)}
   {\Gamma \vdash e : A \times B}
-  {\Gamma \vdash e \equiv (\pi_1\ e, \pi_2\ e)}
+  {\Gamma \vdash e \equiv (\pi_1\ e, \pi_2\ e) : A \times B}
   $$
 
   On peut également voir les types produits comme un cas particulier des types de fonctions dépendantes dont le domaine
@@ -261,7 +260,7 @@
 
   Si on considère un type $A : \U_i$ et une famille de type $B : A \fun \U_i$ indexée sur $A$,
   on veut pouvoir construire l'union disjointe des $B(a)$ pour $a : A$.
-  Pour ce faire, on introduit les types de paires dépendantes (où $\Sigma$-type) qui se forme grâce à la règle :
+  Pour ce faire, on introduit les types de paires dépendantes (ou $\Sigma$-type) qui se forme grâce à la règle :
   $$
   \prfinterspace=1.2em
   \prftree[r]{($\Sigma$ f)}
@@ -361,8 +360,12 @@
 
   \begin{gather*}
     \prfinterspace=2em
-    \prftree[r]{($\1$ e)}{\Gamma \vdash C : \U_i}{\Gamma \vdash c : C}{\Gamma \vdash x : \1}
-      {\Gamma \vdash \rec_{\1}(C, c, x) : C} \\
+    \prftree[r]{($\1$ e)}
+      {\Gamma, x: \1 \vdash C(x) : \U_i}
+      {\Gamma \vdash c : C(x)}
+      {\Gamma \vdash x : \1}
+    {\Gamma \vdash \rec_{\1}(C, c, x) : C(x)} \\
+    \prfinterspace=2em
     \prftree[r]{($\1 \equiv$)}
       {\Gamma, x : \1 \vdash C(x) : \U_i}{\Gamma \vdash c : C(\star)}
     {\Gamma \vdash \rec_{\1}(C, c, \star) \equiv c : C(\star)}
@@ -418,7 +421,7 @@
   {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, e) : C(e)}
   $$
   Ainsi, la fonction $\rec_{A+B}$ est de type %$\prod_{C : \U}(A \fun C) \fun (B \fun C) \fun A + B \fun C$,
-  $$\prod_{C : A+B \fun \U}\left(\prod_{a : A}C(\inl\ a)\right) \fun \left(\prod_{b : B}C(\inr\ b)\right) \fun (\prod_{e:A+B}C(e))$$
+  $$\prod_{C : A+B \fun \U}\left(\prod_{a : A}C(\inl\ a)\right) \fun \left(\prod_{b : B}C(\inr\ b)\right) \fun \left(\prod_{e:A+B}C(e)\right)$$
   et permet de faire la disjonction de cas.
   On a de plus deux règles décrivant le comportement de la fonction $\rec_{A+B}$ en fonction de son dernier argument :
 
@@ -498,7 +501,7 @@
     $$
     $$
     \prfinterspace=1.2em
-    \prftree[r]{($\2 \equiv_1$)}
+    \prftree
       {\Gamma, b: \2 \vdash C(b) : \U_i}
       {\Gamma, p : \1 \vdash g_0\ p : C(\inl\ p)}
       {\Gamma, p : \1 \vdash g_1\ p : C(\inr\ p)}
@@ -506,7 +509,7 @@
     $$
     $$
     \prfinterspace=1.2em
-    \prftree[r]{($\2 \equiv_2$)}
+    \prftree
       {\Gamma, b: \2 \vdash C(b) : \U_i}
       {\Gamma, p : \1 \vdash g_0\ p : C(\inl\ p)}
       {\Gamma, p : \1 \vdash g_1\ p : C(\inr\ p)}
@@ -531,7 +534,7 @@
       {\Gamma \vdash \rec_{\2}(C, g_0, g_1, \bot) \equiv g_0 : C(\bot)} \hspace{1em}
       &
       \prfinterspace=1.2em
-      \prftree[r]{($\2 \equiv_0$)}
+      \prftree[r]{($\2 \equiv_2$)}
 	{\Gamma, b : \2 \vdash C(b) : \U_i}
 	{\prfStackPremises{\Gamma \vdash g_0 : C(\bot)}
 	{\Gamma \vdash g_1 : C(\top)}}
@@ -565,7 +568,7 @@
   \end{tikzpicture}
   \end{figure}
 
-  Un autre exemple de type défini de manière inductive est le type $L(A)$ des listes sur un type $A : \U$.
+  Un autre exemple de type défini de manière inductive est le type $L(A)$ des listes sur un type $A : \U_i$.
   La seule feuille est la liste vide notée $()$ et la fonctions jouant le rôle de constructeur inductif est
   la fonction $c : A \fun L(A) \fun L(A)$ qui a un élément $a : A$ et une liste $l : L(A)$ renvoie la liste
   dont le premier élément est $a$ et le reste est $l$.
@@ -592,13 +595,13 @@
   \end{figure}
 
   Pour généraliser les types inductifs, on introduit alors les W-types (\textit{well-founded trees}) de Martin-Löf.
-  Pour ce faire, on utilise un type $A : \U$ qui correspond aux \textit{étiquettes} et un type $B : A \fun \U$ qui
+  Pour ce faire, on utilise un type $A : \U_i$ qui correspond aux \textit{étiquettes} et un type $B : A \fun \U$ qui
   permet de coder l'arité des noeuds : un noeud dont l'étiquette est $a : A$ aura une arité de $B(a)$.
   Le type résultant de ces deux types est $W_{a:A} B(a)$ que l'on construit via la règle de formation suivante :
 
   $$
   \prfinterspace=2em
-  \prftree[r]{(W f)}{\Gamma \vdash A : \U}{\Gamma, a : A \vdash B(a) : \U}{\Gamma \vdash W_{a: A} B(a) : \U}
+  \prftree[r]{(W f)}{\Gamma \vdash A : \U_i}{\Gamma, a : A \vdash B(a) : \U_i}{\Gamma \vdash W_{a: A} B(a) : \U_i}
   $$
 
   Les éléments d'un type $W_{a:A}B(a)$ sont donc des noeuds d'un arbre auxquels on associe la fonction donnant
@@ -680,7 +683,7 @@
     {\prfStackPremises
       {\Gamma\ \vdash a : A}
       {\Gamma\ \vdash b : B(a) \fun W_{x:A}B(x)}
-      {\Gamma, x : A, x : B(x) \fun W_{x:A}B(x), z : \prod_{v:B(x)}{E(y\ v)}\ \vdash e(x, y, z) : E(\sup(x, y))}
+      {\Gamma, x : A, y : B(x) \fun W_{x:A}B(x), z : \prod_{v:B(x)}{E(y\ v)}\ \vdash e(x, y, z) : E(\sup(x, y))}
     }
       {\Gamma \vdash \rec_{W_{x:A}B(x)}(E, e, \sup(a, b)) \equiv e(a, b, \lambda v.\ \rec_{W_{x:A}B(x)}(E, e, b\ v)) : E(\sup(a, b))}
   $$
@@ -696,14 +699,14 @@
   Avec les W-types, nous pouvons désormais construire les entiers naturels.
   Pour ce faire, on note $\N \equiv W_{x : \2}B(x)$ où $B(0_{\2}) :\equiv \0$ et $B(1_{\2}) :\equiv \1$
   (\textit{ie.} $B \equiv \rec_{\2}(\U_i, \0, \1) : \2 \fun \U_i$).
-  On a donc déjà vu dans le paragraphe précédent que tout élément de $\N$ s'exprime sous la forme $0$ ou $s\ k$
+  On a déjà vu dans le paragraphe précédent que tout élément de $\N$ s'exprime sous la forme $0$ ou $s\ k$
   avec $k : \N$ et de plus on avait les expressions de $0$ et de $s : \N \fun \N$ suivantes :
   $$\left\{ \begin{array}{rll}
       0 &:\equiv \sup(0_{\2}, \rec_{\0, \N}) 				&: \N \\
       s &:\equiv \lambda(n : \N).\ \sup(1_{\2}, \lambda(x : \1).\ n)	&: \N \fun \N
   \end{array}\right.$$
 
-  On peut également réexprimer les règles de formation, d'introduction, d'élimination et d'égalité dans le cas de $\N$.
+  On peut également exprimer les règles de formation, d'introduction, d'élimination et d'égalité dans le cas de $\N$.
   Pour la règle de formation, on obtient :
 
   $$
@@ -785,7 +788,7 @@
   De même, pour le Lemme 2 en remaquant qu'un fonction $b : \1 \fun \N$ est équivalent à choisir un $k : \N$ et que
   $c : \prod_{v:\1}E(b\ v)$ est similaire à $c : E(k)$, on peut réécrire la prémisse en
   $$\Gamma, k : \N, p : E(k) \vdash e_s(k, p) : E(s\ k).$$
-  Finalement, on peut décomposer la fonction $e$ du recurseur : $e_0 : E(0)$ et $e_s : \prod_{k : \N}E(k) \fun E(s\ k)$,
+  Finalement, on peut décomposer la fonction $e$ du récurseur : $e_0 : E(0)$ et $e_s : \prod_{k : \N}E(k) \fun E(s\ k)$,
   ce qui permet de réécrire la règle d'élimination sous la forme plus simple :
 
   $$\prfinterspace=1.2em
@@ -831,7 +834,7 @@
   \begin{itemize}
     \item La liste vide, notée $()$ que l'on définit comme $() :\equiv \sup(\inl(\star), \rec_{\0}(L(A))) : L(A)$,
     \item L'ajout d'un élément en tête de liste via la fonction $c : A \fun L(A) \fun L(A)$ qui est définit de la manière suivante :
-      $$c :\equiv \lambda(a : A).\ \lambda(l : L(A)).\ \sup(a, \lambda(x : \1).\ l).$$
+      $$c :\equiv \lambda(a : A).\ \lambda(l : L(A)).\ \sup\left(a, \lambda(x : \1).\ l\right).$$
       que l'on peut également noter $::$ de manière infixe.
   \end{itemize}
   Ainsi, une liste $l \equiv (a_1, \hdots, a_k) : L(A)$ est définie par

@@ -9,7 +9,7 @@
   Ce théorème établit l'existence et l'unicité d'une certaine mesure de probabilité dite de Gibbs sur un espace métrique particulier,
   et donc ce théorème fait intervenir notamment de la topologie et de la théorie de la mesure.
 
-  Pour formaliser ce théorème, j'ai donc eu recours à des outils extérieurs à Lean comme
+  Pour formaliser ce théorème, j'ai eu recours à des outils extérieurs à Lean comme
   % \href{https://github.com/PatrickMassot/leanblueprint}{leanblueprint},
   leanblueprint \cite{leanblueprint}
   qui permet à partir d'un texte mathématiques d'obtenir un graphe décrivant les liens entre les différents lemmes,
@@ -60,19 +60,19 @@
   et donc la preuve du théorème était trop longue par rapport au temps imparti.
 
   On a donc décidé de se concentrer sur la formalisation des énoncés et sur la preuve d'un lemme important
-  de topologie des espaces ultramétriques, pour experimenter tout les aspects d'un assistant de preuves.
+  de topologie des espaces ultramétriques, pour expérimenter tout les aspects d'un assistant de preuves.
 
   Pour la formalisation des énoncés il a donc fallu dans un premier temps adapter le rapport de stage au format demandé
   par l'outil lean-blueprint, en ajoutant des détails et en décomposant certains énoncés pour correspondre davantage à la structure
-  du code Lean. L'étape suivante était de traduire chaque définition et lemmes (sans les preuves) en un code le plus clair possible
+  du code Lean. L'étape suivante était de traduire chaque définition et lemme (sans les preuves) en un code le plus clair possible
   pour faciliter le travail d'écriture des preuves suivant l'ordre préconisé par le graphe de dépendance.
-  Enfin, j'ai pu commencer à écrire des morceaux de preuves pour les lemmes les plus simples.
-  Finalement au vu du nombre de preuve à convertir en code, il a fallu choisir un résultat dont la
+  Enfin, j'ai pu commencer l'écriture des morceaux de preuves pour les lemmes les plus simples.
+  Finalement, au vu du nombre de preuve à convertir en code, il a fallu choisir un résultat dont la
   preuve était moins conséquente pour s'y consacrer.
 
   \subsection{Preuve d'un résultat topologique}
 
-  Le choix qui a été fait était de prouver un théorème de topologie permettant de décomposer les ouverts d'un espace ultramétriques compact
+  Le choix qui a été fait était de prouver un théorème de topologie permettant de décomposer les ouverts d'un espace ultramétrique compact
   en une union disjointe de boules.
   Ce résultat était nécessaire pour réécrire la mesure des ouverts en somme de mesure de boules pour lesquelles on possède une estimation
   dans le cas des mesures de Gibbs.
@@ -81,7 +81,7 @@
   les étapes intermédiaires pour ensuite les convertir en lemme dans Lean pour pouvoir écrire les preuves de ces lemmes.
   L'étape finale à donc été d'écrire la preuve du théorème en utilisant tout les lemmes précédents.
 
-  Cependant la traduction des preuves en Lean ne se fait pas littéralement, il faut souvent adapter les énoncés pour
+  Cependant, la traduction des preuves en Lean ne se fait pas littéralement, il faut souvent adapter les énoncés pour
   les faire correspondre aux lemmes déjà existants et prouvés dans Mathlib (la bibliothèque de Lean contenant une large variété de théorèmes).
   Ainsi, nous avons donc transformés l'énoncé mathématique standard, à savoir
   \begin{theorem*}

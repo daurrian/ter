@@ -10,7 +10,7 @@
   sont les prémisses ou hypothèses de la règle.
 
   Avec de telles règles, on peut prouver une proposition en construisant un arbre de preuve
-  dont la racine est la proposition à prouver et les liens entre les feuilles respectent les règles d'inférence de la théorie.
+  dont la racine est la proposition à prouver et les liens entre les noeuds respectent les règles d'inférence de la théorie.
 
   \subsubsection{Contexte}
 
@@ -25,7 +25,7 @@
       {(a_1 : A_1, \hdots, a_n : A_n) \ctx}
   \end{array}
   $$
-  Le jugement $A_n\ \text{type}$ signifie que $A_n$ est un type et sera détaillé davantage dans la section suivante.
+  Le jugement "$A_n\ \text{type}$" signifie que $A_n$ est un type et sera détaillé davantage dans la partie suivante.
   La première règle dit qu'un contexte vide est toujours bien formé, la seconde règle dit que un contexte est bien formé
   dès lors que la dernière variable est bien typé sous l'hypothèse que le contexte auquel on retire la dernière variable
   est lui-même bien formé.
