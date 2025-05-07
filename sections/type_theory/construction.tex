@@ -17,7 +17,7 @@
   le jugement de typage.
   Pour ce faire, on doit introduire un type dont les éléments sont des types, un type univers\ $\U$.
   Pour la même raison, on voudrait pouvoir dire que $\U$ est lui-même un élément d'un type plus grand et ainsi de suite.
-  Pour résoudre ce problème, on postule qu'il existe une hiérarchie de type
+  Pour résoudre ce problème, on postule qu'il existe une hiérarchie de types
   $$\U_0,\ \U_1,\ \U_2,\ \hdots,\ \U_i,\ \hdots$$
   telle que $\U_i : \U_{i+1}$.
 
@@ -25,7 +25,7 @@
 
   $$
   \begin{array}{cc}
-    \prftree[r]{($\U$ i)}{\Gamma \ctx}{\Gamma \vdash U_i : U_{i+1}} \hspace{2cm}
+    \prftree[r]{($\U$ i)}{\Gamma \ctx}{\Gamma \vdash \U_i : \U_{i+1}} \hspace{2cm}
     & \prftree[r]{($\U$ cumul)}{\Gamma \vdash A : \U_i}{\Gamma \vdash A : \U_{i+1}}
   \end{array}
   $$
@@ -87,7 +87,7 @@
   $$
 
   \begin{example}
-    Considérons un type $A : \U$ et la fonction "identité" de $A$ définie par $I :\equiv \lambda(x : A).x$.
+    Considérons un type $A : \U_i$ et la fonction "identité" de $A$ définie par $I :\equiv \lambda(x : A).x$.
     Pour prouver que le type de $I$ est bien $A \fun A$, on peut utiliser les règles énoncées précédemment :
 
     $$
@@ -109,7 +109,7 @@
 
   On a vu jusqu'ici comment construire des fonctions à une variable, on peut alors généraliser pour obtenir
   des fonctions à plusieurs variables.
-  Pour ce faire, considérons trois types $A, B, C : \U$.
+  Pour ce faire, considérons trois types $A, B, C : \U_i$.
   Naïvement, on voudrais construire une fonction de type $A \times B \fun C$,
   mais le type $A \times B$ n'est pas encore défini.
   Pour contourner ce problème, on peut voir une fonction $f$ de $A \times B \fun C$ comme
@@ -123,7 +123,7 @@
   grâce à ce processus de \textit{curryfication}.
 
   \begin{example}
-    Considérons deux types $A, B : \U$ et la fonction $K$ définie par
+    Considérons deux types $A, B : \U_i$ et la fonction $K$ définie par
     $$K :\equiv \lambda(x : A).(\lambda(y : B).x)$$
     Grâce à un arbre similaire au précédent, on trouve que le type de $K$ est $A \fun B \fun A$
     (on omet les parenthèses en prenant comme convention que $A \fun B \fun C$ est égal à $A \fun (B \fun C)$).
@@ -134,7 +134,7 @@
   Une manière de généraliser le type des fonctions est de définir un type de fonctions dépendantes (ou $\prod$-type),
   qui est un type de fonction dont le codomaine dépend du point d'application de la fonction.
 
-  Pour former ce nouveau type, on considère $A : \U$ un type et $B : A \fun \U$ une famille de type indexée sur $A$.
+  Pour former ce nouveau type, on considère $A : \U_i$ un type et $B : A \fun \U_i$ une famille de type indexée sur $A$.
   On peut alors former le type $\prod_{a : A}{B(a)}$ grâce à la règle de formation suivante :
 
   $$
@@ -333,7 +333,7 @@
   \end{array}
   $$
 
-  Ainsi, on a construit une fonction $\rec_{\0}$ de type $\prod_{C: \U} \0 \fun C$
+  Ainsi, on a construit une fonction $\rec_{\0}$ de type $\prod_{C: \U_i} \0 \fun C$
   qui à un type $C : \U_i$ associe une fonction qui ne prend aucune valeur.
   Par conséquent, on ne devrais jamais calculer cette fonction,
   c'est la raison pour laquelle il n'y a pas de règle de calcul pour ce type.
@@ -370,7 +370,7 @@
       {\Gamma, x : \1 \vdash C(x) : \U_i}{\Gamma \vdash c : C(\star)}
     {\Gamma \vdash \rec_{\1}(C, c, \star) \equiv c : C(\star)}
   \end{gather*}
-  où la fonction $\rec_{\1}$ est de type $\prod_{C : \1 \fun \U} C(\star) \fun \prod_{x:\1} C(x)$
+  où la fonction $\rec_{\1}$ est de type $\prod_{C : \1 \fun \U_i} C(\star) \fun \prod_{x:\1} C(x)$
   De plus pour ce type, on a une règle d'unicité car le seul élément de $\1$ est $\star$ :
   $$
   \prfinterspace=2em
@@ -421,7 +421,7 @@
   {\Gamma \vdash \rec_{A+B}(C, g_0, g_1, e) : C(e)}
   $$
   Ainsi, la fonction $\rec_{A+B}$ est de type %$\prod_{C : \U}(A \fun C) \fun (B \fun C) \fun A + B \fun C$,
-  $$\prod_{C : A+B \fun \U}\left(\prod_{a : A}C(\inl\ a)\right) \fun \left(\prod_{b : B}C(\inr\ b)\right) \fun \left(\prod_{e:A+B}C(e)\right)$$
+  $$\prod_{C : A+B \fun \U_i}\left(\prod_{a : A}C(\inl\ a)\right) \fun \left(\prod_{b : B}C(\inr\ b)\right) \fun \left(\prod_{e:A+B}C(e)\right)$$
   et permet de faire la disjonction de cas.
   On a de plus deux règles décrivant le comportement de la fonction $\rec_{A+B}$ en fonction de son dernier argument :
 
@@ -485,7 +485,7 @@
     $$
 
     On obtient alors la fonction $\rec_{\2}$ de type
-    $$\prod_{C : \2 \fun \U} \left(\prod_{x:\1} C(\inl\ x)\right) \fun \left(\prod_{y:\1}C(\inr\ y)\right) \fun \prod_{b : \2} C(b),$$
+    $$\prod_{C : \2 \fun \U_i} \left(\prod_{x:\1} C(\inl\ x)\right) \fun \left(\prod_{y:\1}C(\inr\ y)\right) \fun \prod_{b : \2} C(b),$$
     que l'on peut également voir comme le type $\prod_{C:\2 \fun \U}C(\bot) \fun C(\top) \fun \prod_{b:\2}C(b)$
     (car les fonctions sur $\1$ sont constantes et égales à la valeurs qu'elles prennent sur $\star$).
     Cette fonction vérifie les règles d'élimination et de calcul suivantes :
@@ -549,7 +549,7 @@
 
   \subsubsection{Types inductifs : W-types}
 
-  Pour construire le type des entiers $\N$, les constructeurs précédent ne suffisent pas car ils ne permettent
+  Pour construire le type des entiers $\N$, les constructeurs précédents ne suffisent pas car ils ne permettent
   pas de décrire le caractère inductif des entiers.
   Habituellement, on définit le type $\N$ comme étant un élément $0 : \N$ et une fonction successeur
   $s : \N \fun \N$ et un entier est de la forme $0$ ou bien $s\circ s \circ \hdots \circ s\ 0$.
@@ -712,14 +712,14 @@
   $$
   \prfinterspace=2em
   \prftree
-    {\prftree{\Gamma \ctx}{\Gamma\ \vdash \2 : \U}}
+    {\prftree{\Gamma \ctx}{\Gamma\ \vdash \2 : \U_i}}
     {\prftree
-      {\prftree{\Gamma \ctx}{\Gamma, a : \2\ \vdash B : \2 \fun \U}}
+      {\prftree{\Gamma \ctx}{\Gamma, a : \2\ \vdash B : \2 \fun \U_i}}
       {\prftree
-	{\prftree{\Gamma \ctx}{\Gamma\ \vdash \2 : \U}}
+	{\prftree{\Gamma \ctx}{\Gamma\ \vdash \2 : \U_i}}
       {\Gamma, a : \2\ \vdash a : \2}}
-    {\Gamma, a : \2\ \vdash B(a) : \U}}
-  {\Gamma\ \vdash \N : \U}
+    {\Gamma, a : \2\ \vdash B(a) : \U_i}}
+  {\Gamma\ \vdash \N : \U_i}
   $$
 
   On a donc la règle simplifiée :
@@ -727,7 +727,7 @@
   $$
   \prftree[r]{$\N$ i}
     {\Gamma \ctx}
-  {\Gamma\ \vdash \N : \U}
+  {\Gamma\ \vdash \N : \U_i}
   $$
 
   Ensuite, concernant la règle d'introduction on distingue deux cas puisqu'il y a deux manières de construire
@@ -758,7 +758,7 @@
   \end{array}$$
 
   Pour la règle d'élimination sur le type $\N$, on s'attend à retrouver le principe de récurrence usuel sur les entiers,
-  à savoir que si une prédicat $E : \N \fun \U$ est vrai sur $0$ et que si $E(k)$ est vrai alors $E(s\ k)$ est vrai,
+  à savoir que si une prédicat $E : \N \fun \U_i$ est vrai sur $0$ et que si $E(k)$ est vrai alors $E(s\ k)$ est vrai,
   alors $E(k)$ est vrai sur tout $k : \N$.
   $$
   \prfinterspace=1.2em

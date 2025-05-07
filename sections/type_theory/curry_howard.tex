@@ -1,7 +1,7 @@
 \documentclass[../../rapport.tex]{subfiles}
 
 \begin{document}
-  Dans la théorie des types, les propositions sont donc des types et les preuves de ces propositions sont donc des éléments de ce type.
+  Dans la théorie des types, les propositions sont des types et les preuves de ces propositions sont des éléments du type correspondant.
   Ainsi, prouver un théorème correspond à construire un élément (ou un terme) du type correspondant à l'énoncé du théorème.
   On a décrit comment construire des types de manière générale et ces constructions peuvent être utilisés pour construire des propositions,
   comme décrit dans le tableau suivant.
@@ -81,9 +81,26 @@
   un système de construction de termes à partir de commande plus simple ayant un sens qui se rapproche des règles habituelles
   de raisonnement.
   Reprenons l'exemple précédent. En Lean, le code suivant qui permet de construire un terme de ce type :
-  \begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.95\textwidth]{lean.png}
-  \end{figure}
+  % \begin{figure}[ht]
+  %   \centering
+  %   \includegraphics[width=0.95\textwidth]{lean.png}
+  % \end{figure}
+  \begin{lean4code}
+    example : (¬(And p q) → r) → And (¬p → r) (¬q → r) := by
+      intro h 	    -- Introduit un terme de type ¬(And p q) → r)
+      constructor 	-- Sépare l'objectif en deux sous-objectifs
+      <;> intro hn        -- Introduit un terme de type ¬p (resp. ¬q)
+		          -- dans le premier (resp. second) sous-objectif
+      <;> apply h 	-- Applique h aux deux sous-objectifs
+      <;> rintro ⟨hp, hq⟩ -- Introduit des termes de type p et q
+      . exact hn hp
+      . exact hn hq       -- Construit des termes de type 0
+  \end{lean4code}
+  Le terme que Lean créé à partir de ce code est alors :
+  \begin{lean4code}
+    fun h =>
+      ⟨fun hn => h fun a => And.casesOn a fun hp hq => hn hp,
+       fun hn => h fun a => And.casesOn a fun hp hq => hn hq⟩
+  \end{lean4code}
 
 \end{document}

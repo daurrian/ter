@@ -8,8 +8,8 @@
 \geometry{a4paper, margin=1in}
 \linespread{1.25}
 
-% \usepackage{minted}
-% \usemintedstyle{tango}
+\usepackage{minted}
+\usemintedstyle{tango}
 
 \usepackage{amsfonts}
 \usepackage{amsthm}
@@ -43,6 +43,10 @@
   urlcolor=blue,
   pdftitle={\Title}
 }
+\definecolor{bgcolor}{gray}{0.96}
+
+% Minted Code
+\newminted{lean4}{bgcolor=bgcolor, fontsize=\small, gobble=3}
 
 % ToC
 \setlength{\cftparskip}{0.4em} % linespread in ToC
