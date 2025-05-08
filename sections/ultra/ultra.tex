@@ -30,7 +30,7 @@
 
   \begin{proof}
     Supposons que $y \in B(x, r)$. Soit $z \in B(x, r)$, alors
-    $$d(y, z) \le \max{(d(y, x), d(x, z))} \le \max{(r, r)} \le r,$$
+    $$d(y, z) \le \max{(d(y, x), d(x, z))} < \max{(r, r)} = r,$$
     car $y, z \in B(x, r)$. Donc on a une inclusion : $B(x, r) \subseteq B(y, r)$.
 
     Réciproquement comme $y \in B(x, r)$ on a $x \in B(y, r)$ par symétrie de la distance
@@ -67,7 +67,7 @@
     notons $R = \sup_{i\in I}{r_i} < \infty$, on a alors l'inclusion
     $$\bigcup_{i\in I}B(x_i, r_i) = \bigcup_{i\in I}{B(z, r_i)} \subseteq B(z, R).$$
 
-    Réciproquement si $y \in B(z, R)$, alors il existe $i_0 \in I$ tel que $d(y, z) \le r_{i_0} \le R$
+    Réciproquement si $y \in B(z, R)$, alors il existe $i_0 \in I$ tel que $d(y, z) < r_{i_0} \le R$
     et donc $y \in B(z, r_{i_0}) \subseteq \bigcup_{i\in I}{B(z, r_i)}$.
     Finalement, l'union de ces boules est encore une boule.
   \end{proof}

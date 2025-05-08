@@ -2,27 +2,34 @@
 
 \begin{document}
   La théorie des types se veut être une alternative à la théorie des ensembles de Zermelo-Fraenkel (ZF).
-  Or les fondations de cette dernière s'appuient sur le système déductif de la logique du premier ordre,
-  et la théorie des ensembles est formulée à l'intérieur de ce système, donc cette théorie est formée
-  de deux couches : la logique du premier ordre, puis la théorie des ensembles, formée de ses axiomes.
+  Les fondations de cette dernière s'appuient sur le système déductif de la logique du premier ordre,
+  et la théorie des ensembles est formulée dans ce système.
+  Cette théorie est donc composée de deux couches :
+  la logique du premier ordre, puis la théorie des ensembles, formée de ses axiomes.
   On a donc deux objets fondamentaux dans cette approche :
   les propositions (qui se basent sur la logique du premier ordre) et les ensembles de ZF.
 
-  Pour éviter cette construction en deux couches, la théorie des types possède son propre système déductif,
-  par conséquent une fois les jugements et les règles du système déductif définies,
-  il est prêt à être utilisé sans axiomes supplémentaires.
-  Ainsi, cette théorie ne possède qu'un objet fondamental : les \textbf{types}.
+  % Pour construire un système déductif, on doit définir d'abord les jugements de ce système qui décrivent quelles
+  % propositions peuvent être prouvées,
+  % et les règles donnant la manière dont les jugements peuvent être dérivés les uns par rapport aux autres.
 
-  Ayant uniquement des types, pour pouvoir formuler des théorèmes on a besoin de l'équivalent des propositions,
-  qui sont ici des types particuliers, dont la construction suit des règles qui seront précisées après.
+  Afin d'éviter cette construction en deux couches, la théorie des types possède son propre système déductif.
+  Un système déductif est définit par ses jugements, qui décrivent quelles affirmations peuvent être prouvées,
+  et ses règles qui donne la manière dont les jugements peuvent être dérivés les uns par rapport aux autres.
+  Par conséquent, une fois les jugements et les règles du système déductif définies,
+  il est prêt à être utilisé sans axiomes supplémentaires.
+  Cette théorie ne possède qu'un objet fondamental : les \textbf{types}.
+
+  Pour pouvoir formuler des théorèmes, on a besoin de l'équivalent des propositions,
+  qui sont ici des types, dont la construction suit des règles qui seront précisées dans les sections suivantes.
   Dans cette théorie, prouver un théorème est donc équivalent à construire un objet
   dont le type correspond au théorème (ici l'objet en question est une preuve).
 
   On peut aussi voir les types d'un point de vue plus proche de la théorie des ensembles,
   en interprétant le fait qu'un élément $a$ soit de type $A$ comme l'affirmation $a \in A$.
-  Cependant ici l'affirmation $a \in A$ est une proposition alors que dire "$a$ est de type $A$"
-  (que l'on notera dorénavant $a : A$) est un jugement. En effet,
-  dans la théorie des types un élément possède toujours un type (uniquement) déterminé.
+  Cependant, l'affirmation $a \in A$ est une proposition alors que dire "$a$ est de type $A$"
+  (que l'on notera dorénavant $a : A$) est un jugement.
+  En effet, dans la théorie des types un élément possède toujours un type déterminé.
 
   Le système déductif de cette théorie est composé de trois jugements :
   \begin{enumerate}
@@ -37,7 +44,9 @@
   étant donné qu'elle est vraie par définition (ou par construction).
 
   Cette distinction entre proposition et jugement est fondamentale.
-  Un jugement est une affirmation dans le système déductif de la théorie, qui est donc considérée comme vrai et n'est pas à prouver,
+  Un jugement est l'affirmation qu'une proposition est vraie dans le système déductif de la théorie,
   alors qu'une proposition est un type, pouvant être non vide et se situe donc dans la théorie elle-même.
+  % Un jugement est une affirmation dans le système déductif de la théorie, qui est donc considérée comme vrai et n'est pas à prouver,
+  % alors qu'une proposition est un type, pouvant être non vide et se situe donc dans la théorie elle-même.
 \end{document}
 
