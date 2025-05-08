@@ -86,17 +86,17 @@
   %   \includegraphics[width=0.95\textwidth]{lean.png}
   % \end{figure}
   \begin{lean4code}
-    example : (¬(And p q) → r) → And (¬p → r) (¬q → r) := by
-      intro h 	    -- Introduit un terme de type ¬(And p q) → r)
+    example : (¬(p |$\wedge$| q) → r) → (¬p → r) |$\wedge$| (¬q → r) := by
+      intro h 	    -- Introduit un terme de type ¬(p |$\wedge$| q) → r)
       constructor 	-- Sépare l'objectif en deux sous-objectifs
       <;> intro hn        -- Introduit un terme de type ¬p (resp. ¬q)
-		          -- dans le premier (resp. second) sous-objectif
+                          -- dans le premier (resp. second) sous-objectif
       <;> apply h 	-- Applique h aux deux sous-objectifs
       <;> rintro ⟨hp, hq⟩ -- Introduit des termes de type p et q
       . exact hn hp
       . exact hn hq       -- Construit des termes de type 0
   \end{lean4code}
-  Le terme que Lean créé à partir de ce code est alors :
+  Le terme créé par Lean à partir de ce code est :
   \begin{lean4code}
     fun h =>
       ⟨fun hn => h fun a => And.casesOn a fun hp hq => hn hp,

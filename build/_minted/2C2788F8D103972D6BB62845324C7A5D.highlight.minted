@@ -1,0 +1,11 @@
+\begin{MintedVerbatim}[commandchars=\\\{\},codes={\catcode`\$=3\catcode`\^=7\catcode`\_=8\relax}]
+\PYG{+w}{ }\PYG{k+kn}{example}\PYG{+w}{ }\PYG{o}{:}\PYG{+w}{ }\PYG{o}{(}\PYG{n+nb+bp}{¬}\PYG{o}{(}\PYG{n}{p}\PYG{+w}{ }\PYG{esc}{$\wedge$}\PYG{+w}{ }\PYG{n}{q}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{→}\PYG{+w}{ }\PYG{n}{r}\PYG{o}{)}\PYG{+w}{ }\PYG{n+nb+bp}{→}\PYG{+w}{ }\PYG{o}{(}\PYG{n+nb+bp}{¬}\PYG{n}{p}\PYG{+w}{ }\PYG{n+nb+bp}{→}\PYG{+w}{ }\PYG{n}{r}\PYG{o}{)}\PYG{+w}{ }\PYG{esc}{$\wedge$}\PYG{+w}{ }\PYG{o}{(}\PYG{n+nb+bp}{¬}\PYG{n}{q}\PYG{+w}{ }\PYG{n+nb+bp}{→}\PYG{+w}{ }\PYG{n}{r}\PYG{o}{)}\PYG{+w}{ }\PYG{o}{:=}\PYG{+w}{ }\PYG{k}{by}
+\PYG{+w}{   }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{h}\PYG{+w}{ 	    }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Introduit un terme de type ¬(p $\wedge$ q) → r)}
+\PYG{+w}{   }\PYG{n}{constructor}\PYG{+w}{ 	}\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Sépare l\PYGZsq{}objectif en deux sous\PYGZhy{}objectifs}
+\PYG{+w}{   }\PYG{n+nb+bp}{\PYGZlt{}}\PYG{n+nb+bp}{;}\PYG{n+nb+bp}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{intro}\PYG{+w}{ }\PYG{n}{hn}\PYG{+w}{        }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Introduit un terme de type ¬p (resp. ¬q)}
+\PYG{+w}{                       }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} dans le premier (resp. second) sous\PYGZhy{}objectif}
+\PYG{+w}{   }\PYG{n+nb+bp}{\PYGZlt{}}\PYG{n+nb+bp}{;}\PYG{n+nb+bp}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{apply}\PYG{+w}{ }\PYG{n}{h}\PYG{+w}{ 	}\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Applique h aux deux sous\PYGZhy{}objectifs}
+\PYG{+w}{   }\PYG{n+nb+bp}{\PYGZlt{}}\PYG{n+nb+bp}{;}\PYG{n+nb+bp}{\PYGZgt{}}\PYG{+w}{ }\PYG{n}{rintro}\PYG{+w}{ }\PYG{n+nb+bp}{⟨}\PYG{n}{hp}\PYG{o}{,}\PYG{+w}{ }\PYG{n}{hq}\PYG{n+nb+bp}{⟩}\PYG{+w}{ }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Introduit des termes de type p et q}
+\PYG{+w}{   }\PYG{n+nb+bp}{.}\PYG{+w}{ }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{hn}\PYG{+w}{ }\PYG{n}{hp}
+\PYG{+w}{   }\PYG{n+nb+bp}{.}\PYG{+w}{ }\PYG{n}{exact}\PYG{+w}{ }\PYG{n}{hn}\PYG{+w}{ }\PYG{n}{hq}\PYG{+w}{       }\PYG{c+c1}{\PYGZhy{}\PYGZhy{} Construit des termes de type 0}
+\end{MintedVerbatim}

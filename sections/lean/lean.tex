@@ -48,27 +48,26 @@
   Pour ce faire on a besoin notamment de définir la notion de mesure de Gibbs puis on peut alors énoncé le théorème
   avec le code suivant :
   \pagebreak
-  \begin{figure}[ht]
-    \centering
-    \includegraphics[width=\textwidth]{gibbs_def.png}
-
-    \vspace{0.5cm}
-    \includegraphics[width=0.6\textwidth]{gibbs_thm.png}
-  \end{figure}
+  % \begin{figure}[ht]
+  %   \centering
+  %   \includegraphics[width=\textwidth]{gibbs_def.png}
+  %
+  %   \vspace{0.5cm}
+  %   \includegraphics[width=0.6\textwidth]{gibbs_thm.png}
+  % \end{figure}
 
   \begin{lean4code}
-    class IsGibbs (f : Bernoulli Z n → R) (mu : Measure (Bernoulli Z n))
-    extends InvariantProb mu where
-      gibbs_prop : Exists P : R, Exists c c' : NNReal, c > 0 /\ c' > 0 /\ 
-      Forall x : Bernoulli Z n, Forall m : N,
-    mu (cylinder x m) / nnexp (- P * m + ∑ k ∈ Ico 0 m, f (shift^[k] x))
-      ∈ Icc (c : ENNReal) (c': ENNReal)
+    class IsGibbs (|$\phi$| : Bernoulli |$\Z$| n → |$\R$|) (|$\mu$| : Measure (Bernoulli |$\Z$| n))
+    extends InvariantProb |$\mu$| where
+      gibbs_prop : Exists P : |$\R$|, Exists c c' : NNReal, c > 0 |$\wedge$| c' > 0 |$\wedge$|
+      Forall x : Bernoulli |$\Z$| n, Forall m : |$\N$|,
+    |$\mu$| (cylinder x m) / nnexp (- P * m + |$\Sigma$| k |$\in$| Ico 0 m, |$\phi$| (shift^[k] x))
+      |$\in$| Icc (c : ENNReal) (c': ENNReal)
   \end{lean4code}
 
-
   \begin{lean4code}
-    theorem gibbs (f : Bernoulli Z n → R) [HolderLike f] :
-      ExistsUnique mu : Measure (Bernoulli Z n), IsGibbs f mu := by sorry
+    theorem gibbs (|$\phi$| : Bernoulli |$\Z$| n → |$\R$|) [HolderLike |$\phi$|] :
+      ExistsUnique |$\mu$| : Measure (Bernoulli |$\Z$| n), IsGibbs |$\phi\ \mu$| := by sorry
   \end{lean4code}
 
   Cependant, la preuve de ce résultat nécessite un certain nombre de lemmes intermédiaires qu'il faut également prouver
@@ -111,7 +110,7 @@
   et d'une fonction $\Phi : S_{\O} \fun B$ qui à chaque classe d'équivalence associe l'union de ses éléments.
 
   \begin{theorem*}
-    Soit $\O$ un ouvert borné de $E$. Alors lafonction $\Phi$ vérifie les propriétés suivantes :
+    Soit $\O$ un ouvert borné de $E$. Alors la fonction $\Phi$ vérifie les propriétés suivantes :
     \begin{enumerate}
       \item $\bigcup_{s : S_{\O}}{\Phi(s)} = \O$
       \item Si $s_1, s_2 : S_{\O}$ sont distincts alors $\Phi(s_1)$ et $\Phi(s_2)$ sont disjoints.
@@ -122,10 +121,16 @@
   plus maniable en Lean d'un même théorème, car elle fait intervenir des types et des fonctions largement utilisées dans Mathlib
   et qui sont donc plus faciles d'utilisation. Une fois converti en Lean, il peut s'écrire avec le code suivant :
 
-  \begin{figure}[ht]
-    \centering
-    \includegraphics[width=0.8\textwidth]{topo_thm.png}
-  \end{figure}
+  % \begin{figure}[ht]
+  %   \centering
+  %   \includegraphics[width=0.8\textwidth]{topo_thm.png}
+  % \end{figure}
+  \begin{lean4code}
+    theorem partition (hO : IsOpen O)
+      (O_bdd : Exists (x : X), Exists r > 0, O |$\subseteq$| ball x r) :
+      let |$\Phi$| := iBall (Obdd O_bdd)
+      |$\bigcup$| s, |$\Phi$| s = O |$\wedge$| Pairwise (onFun Disjoint (fun s => (|$\Phi$| s).1)) := by sorry
+  \end{lean4code}
 
   Une preuve de ce théorème se trouve dans la section suivante et une formalisation de ce théorème est disponible sur
   \href{https://github.com/daurrian/bowen/blob/main/Bowen/Ultrametric.lean}{Github}.
