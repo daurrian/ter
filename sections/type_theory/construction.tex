@@ -76,7 +76,7 @@
   $$
 
   On ajoute aussi une dernière règle correspondant au principe d'unicité des fonctions,
-  affirmant que'un fonction $f : A \fun B$ est égale à la fonction $\lambda (a: A).\ f\ a$.
+  affirmant qu'une fonction $f : A \fun B$ est égale à la fonction $\lambda (a: A).\ f\ a$.
   Sous forme d'une règle, on l'écrit :
 
   $$
@@ -110,7 +110,7 @@
   On a vu jusqu'ici comment construire des fonctions à une variable, on peut alors généraliser pour obtenir
   des fonctions à plusieurs variables.
   Pour ce faire, considérons trois types $A, B, C : \U_i$.
-  Naïvement, on voudrais construire une fonction de type $A \times B \fun C$,
+  Naïvement, on voudrait construire une fonction de type $A \times B \fun C$,
   mais le type $A \times B$ n'est pas encore défini.
   Pour contourner ce problème, on peut voir une fonction $f$ de $A \times B \fun C$ comme
 
@@ -145,7 +145,7 @@
 
   On construit des éléments de type $\prod_{a:A}{B(a)}$ de manière analogue aux fonctions en utilisant les $\lambda$-abstractions.
   En effet, $\lambda(a : A). \Phi$ est de type $\prod_{a:A}{B(a)}$ si lorsque $a : A$, alors $\Phi : B(a)$.
-  Cette règle énoncé plus formellement est la règle d'introduction de ce nouveau type :
+  Cette règle énoncée plus formellement est la règle d'introduction de ce nouveau type :
 
   $$
   \prftree[r]{($\Pi$ i)}{\Gamma, a : A \vdash \Phi : B(a)}
@@ -180,7 +180,7 @@
   comme le montre les exemples suivants.
 
   \begin{example}
-    La fonction identité du paragraphe précédent était défini sur un type $A : \U_i$ quelconque.
+    La fonction identité du paragraphe précédent était définie sur un type $A : \U_i$ quelconque.
     On peut alors généraliser sa définition de la manière suivante :
 
     $$I \equiv \lambda (A : \U_i). \lambda (a : A).\ a : \prod_{A : \U_i}{A \fun A}.$$
@@ -260,7 +260,7 @@
 
   Si on considère un type $A : \U_i$ et une famille de type $B : A \fun \U_i$ indexée sur $A$,
   on veut pouvoir construire l'union disjointe des $B(a)$ pour $a : A$.
-  Pour ce faire, on introduit les types de paires dépendantes (ou $\Sigma$-type) qui se forme grâce à la règle :
+  Pour ce faire, on introduit les types de paires dépendantes (ou $\Sigma$-type) qui se forment grâce à la règle :
   $$
   \prfinterspace=1.2em
   \prftree[r]{($\Sigma$ f)}
@@ -270,7 +270,7 @@
   $$
 
   Un élément de ce type est une paire $(a, b)$ où $a : A$ et $b : B(a)$ (d'où le nom de paire dépendante),
-  c'est ce que la règle suivante décrit :
+  ce que la règle suivante décrit :
   $$\prfinterspace=1.2em
   \prftree[r]{($\Sigma$ i)}
     {\Gamma \vdash a : A}
@@ -317,7 +317,7 @@
   \begin{example}[Cas où $B$ est constant]
     Si on considère deux types $A, B : \U_i$, on peut poser $C :\equiv \Sigma_{a:A}B$ qui est en tout point similaire au produit $A \times B$.
     En effet, si $(a, b) : C$ alors $a: A$ et $b : B(a) \equiv B$ et donc $(a, b) : A \times B$.
-    De plus les règles étant très similaire, lorsque la famille $B$ est constante on retrouve les règles des types produits.
+    De plus les règles étant très similaires, lorsque la famille $B$ est constante on retrouve les règles des types produits.
   \end{example}
 
   \subsubsection{Type vide}
@@ -335,7 +335,7 @@
 
   Ainsi, on a construit une fonction $\rec_{\0}$ de type $\prod_{C: \U_i} \0 \fun C$
   qui à un type $C : \U_i$ associe une fonction qui ne prend aucune valeur.
-  Par conséquent, on ne devrais jamais calculer cette fonction,
+  Par conséquent, on ne devrait jamais calculer cette fonction,
   c'est la raison pour laquelle il n'y a pas de règle de calcul pour ce type.
   La règle d'élimination agit comme le principe \textit{ex falso quodlibet},
   en effet si on construit un élément du type vide (\textit{ie.} une preuve de $\bot$),
@@ -343,7 +343,7 @@
 
   \subsubsection{Type unité}
 
-  Ensuite, dans l'objectif de construire tout les types finis, on commence par construire le type unité $\1$,
+  Ensuite, dans l'objectif de construire tous les types finis, on commence par construire le type unité $\1$,
   contenant seulement un élément. Pour ce faire on a la règle de formation analogue à celle du type $\0$ avec
   une règle d'introduction simple car le type $\1$ ne possède qu'un seul élément :
 
@@ -449,7 +449,7 @@
 
   \begin{example}[Le type $\2$]
     \label{ex:type_2}
-    Avec le coproduit et le type $\1$ on peut désormais construire le type $\2$ a deux éléments.
+    Avec le coproduit et le type $\1$ on peut désormais construire le type $\2$ à deux éléments.
     En effet, on définit $\2$ par $\2 :\equiv \1 + \1$, ce qui donne la règle de formation
     $$
     \prfinterspace=1.2em
@@ -613,10 +613,10 @@
   \prftree[r]{(W i)}{\Gamma \vdash a : A}{\Gamma, a : A \vdash b : B(a) \fun W_{x:A}B(x)}
     {\Gamma \vdash \sup(a, b) : W_{x:A}B(x)}
   $$
-  La fonction $\sup$ utilisé dans cette règle est donc de type
+  La fonction $\sup$ utilisée dans cette règle est donc de type
   $$\sup : \prod_{a:A}{\left(B(a) \fun W_{x:A}B(x)\right)} \fun W_{a:A}B(a).$$
   Chaque noeud $c :\equiv \sup(a, b) : W_{x:A}B(x)$ est donc relié aux autres par la fonction $b : B(a) \fun W_{x:A}B(x)$,
-  en effet si on considère un élément $v : B(a)$ alors $b\ v$ est un prédecesseur du noeud $c$ dans l'arbre $W_{x:A}B(x)$.
+  en effet si on considère un élément $v : B(a)$ alors $b\ v$ est un prédécesseur du noeud $c$ dans l'arbre $W_{x:A}B(x)$.
 
   \begin{figure}[ht]
     \centering
@@ -782,10 +782,10 @@
   {\Gamma, a : \1, b : \1 \fun \N, c : \prod_{v : \1}E(b\ v) \vdash e(a, b, c) : E(\sup(1_{\2}, b))}
   {\Gamma, a : \1, b : B(\inr(a)) \fun \N, c : \prod_{v:B(\inr(a))}E(b\ v) \vdash e(a, b, c) : E(\sup(\inr(a), b))}
   $$
-  On peut simplifier les prémisses du Lemme 1 en remaquant que ses hypothèses sont triviales et que $\sup(0_{\2}, b) \equiv 0$
+  On peut simplifier les prémisses du Lemme 1 en remarquant que ses hypothèses sont triviales et que $\sup(0_{\2}, b) \equiv 0$
   pour toute fonction $b : \0 \fun \N$, ce qui donne après simplification :
   $$\Gamma \vdash e_0 : E(0).$$
-  De même, pour le Lemme 2 en remaquant qu'un fonction $b : \1 \fun \N$ est équivalent à choisir un $k : \N$ et que
+  De même, pour le Lemme 2 en remarquant qu'une fonction $b : \1 \fun \N$ est équivalente à choisir un $k : \N$ et que
   $c : \prod_{v:\1}E(b\ v)$ est similaire à $c : E(k)$, on peut réécrire la prémisse en
   $$\Gamma, k : \N, p : E(k) \vdash e_s(k, p) : E(s\ k).$$
   Finalement, on peut décomposer la fonction $e$ du récurseur : $e_0 : E(0)$ et $e_s : \prod_{k : \N}E(k) \fun E(s\ k)$,

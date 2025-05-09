@@ -3,14 +3,14 @@
 \begin{document}
 
   L'objectif du TER est de découvrir un assistant de preuve en formalisant un résultat non trivial,
-  puis de comprendre les fondements théoriques sur lesquels repose les assistants de preuves actuels comme Lean ou Rocq.
+  puis de comprendre les fondements théoriques sur lesquels reposent les assistants de preuves actuels comme Lean ou Rocq.
   Pour ce faire, ce rapport est décomposé en trois parties distinctes.
   \vspace{0em}
 
   La première partie est une présentation de la théorie des types (dépendants),
   dans la version introduite par Per Martin-Löf \cite{martin2021intuitionistic}.
   Cette théorie introduit la notion fondamentale de \textit{type} qui est un analogue des ensembles,
-  et est largement utilisé par de nombreux langages de programmation.
+  et est largement utilisée par de nombreux langages de programmation.
   Elle permet de formaliser les mathématiques et de construire un lien entre informatique et mathématiques en étendant
   la correspondance de Curry-Howard entre les preuves et les programmes.
   On décrira ici seulement les règles structurant les relations entre les types et décrivant le système de preuve qu'il fournit,
@@ -20,7 +20,7 @@
   La deuxième partie décrit la formalisation d'un théorème à l'aide de l'assistant de preuve Lean.
   Pour ce faire, on présente les outils qui ont été utilisés dans le cadre de la formalisation et les obstacles rencontrés.
   Initialement, le théorème choisi pour être formalisé établissait l'existence de mesure dite de Gibbs.
-  Cependant la preuve dûe à Rufus Bowen \cite{bowen} était trop longue pour être complètement porté en Lean.
+  Cependant la preuve dûe à Rufus Bowen \cite{bowen} était trop longue pour être complètement portée en Lean.
   Le choix final a été de montrer rigoureusement un de ses lemmes essentiels.
   On présente également dans cette section les reformulations des énoncés qui ont été nécessaires pour formaliser
   ces résultats en utilisant les types présents dans Lean.
